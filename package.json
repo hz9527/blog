@@ -1,0 +1,27 @@
+{
+  "name": "blog",
+  "version": "0.1.0",
+  "description": "a blog system",
+  "main": "bin/www",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hz9527/blog.git"
+  },
+  "keywords": [
+    "hz930123"
+  ],
+  "author": "hz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hz9527/blog/issues"
+  },
+  "homepage": "https://github.com/hz9527/blog#readme",
+  "devDependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.6"
+  }
+}
