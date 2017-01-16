@@ -5,6 +5,6 @@ module.exports = function(){
 	var db = mongoose.connect(config.mongodb);
 
 	//导入model
-
+	require('../app/models/userListModel.js');
 	return db;
 }

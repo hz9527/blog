@@ -7,10 +7,11 @@ module.exports = function(){
 	app.use(express.static('./static'));
 
 	//导入路由处理并将服务器实例作为参数传入
-
+	require('../app/routers/signRoute.js')(app);
 
 	// 处理所有404情况
 	app.use(function(req, res, next){
+		console.log(404)
 		res.status(404);
 		try{
 			return res.json('Not Found');
@@ -24,6 +25,7 @@ module.exports = function(){
 		if(!err){
 			return next();
 		}else{
+			console.log(500)
 			res.status(500);
 			try{
 				res.json(err.message || 'serve error');
