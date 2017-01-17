@@ -19,7 +19,7 @@ $('#checkSign').onclick=function(){
 	)
 }
 
-// 登录账户
+// 登录账户画
 
 $('#stopUsing').onclick=function(){
 	$http('get', '/api/sign').then(
