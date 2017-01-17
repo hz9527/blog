@@ -1,13 +1,22 @@
 var mongoose = require('mongoose');
 var userList = mongoose.model('userList');
 
-function checkUser(info,cb){//
-	userList.find(info,function(err,docs){
+function findOne(conditions,cb){//
+	userList.find(conditions, function(err,docs){
 		if(err){
 			return
 		}else{
-			console.log(docs)
-			cb(docs.length);
+			cb(docs);
+		}
+	})
+}
+
+function findAndUpdate(conditions, newDoc,cb){
+	userList.findOneAndUpDate(conditions, {$set: newDoc}, function(err, docs){
+		if(err){
+			return
+		}else{
+			cb(docs)
 		}
 	})
 }
@@ -30,44 +39,63 @@ function getToken(uid){//随机生成uId＋10为长度随机的token
 module.exports = {
 	check(req, res, next){//检查账号是否可用接口
 		var query = req.query.userName;
-		checkUser({userName: query}, function(l){
+		userList.count({userName: query}, function(err, l){
+			if(err){return}
 			if(l===0){
-				res.send('can signUp');
+				res.json({canSignUp: true});
 			}else{
-				res.send('have signUp');
+				res.json({canSignUp: false});
 			}
 		})
 	},
 	create(req, res, next){//注册接口
 		var data = req.body;
-		checkUser({userName: data.userName}, function(l){
+		userList.count({userName: data.userName}, function(err, l){
+			if(err){return}
 			if(l===0){
-				userList.count({},function(err,count){
+				userList.count({},function(err,count){//根据count分配ID
 					if(err){
 						return
 					}else{
+						var token = getToken(count+1);
 						var newUser = new userList();
 						newUser.userName = data.userName;
 						newUser.passWord = data.passWord;
-						newUser.uId = count;
-						newUser.token = getToken(count);
+						newUser.uId = count+1;
+						newUser.token = token;
 						newUser.save();
 						// 将token以cookie形式返回给客户端
-						res.send('signUp');
+						res.cookie('token', token, {maxAge: 3600*24*7});
+						res.json({signUp: true, name: data.userName});
 					}
 				})
 			}else{
-				res.send('have signUp');
+				res.json({signUp: false, name: null});
 			}
 		})
 	},
 	signIn(req, res, next){//登录接口
-
+		var data = req.body;
+		findOne({$and: [{userName: data.userName, passWord: data.passWord}]}, function(docs){
+			if(docs.length == 1){
+				//查询消息数并返回结果，将以下返回作为回调
+				//设置cookie
+				var token = getToken(docs.uId);
+				res.cookie('token', token, {maxAge: 3600*24*7});
+				docs.token = token;
+				docs.save();
+				res.json({sign: true});
+			}else{
+				res.json({sign: false});
+			}
+		})
 	},
 	stopUsing(req, res, next){//注销接口
-
+		var data = req.body;
+		console.log('im here', req.identity);
+		res.end();
 	},
 	changePwd(req, res, next){//修改密码接口
-
+		console.log(arguments);
 	}
 }

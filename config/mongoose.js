@@ -6,5 +6,5 @@ module.exports = function(){
 
 	//导入model
 	require('../app/models/userListModel.js');
-	return db;
+	return mongoose;
 }

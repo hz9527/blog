@@ -19,6 +19,16 @@ $('#checkSign').onclick=function(){
 	)
 }
 
+// 登录账户
+
+$('#stopUsing').onclick=function(){
+	$http('get', '/api/sign').then(
+		function(res){
+			console.log(res)
+		}
+	)
+}
+
 function $http(method,url,params){
 	var xhr=getXhr();
 	params&&(params=JSON.stringify(params));
