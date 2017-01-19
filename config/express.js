@@ -55,7 +55,7 @@ module.exports = function(){
 		if(!err){
 			return next();
 		}else{
-			console.log(500)
+			console.log(500,err)
 			res.status(500);
 			try{
 				res.json(err.message || 'serve error');

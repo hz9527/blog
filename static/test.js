@@ -19,7 +19,22 @@ $('#checkSign').onclick=function(){
 	)
 }
 
-// 登录账户画
+// 登录账户
+$('#signIn').onclick=function(){
+	$http('put', '/sign', {userName:'hz3', passWord:'123456'}).then(
+		function(res){
+			console.log(res);
+		}
+	)
+}
+
+$('#changePwd').onclick=function(){
+	$http('put', '/api/sign', {userName:'hz3', passWord:'hz123456'}).then(
+		function(res){
+			console.log(res)
+		}
+	)
+}
 
 $('#stopUsing').onclick=function(){
 	$http('get', '/api/sign').then(
