@@ -1,37 +1,43 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var uidKey = require('./uidKey.js');
 
 module.exports = function(){
 	var app = express();
 	app.use(bodyParser.json());
 	app.use(express.static('./static'));
 	app.use(cookieParser());
+	app.use(session({
+		secret:'9527',
+		name:'hz',
+		cookie:{maxAge:3600*10},
+		reload:true,
+		rolling:true
+	}));
 
 	var mongoose = require('mongoose');
-	var userList = mongoose.model('userList');
+	//var userList = mongoose.model('userList');
 
 	//处理所有需要验证身份的api
 	app.all('/api/*', function(req, res, next){
 		console.log('app.all',req.head,req.cookies);
-		var token = req.cookies['token'];
-		if(token){
+		var uId = req.session.userId;
+		var token = uidKey.getUid(req.cookies.uId);
+
+		if(uId || token){
 			//验证身份
-			userList.findOne({token: token}, function(err,docs){
-				if(err){return}
-				if(docs){
-					if(docs.using === true){
-						req.identity = docs.uId;//用户身份，值为id
-					}else{
-						req.identity = 'log-off';//注销身份
-					}
-				}else{
-					req.identity = 'invaild';//非法身份
-				}
-				next();
-			})
+			if(token[0] == 'v'){
+				req.identity = token;//返回有记录游客id
+			}else if(uId == token){
+				req.identity = token;//返回用户id
+			}else{
+				req.identity = 'invaild'//身份非法
+			}
+			next();
 		}else{
-			req.identity = 'visiter';//游客身份
+			req.identity = 'visiter';//普通游客身份
 			next();
 		}
 	})

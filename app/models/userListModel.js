@@ -1,12 +1,10 @@
 var mongoose = require('mongoose');
 
-var UserListSchema = new mongoose.Schema({
-	userName: String,
-	passWord: String,
-	uId: Number,
-	token: String,
-	using: {type:Boolean, default: true},
-	createTime: {type: Number, default: Date.now()}
+var UserSchema = new mongoose.Schema({
+	_id: Number,
+	name: String,
+	picture: String,
+	using: {type:Boolean, default: true}
 });
 
-var userList = mongoose.model('userList', UserListSchema);
+var User = mongoose.model('User', UserSchema);
