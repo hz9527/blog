@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var UserInfoSchema = new mongoose.Schema({
-	uId: {type:Schema.Types.ObjectId, ref:'User'},
-	lId: {type:Schema.Types.ObjectId, ref:'defaultLimit'},
+	uId: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+	lId: {type: mongoose.Schema.Types.ObjectId, ref:'defaultLimit'},
 	name: String,
 	sex: String,
 	birthday: Number,
@@ -12,4 +12,4 @@ var UserInfoSchema = new mongoose.Schema({
 	blog: String,
 	createTime: {type: Number, default: Date.now()}
 });
-var userInfo = mongoose.model('userInfo', UserInfoSchema);
+var UserInfo = mongoose.model('UserInfo', UserInfoSchema);

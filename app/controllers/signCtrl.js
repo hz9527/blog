@@ -1,5 +1,14 @@
 var mongoose = require('mongoose');
-var userList = mongoose.model('userList');
+
+var userList = mongoose.model('User');
+var accountList = mongoose.model('Account');
+var fansList = mongoose.model('Fans');
+var messageList = mongoose.model('Message');
+var defaultLimitList = mongoose.model('DefaultLimit');
+var collectList = mongoose.model('Collect');
+
+var pictureList = require('../../config/defaultPicture.js');
+
 var common = require('./common/common.js');
 
 function findOne(conditions,cb){//
@@ -37,6 +46,12 @@ module.exports = {
 					if(err){
 						return
 					}else{
+						// 更新用户表，账户表，新建粉丝表，消息表，默认权限表，收藏表；设置session及token
+						var newUser = new userList();
+						newUser._id = count+1;
+						newUser.name = data.userName;
+						newUser.picture = pictureList[parseInt(pictureList.length*Math.random())];
+
 						var token = getToken(count+1);
 						var newUser = new userList();
 						newUser.userName = data.userName;

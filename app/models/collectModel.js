@@ -1,10 +1,10 @@
 var mongoose = require('mongoose');
 var CollectSchema = new mongoose.Schema({
-	uId: {type: Schema.Types.ObjectId, ref:'User'},
+	uId: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
 	collectList: [{
-		bId: String,
+		bId: {type: mongoose.Schema.Types.ObjectId, ref:'BlogList'},
 		collectTime: {type: Number, default: Date.now()},
 		comment: String
 	}]
 });
-var userInfo = mongoose.model('userInfo', UserInfoSchema);
+var Collect = mongoose.model('Collect', CollectSchema);
