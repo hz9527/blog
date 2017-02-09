@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var UserInfoSchema = new mongoose.Schema({
-	uId: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
-	lId: {type: mongoose.Schema.Types.ObjectId, ref:'defaultLimit'},
+	_id: String,
 	name: String,
+	picture: String,
 	sex: String,
 	birthday: Number,
 	company: String,

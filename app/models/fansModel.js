@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var FansSchema = new mongoose.Schema({
-	uId: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+	_id: String,
 	follower: [
 		{
 			uId: {type: mongoose.Schema.Types.ObjectId, ref:'User'},

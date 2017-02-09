@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var DefaultLimitSchema = new mongoose.Schema({
-	uId: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+	_id: String,
 	publishLimit: {type: Number, default: 4},//0 self 1 fans 2 follow 3 fans&follow 4 all
 	commentLimit: {type: Number, default: 4},
 	visitLimit: {type: Number, default: 4},

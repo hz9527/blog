@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var CollectSchema = new mongoose.Schema({
-	uId: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+	_id: String,
 	collectList: [{
 		bId: {type: mongoose.Schema.Types.ObjectId, ref:'BlogList'},
 		collectTime: {type: Number, default: Date.now()},
