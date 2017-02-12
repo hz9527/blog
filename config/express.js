@@ -7,7 +7,7 @@ var uidKey = require('./uidKey.js');
 module.exports = function(){
 	var app = express();
 	app.use(bodyParser.json());
-	app.use(express.static('./static'));
+	app.use(express.static('../static'));
 	app.use(cookieParser());
 	app.use(session({
 		secret:'9527',
@@ -23,17 +23,16 @@ module.exports = function(){
 	//处理所有需要验证身份的api
 	app.all('/api/*', function(req, res, next){
 		console.log('app.all',req.head,req.cookies);
-		var uId = req.session.userId;
-		var token = uidKey.getUid(req.cookies.uId);
+		var uId = req.session.uId;
+		var cId = uidKey.getUid(req.cookies.cId);//游客
 
 		if(uId || token){
 			//验证身份
-			if(token[0] == 'v'){
-				req.identity = token;//返回有记录游客id
-			}else if(uId == token){
-				req.identity = token;//返回用户id
-			}else{
-				req.identity = 'invaild'//身份非法
+			if(cId){
+				req.identity = cId;//返回有记录游客id
+			}
+			if(uId){
+				req.identity = cId;//返回用户id
 			}
 			next();
 		}else{

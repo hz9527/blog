@@ -12,16 +12,6 @@ var pictureList = require('../../config/defaultPicture.js');
 
 var common = require('./common/common.js');
 
-function saveNewUser(i, cb){
-	var newUser = new userList();
-	newUser._id = i;
-	newUser.message = 'message' + i;
-	newUser.info = 'info' + i;
-	newUser.collect = 'collect' + i;
-	newUser.fans = 'fans' + i;
-	newUser.limit = 'limit' +i;
-	newUser.save(cb);
-}
 
 module.exports = {
 	check(req, res, next){//检查账号是否可用接口
@@ -57,6 +47,10 @@ module.exports = {
 
 						var newMessage = new messageList();
 						newMessage._id = 'message' + i;
+						newMessage.messageList.unshift({
+							type:0,
+							comment: '欢迎' + data.userName + '注册'
+						});
 
 						var newLimit =new defaultLimitList();
 						newLimit._id = 'limit' + i;
@@ -65,34 +59,46 @@ module.exports = {
 						newCollect._id = 'collect' + i;
 
 						newFans.save(function(){
-							(++c == 5) && saveCb();
+							saveCb();
 						});
 						newInfo.save(function(){
-							(++c == 5) && saveCb();
+							saveCb();
 						});
-
 						newLimit.save(function(){
-							(++c == 5) && saveCb();
+							saveCb();
 						});
-						newMessage.save(function(){
-							(++c == 5) && saveCb();
+						newMessage.save(function(err){
+							console.log(err);
+							saveCb();
 						});
 						newCollect.save(function(){
-							(++c == 5) && saveCb();
+							saveCb();
 						});
 
 						function saveCb(){
-							saveNewUser(i, function(){
-								var newAccount = new accountList();
-								newAccount.name = data.userName;
-								newAccount.password = data.passWord;
-								newAccount.uId = i;
-								newAccount.save(function(){
-									// 将token以cookie形式返回给客户端
-									// res.cookie('token', token, {maxAge: 3600*24*7});
-									res.json({signUp: true, name: data.userName});
-								})
-							})
+							if(++c == 5){
+								var newUser = new userList();
+								newUser._id = i;
+								newUser.message = newMessage._id;
+								newUser.info = newInfo._id;
+								newUser.collect = newCollect._id;
+								newUser.fans = newFans._id;
+								newUser.limit = newLimit._id;
+								newUser.save(function(err){
+									var key = Date.now();
+									var newAccount = new accountList();
+									newAccount.name = data.userName;
+									newAccount.password = data.passWord;
+									newAccount.key = key;
+									newAccount.uId = newUser._id;
+									newAccount.save(function(err){
+										// 将token以cookie形式返回给客户端,方便下次登陆验证
+										res.cookie('token', key, {maxAge: 3600*24*7});
+										req.session.uId = i;
+										res.json({signUp: true, name: data.userName});
+									});
+								});
+							}
 						}
 
 					}
@@ -104,26 +110,43 @@ module.exports = {
 	},
 	signIn(req, res, next){//登录接口
 		var data = req.body;
-		accountList.find({$and: [{userName: data.userName, passWord: data.passWord}]})
-			.populate({
-				path: 'uId',
-				select: 'using'
-			})
-			.exec(function(err,docs){
-				if(docs.length == 1){
-					//如果使用状态为false直接返回
-					if(docs[0].uId.using === false){
-						res.json({sign: false, message:'用户已注销'})
-					}else{
-						//查询消息数并返回结果，将以下返回作为回调
-						//设置cookie
-						res.cookie('token', token, {maxAge: 3600*24*7});
-						res.json({sign: true, message:''});
-					}
-				}else{
-					res.json({sign: false, message:'用户未注册或密码不正确'});
-				}
-			})
+		messageList.find({},function(err, docs){
+			console.log(docs,docs[0].messageList);
+			res.end()
+		})
+			// .populate({
+			// 	path: 'uId',
+			// 	select: 'using'
+			// })
+			// .exec(function(err,docs){
+			// 	console.log(docs)
+			// 	if(docs.length == 1){
+			// 		//如果使用状态为false直接返回
+			// 		if(docs[0].uId.using === false){
+			// 			res.json({sign: false, message:'用户已注销'})
+			// 		}else{
+			// 			var key = Date.now();
+			// 			accountList.findOneAndUpdate({
+			// 				$and: [{userName: data.userName, passWord: data.passWord}]},
+			// 				{
+			// 					$set:{key:key}
+			// 				})
+			// 				.populate({
+			// 					path:'uId',
+			// 					select: 'message'
+			// 				})
+			// 				.exec(function(err, doc){
+			// 					console.log(doc)
+			// 					res.cookie('token', key, {maxAge: 3600*24*7});
+			// 					req.session.uId = 1;
+			// 					res.json({sign: true, message:''});
+			// 				})
+			//
+			// 		}
+			// 	}else{
+			// 		res.json({sign: false, message:'用户未注册或密码不正确'});
+			// 	}
+			// })
 	},
 	stopUsing(req, res, next){//注销接口
 		if(typeof req.identity !=='number'){
