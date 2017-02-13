@@ -12,7 +12,7 @@ $('#signUp').onclick=function(){
 }
 // 检查账户是否已注册接口
 $('#checkSign').onclick=function(){
-	$http('get', '/sign?userName=hz1').then(
+	$http('get', '/sign?userName=hz3').then(
 		function(res){
 			console.log(res);
 		}
@@ -37,7 +37,7 @@ $('#changePwd').onclick=function(){
 }
 
 $('#stopUsing').onclick=function(){
-	$http('get', '/api/sign').then(
+	$http('get', '/apv/sign').then(
 		function(res){
 			console.log(res)
 		}

@@ -6,7 +6,7 @@ module.exports = function(app){
 		.post(signCtrl.create)
 		.put(signCtrl.signIn);
 
-	app.route('/api/sign')
+	app.route('/apv/sign')
 		.put(signCtrl.changePwd)
 		.get(signCtrl.stopUsing);
 

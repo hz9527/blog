@@ -87,13 +87,14 @@ module.exports = {
 								newUser.save(function(err){
 									var key = Date.now();
 									var newAccount = new accountList();
-									newAccount.name = data.userName;
-									newAccount.password = data.passWord;
+									newAccount.userName = data.userName;
+									newAccount.passWord = data.passWord;
 									newAccount.key = key;
 									newAccount.uId = newUser._id;
 									newAccount.save(function(err){
 										// 将token以cookie形式返回给客户端,方便下次登陆验证
-										res.cookie('token', key, {maxAge: 3600*24*7});
+										res.cookie('key', newAccount._id, {maxAge: 3600*24*30});
+										res.cookie('token', key, {maxAge: 3600*24*30});
 										req.session.uId = i;
 										res.json({signUp: true, name: data.userName});
 									});
@@ -110,58 +111,96 @@ module.exports = {
 	},
 	signIn(req, res, next){//登录接口
 		var data = req.body;
-		messageList.find({},function(err, docs){
-			console.log(docs,docs[0].messageList);
-			res.end()
-		})
-			// .populate({
-			// 	path: 'uId',
-			// 	select: 'using'
-			// })
-			// .exec(function(err,docs){
-			// 	console.log(docs)
-			// 	if(docs.length == 1){
-			// 		//如果使用状态为false直接返回
-			// 		if(docs[0].uId.using === false){
-			// 			res.json({sign: false, message:'用户已注销'})
-			// 		}else{
-			// 			var key = Date.now();
-			// 			accountList.findOneAndUpdate({
-			// 				$and: [{userName: data.userName, passWord: data.passWord}]},
-			// 				{
-			// 					$set:{key:key}
-			// 				})
-			// 				.populate({
-			// 					path:'uId',
-			// 					select: 'message'
-			// 				})
-			// 				.exec(function(err, doc){
-			// 					console.log(doc)
-			// 					res.cookie('token', key, {maxAge: 3600*24*7});
-			// 					req.session.uId = 1;
-			// 					res.json({sign: true, message:''});
-			// 				})
-			//
-			// 		}
-			// 	}else{
-			// 		res.json({sign: false, message:'用户未注册或密码不正确'});
-			// 	}
-			// })
+		accountList.find({userName:data.userName, passWord:data.passWord})
+			.populate({
+				path:'uId',
+				select: '_id message using'
+			})
+			.exec(function(err, docs){
+				if(docs.length == 1 && docs[0].uId.using){
+					docs[0].uId.populate({
+						path:'message',
+						select:'messageList'
+					},function(err,doc){
+						var key = Date.now();
+						docs[0].key = key;
+						docs[0].save(function(err){
+							res.cookie('key', docs[0]._id, {maxAge: 3600*24*30});
+							res.cookie('token', key, {maxAge: 3600*24*30});
+							req.session.uId = doc._id;
+							res.json({signIn: true, message: doc.message.messageList, messageTime: key});
+						});
+					});
+				}else{//登陆失败
+					if(docs.length == 0){
+						res.json({signIn: false, message: '用户名或密码错误', messageTime: Date.now()});
+					}else if(docs.length == 1 && !docs[0].uId.using){
+						res.json({signIn: false, message: '用户已注销', messageTime: Date.now()});
+					}
+				}
+			})
+	},
+	checkSign(req, res, next){//校验登陆
+		var data = req.body;
+		//客户端使用cookie key查询，使用token作为cookie过期时间
+		accountList.findOne({_id: data.key, key: data.token})
+			.populate({
+				path:'uId',
+				select: '_id message using'
+			}).exec(function(err, doc){
+				if(doc && doc.uId.using){
+					doc.uId.populate({
+						path:'message',
+						select:'messageList'
+					}, function(err, mDoc){
+						var key = Date.now();
+						doc.key = key;
+						doc.save(function(err){
+							res.cookie('key', doc._id, {maxAge: key - data.token});
+							res.cookie('token', key, {maxAge: key - data.token});
+							req.session.uId = mDoc._id;
+							res.json({signIn: true, message: mDoc.message.messageList, messageTime: key});
+						});
+					})
+				}else{
+					// 客户端清空cookie
+					if(!doc){
+						res.json({signIn: false, message: '非法登陆', messageTime: Date.now()});
+					}else if(!doc.uId.using){
+						res.json({signIn: false, message: '用户已注销', messageTime: Date.now()});
+					}
+				}
+			})
 	},
 	stopUsing(req, res, next){//注销接口
-		if(typeof req.identity !=='number'){
-			res.json({stopUsing: false, message:req.identity});
-			return
-		}
-		userList.findOneAndUpdate({uId: req.identity }, {$set: {using: false}}, function(err, docs){
-			if(err){return}
-			if(docs.uId){
-				//将所有发布博客，个人信息置为不可用状态
-				res.json({stopUsing: true, message:''})
-			}else{
-				res.json({stopUsing: false, message:'未找到该用户'})
-			}
-		});
+		// if(typeof req.identity !=='number'){
+		// 	res.json({stopUsing: false, message:req.identity});
+		// 	return
+		// }
+		// userList.findOneAndUpdate({uId: req.identity }, {$set: {using: false}}, function(err, docs){
+		// 	if(err){return}
+		// 	if(docs.uId){
+		// 		//将所有发布博客，个人信息置为不可用状态
+		// 		res.json({stopUsing: true, message:''})
+		// 	}else{
+		// 		res.json({stopUsing: false, message:'未找到该用户'})
+		// 	}
+		// });
+		//add
+		// messageList.findOneAndUpdate({},{$push:{
+		// 	'messageList':{
+		// 		type:0,
+		// 		comment: '欢迎back'
+		// 	}
+		// }},function(err,doc){
+		// 	console.log(err,doc);
+		// 	res.end();
+		// })
+		//update
+		// messageList.findOne({},function(err,doc){
+		// 	doc.messageList[1].read = true;
+		// 	doc.save();
+		// })
 	},
 	changePwd(req, res, next){//修改密码接口
 		if(typeof req.identity !=='number'){
