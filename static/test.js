@@ -29,15 +29,21 @@ $('#signIn').onclick=function(){
 }
 
 $('#changePwd').onclick=function(){
-	$http('put', '/api/sign', {userName:'hz3', passWord:'hz123456'}).then(
+	$http('put', '/api/sign', {userName:'hz3', passWord:'123456', newPassWord:'hz123456'}).then(
 		function(res){
 			console.log(res)
 		}
 	)
 }
 
+$('#online').onclick = function(){
+	$http('post', '/api/sign', {}).then(function(res){
+		console.log(res)
+	})
+}
+
 $('#stopUsing').onclick=function(){
-	$http('get', '/apv/sign').then(
+	$http('get', '/api/sign').then(
 		function(res){
 			console.log(res)
 		}

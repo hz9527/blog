@@ -6,8 +6,9 @@ module.exports = function(app){
 		.post(signCtrl.create)
 		.put(signCtrl.signIn);
 
-	app.route('/apv/sign')
+	app.route('/api/sign')
 		.put(signCtrl.changePwd)
+		.post(signCtrl.checkSign)
 		.get(signCtrl.stopUsing);
 
 	// app.param('uId', function(req, res, next, uId){

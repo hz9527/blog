@@ -22,17 +22,18 @@ module.exports = function(){
 
 	//处理所有需要验证身份的api
 	app.all('/api/*', function(req, res, next){
-		console.log('app.all',req.head,req.cookies);
-		var uId = req.session.uId;
-		var cId = uidKey.getUid(req.cookies.cId);//游客
+		var uId,vId;
+		uId = req.session.uId;
+		console.log(uId)
+		// var cId = uidKey.getUid(req.cookies.cId);//游客
 
-		if(uId || token){
+		if(uId || vId){
 			//验证身份
-			if(cId){
-				req.identity = cId;//返回有记录游客id
+			if(vId){
+				req.identity = vId;//返回有记录游客id
 			}
 			if(uId){
-				req.identity = cId;//返回用户id
+				req.identity = uId;//返回用户id
 			}
 			next();
 		}else{

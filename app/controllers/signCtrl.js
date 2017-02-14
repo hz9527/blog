@@ -41,7 +41,7 @@ module.exports = {
 						newFans._id = 'fans' + i;
 
 						var newInfo = new infoList();
-						newInfo.Id = 'info' + i;
+						newInfo._id = 'info' + i;
 						newInfo.name = data.userName;
 						newInfo.picture = pictureList[parseInt(pictureList.length*Math.random())];
 
@@ -68,7 +68,6 @@ module.exports = {
 							saveCb();
 						});
 						newMessage.save(function(err){
-							console.log(err);
 							saveCb();
 						});
 						newCollect.save(function(){
@@ -89,14 +88,18 @@ module.exports = {
 									var newAccount = new accountList();
 									newAccount.userName = data.userName;
 									newAccount.passWord = data.passWord;
-									newAccount.key = key;
+									newAccount.key.push(key);
 									newAccount.uId = newUser._id;
 									newAccount.save(function(err){
 										// 将token以cookie形式返回给客户端,方便下次登陆验证
-										res.cookie('key', newAccount._id, {maxAge: 3600*24*30});
-										res.cookie('token', key, {maxAge: 3600*24*30});
+										res.cookie('key', newAccount._id, {maxAge: 3600*24*30*1000});
+										res.cookie('token', key, {maxAge: 3600*24*30*1000});
 										req.session.uId = i;
-										res.json({signUp: true, name: data.userName});
+										res.json({
+											signUp: true,
+											name: data.userName,
+											pic: newInfo.picture
+										});
 									});
 								});
 							}
@@ -114,21 +117,27 @@ module.exports = {
 		accountList.find({userName:data.userName, passWord:data.passWord})
 			.populate({
 				path:'uId',
-				select: '_id message using'
+				select: '_id message info using'
 			})
 			.exec(function(err, docs){
 				if(docs.length == 1 && docs[0].uId.using){
 					docs[0].uId.populate({
-						path:'message',
-						select:'messageList'
+						path:'info message',
+						select:'messageList picture name  -_id'
 					},function(err,doc){
 						var key = Date.now();
-						docs[0].key = key;
+						docs[0].key.length > 4 ? (docs[0].key.$pop() && docs[0].key.push(key)) : docs[0].key.push(key);
 						docs[0].save(function(err){
-							res.cookie('key', docs[0]._id, {maxAge: 3600*24*30});
-							res.cookie('token', key, {maxAge: 3600*24*30});
+							res.cookie('key', docs[0]._id, {maxAge: 3600*24*30*1000});
+							res.cookie('token', key, {maxAge: 3600*24*30*1000});
 							req.session.uId = doc._id;
-							res.json({signIn: true, message: doc.message.messageList, messageTime: key});
+							res.json({
+								signIn: true,
+								message: doc.message.messageList,
+								messageTime: key,
+								name: doc.info.name,
+								picture: doc.info.picture
+							});
 						});
 					});
 				}else{//登陆失败
@@ -142,24 +151,27 @@ module.exports = {
 	},
 	checkSign(req, res, next){//校验登陆
 		var data = req.body;
-		//客户端使用cookie key查询，使用token作为cookie过期时间
-		accountList.findOne({_id: data.key, key: data.token})
+		var cookie = req.cookies;
+		//客户端使用cookie key token查询，客户端传入最近消息时间戳，方便服务器返回消息列表
+		accountList.findOne({_id: cookie.key, key:{
+			$in:[cookie.token]
+		}})
 			.populate({
 				path:'uId',
-				select: '_id message using'
+				select: '_id message info using'
 			}).exec(function(err, doc){
 				if(doc && doc.uId.using){
 					doc.uId.populate({
-						path:'message',
-						select:'messageList'
+						path:'message info',
+						select:'messageList picture name -_id'
 					}, function(err, mDoc){
-						var key = Date.now();
-						doc.key = key;
-						doc.save(function(err){
-							res.cookie('key', doc._id, {maxAge: key - data.token});
-							res.cookie('token', key, {maxAge: key - data.token});
-							req.session.uId = mDoc._id;
-							res.json({signIn: true, message: mDoc.message.messageList, messageTime: key});
+						req.session.uId = mDoc._id;
+						res.json({
+							signIn: true,
+							message: mDoc.message.messageList,
+							messageTime: Date.now(),
+							name: mDoc.info.name,
+							picture: mDoc.info.picture
 						});
 					})
 				}else{
@@ -172,20 +184,19 @@ module.exports = {
 				}
 			})
 	},
-	stopUsing(req, res, next){//注销接口
-		// if(typeof req.identity !=='number'){
-		// 	res.json({stopUsing: false, message:req.identity});
-		// 	return
-		// }
-		// userList.findOneAndUpdate({uId: req.identity }, {$set: {using: false}}, function(err, docs){
-		// 	if(err){return}
-		// 	if(docs.uId){
-		// 		//将所有发布博客，个人信息置为不可用状态
-		// 		res.json({stopUsing: true, message:''})
-		// 	}else{
-		// 		res.json({stopUsing: false, message:'未找到该用户'})
-		// 	}
-		// });
+	stopUsing(req, res, next){//注销接口,后续可增加注销是否清空博客数据选项
+		if(typeof req.identity !=='number'){
+			res.json({stopUsing: false, message:req.identity});
+			return
+		}
+		userList.findByIdAndUpdate({_id: req.identity }, {$set: {using: false}}, function(err, doc){
+			if(err){return}
+			if(doc){
+				res.json({stopUsing: true, message:'注销成功'})
+			}else{
+				res.json({stopUsing: false, message:'未找到该用户'})
+			}
+		});
 		//add
 		// messageList.findOneAndUpdate({},{$push:{
 		// 	'messageList':{
@@ -208,12 +219,17 @@ module.exports = {
 			return
 		}
 		var data = req.body;
-		var token = getToken(req.identity);
-		userList.findOneAndUpdate({uId: req.identity }, {$set: {passWord: data.passWord, token:token}}, function(err, docs){
+		var token = Date.now();
+		accountList.findOneAndUpdate({userName: data.userName, passWord: data.passWord, uId: req.identity},
+			{
+				$set: {passWord: data.newPassWord, key: [token]},
+				// $push:{key: token}
+			}, function(err, doc){
 			if(err){return}
-			if(docs.uId){
-				res.cookie('token', token, {maxAge: 3600*24*7});
-				res.json({changePwd: true, message:''})
+			if(doc){
+				res.cookie('key', doc._id, {maxAge: 3600*24*30*1000});
+				res.cookie('token', token, {maxAge: 3600*24*30*1000});
+				res.json({changePwd: true, message:'修改成功'});
 			}else{
 				res.json({changePwd: false, message:'未找到该用户'})
 			}

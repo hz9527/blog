@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var AccountSchema = new mongoose.Schema({
 	userName: String,
 	passWord: String,
-	key: Number,
+	key: [Number],
 	uId: {type: mongoose.Schema.Types.Number, ref:'User'}
 });
 
