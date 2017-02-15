@@ -50,6 +50,21 @@ $('#stopUsing').onclick=function(){
 	)
 }
 
+$('#updateInfo').onclick = function(){
+	$http('post', '/api/userInfo', {info:{sex:'male', company: '58到家'}}).then(function(res){
+		console.log(res)
+	})
+}
+
+$('#userInfo').onclick=function(){
+	$http('get', '/api/userInfo?user=1').then(
+		function(res){
+			console.log(res.responseText);
+		}
+	)
+}
+
+
 function $http(method,url,params){
 	var xhr=getXhr();
 	params&&(params=JSON.stringify(params));

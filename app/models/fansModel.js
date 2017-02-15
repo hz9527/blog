@@ -7,6 +7,8 @@ var fList = new mongoose.Schema({
 
 var FansSchema = new mongoose.Schema({
 	_id: String,
+	followLength: {type: Number, default: 0},
+	followerLength: {type: Number, default: 0},
 	follower: [fList],
 	follow:[fList]
 });

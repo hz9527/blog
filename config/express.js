@@ -45,6 +45,8 @@ module.exports = function(){
 	//导入路由处理并将服务器实例作为参数传入
 	require('../app/routers/signRoute.js')(app);
 
+	require('../app/routers/userRoute.js')(app);
+
 	// 处理所有404情况
 	app.use(function(req, res, next){
 		console.log(404)
