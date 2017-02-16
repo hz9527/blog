@@ -23,7 +23,7 @@ $('#checkSign').onclick=function(){
 $('#signIn').onclick=function(){
 	$http('put', '/sign', {userName:'hz3', passWord:'123456'}).then(
 		function(res){
-			console.log(res);
+			console.log(res.responseText);
 		}
 	)
 }
@@ -62,6 +62,18 @@ $('#userInfo').onclick=function(){
 			console.log(res.responseText);
 		}
 	)
+}
+
+$('#follow').onclick = function(){
+	$http('post', '/api/follow', {follow:1}).then(function(res){
+		console.log(res.responseText)
+	})
+}
+
+$('#unfollow').onclick = function(){
+	$http('put', '/api/follow', {unFollow:1}).then(function(res){
+		console.log(res.responseText)
+	})
 }
 
 

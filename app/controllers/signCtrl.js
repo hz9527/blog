@@ -47,7 +47,7 @@ module.exports = {
 
 						var newMessage = new messageList();
 						newMessage._id = 'message' + i;
-						newMessage.messageList.unshift({
+						newMessage.messageList.push({
 							type:0,
 							comment: '欢迎' + data.userName + '注册'
 						});
