@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var fansList = mongoose.model('Fans');
 var infoList = mongoose.model('UserInfo');
-// var messageList = mongoose.model('Message');
+var messageList = mongoose.model('Message');
 var defaultLimitList = mongoose.model('DefaultLimit');
 var userList = mongoose.model('User');
 var infoConfig = [
@@ -27,7 +27,8 @@ module.exports = {
 				if(doc){
 					res.json({state: true, message:'修改成功'});
 				}else{
-					res.json({state: false, message:'未找到该用户'});
+					res.message = '未找到该用户';
+					next();
 				}
 		});
 	},
@@ -82,9 +83,6 @@ module.exports = {
 						}else{
 							doc.populate('fans',function(err, doc){
 								doc.fans.relation(req.identity,doc,function(err, doc, result){
-									console.log(doc.fans,doc,333)
-									// doc.fans.follow = null;
-									// doc.fans.follower = null;
 									if(v == 5 || (v == 4 && (result.follow || result.follower)) || (v == 3 && result.follower) ||
 										(v == 2 && result.follow) || (v == 1 && result.follow && result.follower)){
 											selectStr = infoConfig[doc.limit.infoLimit].join(' ') + ' -_id';
@@ -128,6 +126,80 @@ module.exports = {
 				res.json({state: false, message:'未找到该用户'});
 			}
 		});
+	},
+	//获取消息列表
+	getMessageList(req, res, next){
+		if(typeof req.identity !=='number'){
+			res.json({state: false, message:req.identity});
+			return
+		}
+		var data = req.body;
+		messageList.findById({_id:'message' + req.identity},function(err, doc){
+			if(doc){
+				doc.getLastList(data.condition,data.option,'',function(err,docs,pi){
+					var resData = {};
+					resData.messageList = docs;
+					// resData.unRead0 = doc.unRead0;
+					// resData.unRead1 = doc.unRead1;
+					// resData.unRead2 = doc.unRead2;
+					// resData.unRead3 = doc.unRead3;
+					pi && (resData.pageInfo = pi);
+					res.json({state: true, message:'获取消息成功', data:resData});
+				})
+			}else{
+				res.message='查询出错';
+				next();
+			}
+		})
+	},
+	// 读取消息
+	readMessage(req, res, next){
+		if(typeof req.identity !=='number'){
+			res.json({state: false, message:req.identity});
+			return
+		}
+		var data = req.body.readList;
+		messageList.findOne({_id: 'message' + req.identity},function(err, doc){
+			if(doc){
+				// console.log(doc.messageList.indexOf(doc.messageList.id(readId)));
+				// doc.messageList.id(readId).read = true;
+				for(var i=0;i<data.length;i++){
+					if(!doc.messageList[data[i]].read){
+						var type = doc['unRead'+ doc.messageList[data[i]].type];
+						doc.messageList[data[i]].read = true;
+						doc['unRead'+ type] = doc['unRead'+ type] - 1;
+					}
+					i==data.length-1 && doc.save(function(err){
+						if(!err){
+							res.json({state: true, message:'消息已读成功'});
+						}else{
+							res.message='数据库错误';
+							next();
+						}
+					})
+				}
+			}else{
+				res.message='查询出错';
+				next();
+			}
+		})
+	},
+	//查询消息数
+	getMessageCount(req, res, next){
+		if(typeof req.identity !=='number'){
+			res.json({state: false, message:req.identity});
+			return
+		}
+		messageList.findById('message' + req.identity,'unRead0 unRead1 unRead2 unRead3 -_id',function(err,doc){
+			if(doc){
+				req.session.uId = req.identity;
+				res.json({state: true, message:'获取未读消息数成功', data:[doc.unRead0,doc.unRead1,doc.unRead2,doc.unRead3]})
+			}else{
+				res.message='查询出错';
+				next();
+			}
+
+		})
 	}
 }
 

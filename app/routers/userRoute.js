@@ -10,4 +10,9 @@ module.exports = function(app){
 	app.route('/api/follow')
 		.post(followCtrl.followOther)//
 		.put(followCtrl.unFollow)
+
+	app.route('/api/message')
+		.get(userCtrl.getMessageCount)
+		.post(userCtrl.getMessageList)
+		.put(userCtrl.readMessage)
 }

@@ -46,19 +46,23 @@ module.exports = {
 									if(uDoc && uDoc.fans){
 										uDoc.fans.update({
 											$push:{
-												'_id': uDoc.fans._id + 'follow' + req.identity,
-												'follow':{'uId': follow}
+												'follow':{'uId': follow, '_id': uDoc.fans._id + 'follow' + req.identity}
 											},
 											$inc:{followLength:1}
 										},function(err){
 											if(!err){
 												res.json({state: true, message:'关注成功'})
+											}else{
+												next();
 											}
 										});
 										doc.message.update({$push:{'messageList':{
+											_id:doc.message.messageLength,
 											type: 3,
 											comment:'新增粉丝' + uDoc.info.name
-										}}},function(err){
+										}},
+										$inc:{'messageLength':1, 'unRead3':1}
+										,},function(err){
 											console.log('messageOfAddFans:' + err);
 										})
 									}else{
@@ -92,7 +96,7 @@ module.exports = {
 			.exec(function(err, doc){
 				if(doc && doc.fans && doc.fans.follow){
 					doc.fans.update({
-						$pull:{'follow': doc.fans.follow[0]},
+						$pull:{'follow': {$in:{'uId': req.identity}}},
 						$inc:{'followLength': -1}
 					},function(err, result){
 						if(!err){

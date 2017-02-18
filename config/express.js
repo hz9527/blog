@@ -49,8 +49,9 @@ module.exports = function(){
 
 	// 处理所有404情况
 	app.use(function(req, res, next){
-		console.log(404)
-		res.status(404);
+		console.log(404);
+		// res.status(404);
+		res.json({state: 404, message:res.message})
 		try{
 			return res.json('Not Found');
 		}catch(e){

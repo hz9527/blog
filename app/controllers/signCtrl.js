@@ -48,9 +48,12 @@ module.exports = {
 						var newMessage = new messageList();
 						newMessage._id = 'message' + i;
 						newMessage.messageList.push({
+							_id:0,
 							type:0,
 							comment: '欢迎' + data.userName + '注册'
 						});
+						newMessage.unRead0 = 1;
+						newMessage.messageLength =1;
 
 						var newLimit =new defaultLimitList();
 						newLimit._id = 'limit' + i;
@@ -98,7 +101,8 @@ module.exports = {
 										res.json({
 											signUp: true,
 											name: data.userName,
-											pic: newInfo.picture
+											pic: newInfo.picture,
+											message: [1,0,0,0]
 										});
 									});
 								});
@@ -123,7 +127,7 @@ module.exports = {
 				if(docs.length == 1 && docs[0].uId.using){
 					docs[0].uId.populate({
 						path:'info message',
-						select:'messageList picture name  -_id'
+						select:'unRead0 unRead1 unRead2 unRead3 picture name  -_id'
 					},function(err,doc){
 						var key = Date.now();
 						docs[0].key.length > 4 ? (docs[0].key.$pop() && docs[0].key.push(key)) : docs[0].key.push(key);
@@ -133,7 +137,7 @@ module.exports = {
 							req.session.uId = doc._id;
 							res.json({
 								signIn: true,
-								message: doc.message.messageList,
+								message: [doc.message.unRead0, doc.message.unRead1, doc.message.unRead2, doc.message.unRead3],
 								messageTime: key,
 								name: doc.info.name,
 								picture: doc.info.picture
@@ -163,12 +167,12 @@ module.exports = {
 				if(doc && doc.uId.using){
 					doc.uId.populate({
 						path:'message info',
-						select:'messageList picture name -_id'
+						select:'unRead0 unRead1 unRead2 unRead3 picture name -_id'
 					}, function(err, mDoc){
 						req.session.uId = mDoc._id;
 						res.json({
 							signIn: true,
-							message: mDoc.message.messageList,
+							message: [mDoc.message.unRead0, mDoc.message.unRead1, mDoc.message.unRead2, mDoc.message.unRead3],
 							messageTime: Date.now(),
 							name: mDoc.info.name,
 							picture: mDoc.info.picture

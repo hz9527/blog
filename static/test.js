@@ -191,6 +191,31 @@ $('#changeLimit').onclick = function(){
 	}
 }
 
+//
+$('#getMessageList').onclick=function(){
+	$http('post', '/api/message',{condition:{},option:{}}).then(
+		function(res){
+			console.log(res.responseText);
+		}
+	)
+}
+
+$('#readMessage').onclick=function(){
+	$http('put', '/api/message',{readList:[1]}).then(
+		function(res){
+			console.log(res.responseText);
+		}
+	)
+}
+
+$('#getMsgCount').onclick=function(){
+	$http('get', '/api/message').then(
+		function(res){
+			console.log(res.responseText);
+		}
+	)
+}
+
 
 
 
