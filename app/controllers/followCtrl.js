@@ -25,9 +25,11 @@ module.exports = {
 				}
 			})
 			.exec(function(err, doc){
-				if(doc.fans && doc.fans.follower){
+				if(doc && doc.fans){
 					doc.fans.update({
-						$push:{'follower':{'uId':req.identity}},
+						$push:{
+							'follower':{'_id': doc.fans._id + 'follower' + req.identity,'uId':req.identity}
+						},
 						$inc:{followerLength:1}
 					},function(err,result){
 						if(!err){
@@ -41,9 +43,12 @@ module.exports = {
 									}
 								})
 								.exec(function(err, uDoc){
-									if(uDoc && uDoc.fans && uDoc.fans.follow){
+									if(uDoc && uDoc.fans){
 										uDoc.fans.update({
-											$push:{'follow':{'uId': follow}},
+											$push:{
+												'_id': uDoc.fans._id + 'follow' + req.identity,
+												'follow':{'uId': follow}
+											},
 											$inc:{followLength:1}
 										},function(err){
 											if(!err){
@@ -81,9 +86,7 @@ module.exports = {
 			.populate({
 				path:'fans',
 				match:{
-					'follow.uId':{
-						$in:[unFollow]
-					}
+					'follow.uId':unFollow
 				}
 			})
 			.exec(function(err, doc){

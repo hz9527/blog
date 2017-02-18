@@ -75,6 +75,125 @@ $('#unfollow').onclick = function(){
 		console.log(res.responseText)
 	})
 }
+//test info
+$('#signUp1').onclick=function(){
+	$http('post','/sign',{userName:'hz1', passWord:'123456'}).then(
+		function(res){
+			console.log(res.responseText);
+			$('#user').innerHTML = '当前用户：hz1';
+
+		}
+	)
+}
+$('#signUp2').onclick=function(){
+	$http('post','/sign',{userName:'hz2', passWord:'123456'}).then(
+		function(res){
+			console.log(res.responseText);
+			$('#user').innerHTML = '当前用户：hz2';
+		}
+	)
+}
+$('#signUp3').onclick=function(){
+	$http('post','/sign',{userName:'hz3', passWord:'123456'}).then(
+		function(res){
+			console.log(res.responseText);
+			$('#user').innerHTML = '当前用户：hz3';
+		}
+	)
+}
+
+$('#signIn1').onclick=function(){
+	$http('put', '/sign', {userName:'hz1', passWord:'123456'}).then(
+		function(res){
+			console.log(res.responseText);
+			$('#user').innerHTML = '当前用户：hz1';
+		}
+	)
+}
+$('#signIn2').onclick=function(){
+	$http('put', '/sign', {userName:'hz2', passWord:'123456'}).then(
+		function(res){
+			console.log(res.responseText);
+			$('#user').innerHTML = '当前用户：hz2';
+		}
+	)
+}
+$('#signIn3').onclick=function(){
+	$http('put', '/sign', {userName:'hz3', passWord:'123456'}).then(
+		function(res){
+			console.log(res.responseText);
+			$('#user').innerHTML = '当前用户：hz3';
+		}
+	)
+}
+
+
+$('#follow1').onclick = function(){
+	$http('post', '/api/follow', {follow:1}).then(function(res){
+		console.log(res.responseText)
+	})
+}
+$('#follow2').onclick = function(){
+	$http('post', '/api/follow', {follow:2}).then(function(res){
+		console.log(res.responseText)
+	})
+}
+$('#follow3').onclick = function(){
+	$http('post', '/api/follow', {follow:3}).then(function(res){
+		console.log(res.responseText)
+	})
+}
+
+$('#visit1').onclick=function(){
+	$http('get', '/api/userInfo?user=1').then(
+		function(res){
+			console.log(res.responseText);
+			$('#visit').innerHTML = '访问用户：hz1';
+		}
+	)
+}
+$('#visit2').onclick=function(){
+	$http('get', '/api/userInfo?user=2').then(
+		function(res){
+			console.log(res.responseText);
+			$('#visit').innerHTML = '访问用户：hz2';
+		}
+	)
+}
+$('#visit3').onclick=function(){
+	$http('get', '/api/userInfo?user=3').then(
+		function(res){
+			console.log(res.responseText);
+			$('#visit').innerHTML = '访问用户：hz3';
+		}
+	)
+}
+
+$('#fullInfo').onclick = function(){
+	$http('post', '/api/userInfo', {info:{sex:'male', company: '58到家', introduce:'im a feer', duty:'fe'}}).then(function(res){
+		console.log(res)
+	})
+}
+$('#changeLimit').onclick = function(){
+	var data = {};
+	var vl = $('#visitLimit').value;
+	var il = $('#infoLimit').value;
+	vl && vl*1 == vl && (data.visitLimit = vl*1);
+	il && il*1 == il && (data.infoLimit = il*1);
+	if(JSON.stringify(data) == '{}'){
+		alert('请填写权限修改值或合法权限值');
+	}else{
+		$http('put', '/api/userInfo', {limit:data}).then(function(res){
+			$('#visitLimit').value = '';
+			$('#infoLimit').value = '';
+			console.log(res.responseText);
+		})
+	}
+}
+
+
+
+
 
 
 function $http(method,url,params){

@@ -5,6 +5,7 @@ module.exports = function(app){
 	app.route('/api/userInfo')
 		.get(userCtrl.getUserInfo)//
 		.post(userCtrl.updateBaseInfo)//
+		.put(userCtrl.changeDefaultLimit)
 
 	app.route('/api/follow')
 		.post(followCtrl.followOther)//
