@@ -3,6 +3,11 @@ import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+	componentDidMount(){
+		this.http('get', 'http://baidu.com').then(function(res){
+			console.log(this)
+		})
+	}
   render() {
     return (
       <div className="App">
