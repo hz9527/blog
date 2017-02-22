@@ -5,22 +5,23 @@ module.exports = function HTTP(loading, cb){
 		var that = this;
 		var xhr = new XMLHttpRequest();
 		data&&(data=JSON.stringify(data));
-		
+
 		xhr.then = function(scb, ecb){
 			xhr.next = scb || function(){};
 			xhr.err = ecb || xhr.next;
 		};
 
 		xhr.open(method, url);
-		xhr.setRequestHeader('Content-Type','application/json');
+		// xhr.setRequestHeader('Content-Type','application/json');
+		console.log(data)
 		xhr.send(data || null);
-		loading && loading();
+		loading && loading(this);
 
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState === 4){
-				cb && cb();
+				cb && cb(this);
 				if(xhr.status === 200 || xhr.status>=300 && xhr.status<=304){
-					xhr.next.call(that, xhr)
+					xhr.next.call(that, JSON.parse(xhr.responseText));
 				}else{
 					xhr.err.call(that, xhr);
 				}

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import logo from '../logo.svg';
+import '../styles/App.css';
+import '../styles/transStyles/common.css'
 
 class App extends Component {
 	componentDidMount(){
-		this.http('get', 'http://baidu.com').then(function(res){
+		this.http('post', '//127.0.0.1:18003/sign',{userName:'hz3',passWord:'123456'}).then(function(res){
 			console.log(this)
 		})
 	}
