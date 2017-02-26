@@ -15,11 +15,8 @@ export default React.createClass({
 			theme:'theme1',
 			nav:{},
 			sign:{},
-			modal: {show:true, cb:{confirm:'a'}},//show,refName,head,content,cb:{confirmxx cancelxx}
-			toast: {
-				// show:true,
-				// text: 'xixxxxxxxxxxxxxxxxxxxxxxxxxxxi'
-			},//show text
+			modal: {},//show,refName,head,content,cb:{confirmxx cancelxx}
+			toast: {},//className text
 		}
 	},
 	componentDidMount(){
@@ -60,38 +57,42 @@ export default React.createClass({
 		this.setState(obj);
 	},
 	toastqueue:[],
-	toastCtrl(text){
+	dealToast(t){
 		var that = this;
+		that.setState({toast:{className:'toast-con toast-transition', text:this.toastqueue[0]}});
+		setTimeout(function(){
+			that.setState({toast:{className:'toast-con',text:that.toastqueue[0]}});
+		},500);
+		setTimeout(function(){
+			that.setState({toast:{className:'toast-con toast-transition',text:that.toastqueue[0]}});
+		},t);
+		setTimeout(function(){
+			that.setState({toast:{className:'toast-con toast-hide'}});
+		},t+500);
+	},
+	toastCtrl(text, t){
+		var that = this;
+		t = t || 2000;
+		console.log(this.setState)
 		this.toastqueue.push(text);
 		if(this.toastqueue.length == 1){
-			this.setState({toast:{show:true, text:this.toastqueue[0]}});
-			setTimeout(function(){
-				that.setState({toast:{show:false, text:that.toastqueue[0]}});
-			},1000);
+			this.dealToast(t);
 		}else if(this.toastqueue.length == 2){
 			window.timer.toast = setInterval(function(){
-				console.log(that.toastqueue)
-				that.setState({toast:{show:true, text:that.toastqueue[0]}});
-				setTimeout(function(){
-					that.setState({toast:{show:false, text:that.toastqueue[0]}});
-				},1000);
-				that.toastqueue.pop();
-				that.toastqueue.length == 0 && clearInterval(window.timer.toast);
-			},3000)
+				that.toastqueue.shift();
+				that.dealToast(t);
+				that.toastqueue.length == 1 && clearInterval(window.timer.toast);
+			},t+1500);
 		}
+
 	},
+	text:'hh',
 	dealModal(result){
-		var that = this;
-		window.timer.toast2 = setInterval(function(){
-			console.log(that.toastqueue)
-			that.toastqueue.length == 5 && clearInterval(window.timer.toast2)
-			that.toastCtrl('hhh');
-		},500)
-		// if(result === true){
-		// 	this.refs[this.state.modal.refName][this.state.modal.cb.confirm]();
-		// }else if(result === false){
-		// 	this.refs[this.state.modal.refName][this.state.modal.cb.cancel]();
-		// }
+		if(result === true){
+			this.refs[this.state.modal.refName][this.state.modal.cb.confirm]();
+		}else if(result === false){
+			this.refs[this.state.modal.refName][this.state.modal.cb.cancel]();
+		}
 		this.setState({modal: null});
 	},
 	render(){
@@ -100,7 +101,7 @@ export default React.createClass({
 					<NavBar {...this.state.nav} theme={this.state.theme} changeProps={this.changeState}/>
 					<Sign {...this.state.sign} changeProps={this.changeState} ref='sign'/>
 					<Modal {...this.state.modal} changeProps={this.changeState} dealModal={this.dealModal}/>
-					<Toast {...this.state.toast} changeProps={this.changeState}/>
+					<Toast {...this.state.toast} ref='toast'/>
 				</div>
 			)
 	}

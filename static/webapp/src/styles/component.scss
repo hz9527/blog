@@ -6,10 +6,10 @@
 	width:100%;
 	height:100%;
 	z-index: 300;
-}
-.modal-con{
 	top:0;
 	left:0;
+}
+.modal-con{
 	background: $modal-bg;
 	.modal-box{
 		@include center;
@@ -41,11 +41,9 @@
 }
 
 .toast-con{
-	z-index: 400;
-	// display: block;
-	opacity: 1;
-	transition: opacity 1s linear, top 0s;
+	 z-index: 400;
 	.toast-box{
+		opacity: 1;
 		@include center;
 		@include ellipsis;
 		padding: 1rem 1rem;
@@ -54,11 +52,15 @@
 		border-radius: 0.4rem;
 		text-align: center;
 		background: $modal-bg;
+		transition: opacity 0.3s ease;
+	}
+}
+.toast-transition{
+	.toast-box{
+		opacity: 0;
+		transition: opacity .5s ease;
 	}
 }
 .toast-hide{
-	// display: block;
-	top:-100%;
-	opacity: 0;
-	transition: opacity 1s linear, top 1s 1s;
+	display: none;
 }
