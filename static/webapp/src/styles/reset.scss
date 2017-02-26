@@ -1,0 +1,101 @@
+@import './rule.scss';
+// reset style
+body{
+	line-height: 1.1;
+	font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+}
+body,ul,li{
+	margin:0;
+	padding:0;
+}
+li{
+	list-style-type: none;
+}
+a{
+	text-decoration: none;
+}
+input{
+	outline: 0;
+	border:0;
+	padding:0;
+	margin:0;
+}
+
+::-webkit-input-placeholder{
+	color:$lowFontColor;
+	font-size: $midFontSize;
+}
+
+// 类名
+.hz-btn{
+	display: inline-block;
+	border:0;
+	outline: 0;
+	text-align: center;
+	text-indent: 0.1rem;
+	letter-spacing: 0.1rem;
+	background-color: $mainColor;
+	border-radius: 0.2rem;
+	color: #fff;
+	cursor: pointer;
+	&:hover{background-color: $mainColorHover;}
+	&-s, &-m, &-b, &-line{@extend .hz-btn;}
+	&-s{
+		font-size: $smallFontSize;
+		line-height: $smallFontSize;
+		padding:0.15rem 0.3rem;
+		&-l, &-r{@extend .hz-btn-s;}
+		&-l{float:left;}
+		&-r{float:right;}
+	}
+	&-m{
+		font-size: $midFontSize;
+		line-height: $midFontSize;
+		padding:0.25rem 0.4rem;
+		&-l, &-r{@extend .hz-btn-m;}
+		&-l{float:left;}
+		&-r{float:right;}
+	}
+	&-b{
+		font-size: $bigFontSize;
+		line-height: $bigFontSize;
+		padding:0.3rem 0.6rem;
+		&-l, &-r{@extend .hz-btn-m;}
+		&-l{float:left;}
+		&-r{float:right;}
+	}
+	&-line{
+		background-color: transparent;
+		border: 1px solid $mainColor;
+		color: $mainColor;
+		&:hover{
+			background-color: $mainColor;
+			color:#fff;
+		}
+		&-s, &-m, &-b{@extend .hz-btn-line;}
+		&-s{
+			font-size: $smallFontSize;
+			line-height: $smallFontSize;
+			padding:0.15rem 0.3rem;
+			&-l, &-r{@extend .hz-btn-line-s;}
+			&-l{float:left;}
+			&-r{float:right;}
+		}
+		&-m{
+			font-size: $midFontSize;
+			line-height: $midFontSize;
+			padding:0.25rem 0.4rem;
+			&-l, &-r{@extend .hz-btn-line-m;}
+			&-l{float:left;}
+			&-r{float:right;}
+		}
+		&-b{
+			font-size: $bigFontSize;
+			line-height: $bigFontSize;
+			padding:0.3rem 0.6rem;
+			&-l, &-r{@extend .hz-btn-line-b;}
+			&-l{float:left;}
+			&-r{float:right;}
+		}
+	}
+}

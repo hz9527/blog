@@ -1,0 +1,29 @@
+@import './rule.scss';
+@import './common.scss';
+
+.nav{
+	@include displayFlex;
+	flex-direction: row;
+	justify-content: space-between;
+	height:$navHeight;
+	background: #0ff;
+	.menu, .con, .sign{
+		height:100%;
+	}
+	.menu, .sign{
+		background: #f00;
+		@include flex(1.5 1 5.5rem);
+		line-height: $navHeight;
+		text-align: center;
+		div{
+			@include ellipsis;	
+		}
+	}
+	.con{
+		width:$contentWidth;
+		background: #fff;
+	}
+	.sign{
+		font-size: $midFontSize;
+	}
+}

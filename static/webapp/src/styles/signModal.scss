@@ -1,0 +1,222 @@
+@import './rule.scss';
+@import './common.scss';
+
+.sign-modal{
+	position: fixed;
+	top:0;
+	left:0;
+	width: 100%;
+	height:100%;
+	z-index: 100;
+	background: $modal-bg;
+	.content{
+		width:$signWidth;
+		height: $signInHeight;
+		@include center;
+	}
+	.eye-con{
+		height:4rem;
+		position: relative;
+		top: -3.58rem;
+		.header{
+			position: absolute;
+			left:50%;
+			top: 0.05rem;
+			z-index: 101;
+			margin-left: -3rem;
+			width:6rem;
+			height: 100%;
+			background: url('../images/sign/face@2x.png') center no-repeat;
+			background-size: contain;
+			.eye{
+				position: absolute;
+				bottom:0;
+				width:100%;
+				height:100%;
+				background: url('../images/sign/eyes@2x.png') center no-repeat;
+				background-size: contain;
+				opacity: 0;
+			}
+		}
+		.left, .right{
+			position: absolute;
+			z-index: 108;
+			bottom: 0.05rem;
+			left:50%;
+			transition: margin-left .3s, bottom .3s, opacity 0.15s linear 0.15s;
+		}
+		.left{
+			margin-left: -3.8rem;
+		}
+		.right{
+			margin-left: 2.4rem;
+		}
+		.left-down, .right-down{
+			width:1.76rem;
+			height:1rem;
+			background: url('../images/sign/arm-down-left@2x.png') center no-repeat;
+			background-size: contain;
+
+		}
+		.right-down{
+			background-image: url('../images/sign/arm-down-right@2x.png');
+		}
+		.left-up, .right-up{
+			z-index: 103;
+			margin-left: -4.5rem;
+			bottom: -2rem;
+			width:2rem;
+			height: 2rem;
+			background: url('../images/sign/arm-up-left@2x.png') center no-repeat;
+			background-size: contain;
+			opacity: 1;
+
+		}
+		.right-up{
+			margin-left: 2.1rem;
+			background-image: url('../images/sign/arm-up-right@2x.png');
+		}
+
+	}
+	.up .eye-con{
+		.header .eye{
+			opacity: 1;
+			transition: opacity 0.15s linear 0.15s;
+		}
+		.left-down, .right-down{
+			transform: translate(0, 1.2rem);
+			opacity: 0;
+		}
+		.left-up, .right-up{
+			margin-left: -2.5rem;
+			bottom: 0.24rem;
+			opacity: 1;
+		}
+		.right-up{
+			margin-left: 0.1rem;
+		}
+	}
+	.up .space{
+		&:before, &:after{
+			opacity: 1;
+			transition: opacity 0s;
+		}
+	}
+	.space{
+		height:0.45rem;
+		width: 100%;
+		background: #fff;
+		border-radius: 0.2rem 0.2rem 0 0;
+		position: absolute;
+		top:0;
+		left:0;
+		&:before, &:after{
+			content:'';
+			opacity: 0;
+			position: absolute;
+			margin-left: 0.3rem;
+			width:3.3rem;
+			height: 100%;
+			left:50%;
+			background: #fff;
+			z-index: 105;
+			transition: opacity 0s .3s;
+		}
+		&:before{
+			margin-left: -4rem;
+		}
+	}
+	%icon{
+		float:left;
+		height:$signInHeight/8;
+		width:$signInHeight/8;
+		margin:$signInHeight/48;
+		background: url('../images/icons.png') no-repeat;
+		background-position: -0.13rem 0;
+		background-size: 15rem 25rem;
+	}
+	.form{
+		height:$signInHeight*3/4 - 0.45rem;
+		background: #fff;
+		position: absolute;
+		top:0.45rem;
+		width:100%;
+		z-index: 110;
+		.label{
+			display: block;
+			border: 1px solid $mainColor;
+			width:80%;
+			height:$signInHeight/6;
+			margin:$signInHeight/12 auto;
+			border-radius: 0.2rem;
+			&:before{
+				content:'';
+				@extend %icon;
+			}
+			.input{
+				float:left;
+				margin-left: $signInHeight/24;
+				width:$signWidth/2;
+				line-height:$signInHeight/6;
+			}
+		}
+		.pwd{
+			&:before{
+				background-position: -0.13rem -1.79rem;
+			}
+			span{
+				@extend %icon;
+				width:$signInHeight/7;
+				height:$signInHeight/10;
+				margin-top: $signInHeight/30;
+				float: right;
+				background-position: 0 -4.55rem;
+			}
+		}
+		.show-pwd span{
+			background-position: 0 -3.3rem;
+		}
+	}
+	.foot{
+		height:$signInHeight*1/4;
+		width:100%;
+		position: absolute;
+		bottom:0;
+		background: $modal-foot;
+		border-radius: 0 0 0.2rem 0.2rem;
+		box-sizing: border-box;
+		padding:0 1rem;
+		line-height: $signInHeight*1/4;
+		font-size: $midFontSize;
+		color: $lowFontColor;
+		span{
+			cursor: pointer;
+			&:hover{color: $mainColor;}
+		}
+		.submit{
+			margin-top: $signInHeight*1/8 - $midFontSize/2 - 0.25rem;
+		}
+	}
+}
+.loading{
+	position: fixed;
+	width:100%;
+	height: 100%;
+	z-index: 120;
+}
+.unloading{display: none;}
+.sign-up{
+	.content{
+		height: $signUpHeight;
+	}
+	.form{
+		height:$signUpHeight*3/4 - 0.45rem;
+	}
+	.foot{
+		height:$signUpHeight*1/4;
+		line-height: $signUpHeight*1/4;
+		.submit{
+			margin-top: $signUpHeight*1/8 - $midFontSize/2 - 0.25rem;
+		}
+	}
+}

@@ -1,7 +1,7 @@
 //http实例，将管理所有的http
 //在各个组件中使用为this.http(method, url, data).then(scb,ecb)
 module.exports = function HTTP(loading, cb){
-	return function(method, url, data){
+	return function(method, url, data, key){
 		var that = this;
 		var xhr = new XMLHttpRequest();
 		data&&(data=JSON.stringify(data));
@@ -13,13 +13,13 @@ module.exports = function HTTP(loading, cb){
 
 		xhr.open(method, url);
 		// xhr.setRequestHeader('Content-Type','application/json');
-		console.log(data)
+		// console.log(data)
 		xhr.send(data || null);
-		loading && loading(this);
+		loading && loading(this, key || 'loading');
 
 		xhr.onreadystatechange = function(){
 			if(xhr.readyState === 4){
-				cb && cb(this);
+				cb && cb(that, key || 'loading');
 				if(xhr.status === 200 || xhr.status>=300 && xhr.status<=304){
 					xhr.next.call(that, JSON.parse(xhr.responseText));
 				}else{

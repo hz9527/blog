@@ -12,8 +12,8 @@
     "react-dom": "^15.4.2"
   },
   "scripts": {
-		"build-css":"node-sass src/styles -o src/styles/transStyles",
-		"watch-css":"npm run build-css && node-sass src/styles -o src/styles/transStyles --watch",
+		"build-css":"node-sass src/styles -o src/transStyles",
+		"watch-css":"npm run build-css && node-sass src/styles -o src/transStyles --watch",
     "start-js": "react-scripts start",
     "build": "npm run build-css && react-scripts build",
 		"start":"npm-run-all -p watch-css start-js",

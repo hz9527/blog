@@ -1,0 +1,92 @@
+body {
+  line-height: 1.1;
+  font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif; }
+
+body, ul, li {
+  margin: 0;
+  padding: 0; }
+
+li {
+  list-style-type: none; }
+
+a {
+  text-decoration: none; }
+
+input {
+  outline: 0;
+  border: 0;
+  padding: 0;
+  margin: 0; }
+
+::-webkit-input-placeholder {
+  color: #999;
+  font-size: 0.8rem; }
+
+.hz-btn, .hz-btn-s, .hz-btn-s-l, .hz-btn-s-r, .hz-btn-m, .hz-btn-m-l, .hz-btn-m-r, .hz-btn-b-l, .hz-btn-b-r, .hz-btn-b, .hz-btn-line, .hz-btn-line-s, .hz-btn-line-s-l, .hz-btn-line-s-r, .hz-btn-line-m, .hz-btn-line-m-l, .hz-btn-line-m-r, .hz-btn-line-b, .hz-btn-line-b-l, .hz-btn-line-b-r {
+  display: inline-block;
+  border: 0;
+  outline: 0;
+  text-align: center;
+  text-indent: 0.1rem;
+  letter-spacing: 0.1rem;
+  background-color: #f55;
+  border-radius: 0.2rem;
+  color: #fff;
+  cursor: pointer; }
+  .hz-btn:hover, .hz-btn-s:hover, .hz-btn-s-l:hover, .hz-btn-s-r:hover, .hz-btn-m:hover, .hz-btn-m-l:hover, .hz-btn-m-r:hover, .hz-btn-b-l:hover, .hz-btn-b-r:hover, .hz-btn-b:hover, .hz-btn-line:hover, .hz-btn-line-s:hover, .hz-btn-line-s-l:hover, .hz-btn-line-s-r:hover, .hz-btn-line-m:hover, .hz-btn-line-m-l:hover, .hz-btn-line-m-r:hover, .hz-btn-line-b:hover, .hz-btn-line-b-l:hover, .hz-btn-line-b-r:hover {
+    background-color: #f23; }
+  .hz-btn-s, .hz-btn-s-l, .hz-btn-s-r {
+    font-size: 0.6rem;
+    line-height: 0.6rem;
+    padding: 0.15rem 0.3rem; }
+    .hz-btn-s-l {
+      float: left; }
+    .hz-btn-s-r {
+      float: right; }
+  .hz-btn-m, .hz-btn-m-l, .hz-btn-m-r, .hz-btn-b-l, .hz-btn-b-r {
+    font-size: 0.8rem;
+    line-height: 0.8rem;
+    padding: 0.25rem 0.4rem; }
+    .hz-btn-m-l {
+      float: left; }
+    .hz-btn-m-r {
+      float: right; }
+  .hz-btn-b {
+    font-size: 1rem;
+    line-height: 1rem;
+    padding: 0.3rem 0.6rem; }
+    .hz-btn-b-l {
+      float: left; }
+    .hz-btn-b-r {
+      float: right; }
+  .hz-btn-line, .hz-btn-line-s, .hz-btn-line-s-l, .hz-btn-line-s-r, .hz-btn-line-m, .hz-btn-line-m-l, .hz-btn-line-m-r, .hz-btn-line-b, .hz-btn-line-b-l, .hz-btn-line-b-r {
+    background-color: transparent;
+    border: 1px solid #f55;
+    color: #f55; }
+    .hz-btn-line:hover, .hz-btn-line-s:hover, .hz-btn-line-s-l:hover, .hz-btn-line-s-r:hover, .hz-btn-line-m:hover, .hz-btn-line-m-l:hover, .hz-btn-line-m-r:hover, .hz-btn-line-b:hover, .hz-btn-line-b-l:hover, .hz-btn-line-b-r:hover {
+      background-color: #f55;
+      color: #fff; }
+    .hz-btn-line-s, .hz-btn-line-s-l, .hz-btn-line-s-r {
+      font-size: 0.6rem;
+      line-height: 0.6rem;
+      padding: 0.15rem 0.3rem; }
+      .hz-btn-line-s-l {
+        float: left; }
+      .hz-btn-line-s-r {
+        float: right; }
+    .hz-btn-line-m, .hz-btn-line-m-l, .hz-btn-line-m-r {
+      font-size: 0.8rem;
+      line-height: 0.8rem;
+      padding: 0.25rem 0.4rem; }
+      .hz-btn-line-m-l {
+        float: left; }
+      .hz-btn-line-m-r {
+        float: right; }
+    .hz-btn-line-b, .hz-btn-line-b-l, .hz-btn-line-b-r {
+      font-size: 1rem;
+      line-height: 1rem;
+      padding: 0.3rem 0.6rem; }
+      .hz-btn-line-b-l {
+        float: left; }
+      .hz-btn-line-b-r {
+        float: right; }

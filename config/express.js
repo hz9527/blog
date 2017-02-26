@@ -12,7 +12,7 @@ module.exports = function(){
 	app.use(session({
 		secret:'9527',
 		name:'hz',
-		cookie:{maxAge:3600*10},
+		cookie:{maxAge:60*1000*10},
 		reload:true,
 		rolling:true
 	}));

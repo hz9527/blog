@@ -1,0 +1,30 @@
+/*box shadow hack*/
+/*border radius hack*/
+/*transform hack*/
+/*transform-origin hach*/
+.nav {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 2.5rem;
+  background: #0ff; }
+  .nav .menu, .nav .con, .nav .sign {
+    height: 100%; }
+  .nav .menu, .nav .sign {
+    background: #f00;
+    -webkit-box-flex: 1.5 1 5.5rem;
+    -webkit-flex: 1.5 1 5.5rem;
+    flex: 1.5 1 5.5rem;
+    line-height: 2.5rem;
+    text-align: center; }
+    .nav .menu div, .nav .sign div {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis; }
+  .nav .con {
+    width: 54rem;
+    background: #fff; }
+  .nav .sign {
+    font-size: 0.8rem; }

@@ -14,6 +14,19 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+		<script>
+				document.getElementsByTagName('html')[0].style.fontSize = window.innerWidth/65 + 'px';
+				window.timer = {resize:null};
+				window.onresize =function(){
+					if(timer.resize === null){
+						timer.resize = setTimeout(function(){
+							document.getElementsByTagName('html')[0].style.fontSize = window.innerWidth/65 + 'px';
+							clearTimeout(timer.resize);
+							timer.resize = null;
+						},500);
+					}
+				}
+		</script>
   </head>
   <body>
     <div id="root"></div>

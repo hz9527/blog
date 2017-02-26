@@ -19,9 +19,9 @@ module.exports = {
 		accountList.count({userName: query}, function(err, l){
 			if(err){return}
 			if(l===0){
-				res.json({canSignUp: true});
+				res.json({state: true});
 			}else{
-				res.json({canSignUp: false});
+				res.json({state: false});
 			}
 		})
 	},
@@ -99,10 +99,12 @@ module.exports = {
 										res.cookie('token', key, {maxAge: 3600*24*30*1000});
 										req.session.uId = i;
 										res.json({
-											signUp: true,
-											name: data.userName,
-											pic: newInfo.picture,
-											message: [1,0,0,0]
+											state: true,
+											data: {
+												name: data.userName,
+												pic: newInfo.picture,
+												message: [1,0,0,0]
+											}
 										});
 									});
 								});
@@ -112,7 +114,7 @@ module.exports = {
 					}
 				})
 			}else{
-				res.json({signUp: false, name: null});
+				res.json({state: false, name: null});
 			}
 		})
 	},
@@ -136,19 +138,21 @@ module.exports = {
 							res.cookie('token', key, {maxAge: 3600*24*30*1000});
 							req.session.uId = doc._id;
 							res.json({
-								signIn: true,
-								message: [doc.message.unRead0, doc.message.unRead1, doc.message.unRead2, doc.message.unRead3],
-								messageTime: key,
-								name: doc.info.name,
-								picture: doc.info.picture
+								state: true,
+								data: {
+									message: [doc.message.unRead0, doc.message.unRead1, doc.message.unRead2, doc.message.unRead3],
+									messageTime: key,
+									name: doc.info.name,
+									picture: doc.info.picture
+								}
 							});
 						});
 					});
 				}else{//登陆失败
 					if(docs.length == 0){
-						res.json({signIn: false, message: '用户名或密码错误', messageTime: Date.now()});
+						res.json({state: false, message: '用户名或密码错误', messageTime: Date.now()});
 					}else if(docs.length == 1 && !docs[0].uId.using){
-						res.json({signIn: false, message: '用户已注销', messageTime: Date.now()});
+						res.json({state: false, message: '用户已注销', messageTime: Date.now()});
 					}
 				}
 			})
@@ -171,34 +175,36 @@ module.exports = {
 					}, function(err, mDoc){
 						req.session.uId = mDoc._id;
 						res.json({
-							signIn: true,
-							message: [mDoc.message.unRead0, mDoc.message.unRead1, mDoc.message.unRead2, mDoc.message.unRead3],
-							messageTime: Date.now(),
-							name: mDoc.info.name,
-							picture: mDoc.info.picture
+							state: true,
+							data: {
+								message: [mDoc.message.unRead0, mDoc.message.unRead1, mDoc.message.unRead2, mDoc.message.unRead3],
+								messageTime: Date.now(),
+								name: mDoc.info.name,
+								picture: mDoc.info.picture
+							}
 						});
 					})
 				}else{
 					// 客户端清空cookie
 					if(!doc){
-						res.json({signIn: false, message: '非法登陆', messageTime: Date.now()});
+						res.json({state: false, message: '非法登陆', messageTime: Date.now()});
 					}else if(!doc.uId.using){
-						res.json({signIn: false, message: '用户已注销', messageTime: Date.now()});
+						res.json({state: false, message: '用户已注销', messageTime: Date.now()});
 					}
 				}
 			})
 	},
 	stopUsing(req, res, next){//注销接口,后续可增加注销是否清空博客数据选项
 		if(typeof req.identity !=='number'){
-			res.json({stopUsing: false, message:req.identity});
+			res.json({state: false, message:req.identity});
 			return
 		}
 		userList.findByIdAndUpdate({_id: req.identity }, {$set: {using: false}}, function(err, doc){
 			if(err){return}
 			if(doc){
-				res.json({stopUsing: true, message:'注销成功'})
+				res.json({state: true, message:'注销成功'})
 			}else{
-				res.json({stopUsing: false, message:'未找到该用户'})
+				res.json({state: false, message:'未找到该用户'})
 			}
 		});
 		//add
@@ -219,7 +225,7 @@ module.exports = {
 	},
 	changePwd(req, res, next){//修改密码接口
 		if(typeof req.identity !=='number'){
-			res.json({changePwd: false, message:req.identity});
+			res.json({state: false, message:req.identity});
 			return
 		}
 		var data = req.body;
@@ -233,9 +239,9 @@ module.exports = {
 			if(doc){
 				res.cookie('key', doc._id, {maxAge: 3600*24*30*1000});
 				res.cookie('token', token, {maxAge: 3600*24*30*1000});
-				res.json({changePwd: true, message:'修改成功'});
+				res.json({state: true, message:'修改成功'});
 			}else{
-				res.json({changePwd: false, message:'未找到该用户'})
+				res.json({state: false, message:'未找到该用户'})
 			}
 		});
 	}
