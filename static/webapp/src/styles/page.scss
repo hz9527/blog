@@ -1,3 +1,16 @@
+@import './rule.scss';
+
 .theme1{
-	
+	color: $mainFontColor1;
+	.modal-box{
+		background: $modalBoxBg1;
+		color: $mainFontColor1;
+		.head{
+			background: $modalHead1;
+			color:$modalHeadColor;
+		}
+		.foot{
+			border-color: $mainBorder1;
+		}
+	}
 }

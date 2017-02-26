@@ -42,7 +42,8 @@
         height: 100%;
         background: url("../images/sign/eyes@2x.png") center no-repeat;
         background-size: contain;
-        opacity: 0; }
+        opacity: 0;
+        transition: opacity 0.15s linear 0.15s; }
     .sign-modal .eye-con .left, .sign-modal .eye-con .right {
       position: absolute;
       z-index: 108;
@@ -88,7 +89,7 @@
     opacity: 1;
     transition: opacity 0s; }
   .sign-modal .space {
-    height: 0.45rem;
+    height: 0.5rem;
     width: 100%;
     background: #fff;
     border-radius: 0.2rem 0.2rem 0 0;
@@ -110,14 +111,14 @@
       margin-left: -4rem; }
   .sign-modal .form .label:before, .sign-modal .form .pwd span {
     float: left;
-    height: 1.5rem;
-    width: 1.5rem;
-    margin: 0.25rem;
+    height: 1.6rem;
+    width: 1.6rem;
+    margin: 0.2rem;
     background: url("../images/icons.png") no-repeat;
-    background-position: -0.13rem 0;
-    background-size: 15rem 25rem; }
+    background-position: -0.05rem 0.1rem;
+    background-size: 7.5rem 12.5rem; }
   .sign-modal .form {
-    height: 8.55rem;
+    height: 9rem;
     background: #fff;
     position: absolute;
     top: 0.45rem;
@@ -126,32 +127,46 @@
     .sign-modal .form .label {
       display: block;
       border: 1px solid #f55;
-      width: 80%;
+      width: 20rem;
       height: 2rem;
-      margin: 1rem auto;
+      margin: 1.5rem auto 0 auto;
       border-radius: 0.2rem; }
       .sign-modal .form .label:before {
         content: ''; }
       .sign-modal .form .label .input {
         float: left;
-        margin-left: 0.5rem;
-        width: 12.5rem;
-        line-height: 2rem; }
+        margin-left: 1rem;
+        width: 14rem;
+        line-height: 2rem;
+        color: #666; }
     .sign-modal .form .pwd:before {
-      background-position: -0.13rem -1.79rem; }
+      background-position: -0.13rem -1.65rem; }
     .sign-modal .form .pwd span {
-      width: 1.71429rem;
+      width: 1.2rem;
       height: 1.2rem;
-      margin-top: 0.4rem;
+      margin: 0.4rem;
       float: right;
-      background-position: 0 -4.55rem; }
+      background-position: -0.26rem -3.25rem; }
     .sign-modal .form .show-pwd span {
-      background-position: 0 -3.3rem; }
+      background-position: -0.26rem -4.4rem; }
+    .sign-modal .form .tip {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      float: left;
+      line-height: 1.5;
+      font-size: 0.6rem;
+      width: 20rem;
+      margin-left: 2.8rem;
+      color: #f03; }
+    .sign-modal .form .tip-s {
+      color: #39c881; }
   .sign-modal .foot {
     height: 3rem;
     width: 100%;
     position: absolute;
     bottom: 0;
+    z-index: 130;
     background: #f0f0f0;
     border-radius: 0 0 0.2rem 0.2rem;
     box-sizing: border-box;
@@ -176,13 +191,7 @@
   display: none; }
 
 .sign-up .content {
-  height: 14.5rem; }
+  height: 16rem; }
 
 .sign-up .form {
-  height: 10.425rem; }
-
-.sign-up .foot {
-  height: 3.625rem;
-  line-height: 3.625rem; }
-  .sign-up .foot .submit {
-    margin-top: 1.1625rem; }
+  height: 13rem; }

@@ -27,8 +27,9 @@ module.exports = {
 	},
 	create(req, res, next){//注册接口
 		var data = req.body;
+		console.log(data)
 		accountList.count({userName: data.userName}, function(err, l){
-			if(err){return}
+			if(err){return};
 			if(l===0){
 				accountList.count({},function(err,count){//根据count分配ID
 					if(err){

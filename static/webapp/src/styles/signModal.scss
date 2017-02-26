@@ -36,6 +36,7 @@
 				background: url('../images/sign/eyes@2x.png') center no-repeat;
 				background-size: contain;
 				opacity: 0;
+				transition: opacity 0.15s linear 0.15s;
 			}
 		}
 		.left, .right{
@@ -103,7 +104,7 @@
 		}
 	}
 	.space{
-		height:0.45rem;
+		height:0.5rem;
 		width: 100%;
 		background: #fff;
 		border-radius: 0.2rem 0.2rem 0 0;
@@ -128,15 +129,15 @@
 	}
 	%icon{
 		float:left;
-		height:$signInHeight/8;
-		width:$signInHeight/8;
-		margin:$signInHeight/48;
+		height:$midIcon;
+		width:$midIcon;
+		margin:($labelHeight - $midIcon)/2;
 		background: url('../images/icons.png') no-repeat;
-		background-position: -0.13rem 0;
-		background-size: 15rem 25rem;
+		background-position: -0.05rem 0.1rem;
+		background-size: $bg-size;
 	}
 	.form{
-		height:$signInHeight*3/4 - 0.45rem;
+		height:$signInHeight - 3rem;
 		background: #fff;
 		position: absolute;
 		top:0.45rem;
@@ -145,9 +146,9 @@
 		.label{
 			display: block;
 			border: 1px solid $mainColor;
-			width:80%;
-			height:$signInHeight/6;
-			margin:$signInHeight/12 auto;
+			width: $signLabelWidth;
+			height: $labelHeight;
+			margin: 1.5rem auto 0 auto;
 			border-radius: 0.2rem;
 			&:before{
 				content:'';
@@ -155,38 +156,52 @@
 			}
 			.input{
 				float:left;
-				margin-left: $signInHeight/24;
-				width:$signWidth/2;
-				line-height:$signInHeight/6;
+				margin-left: $labelHeight/2;
+				width:$signLabelWidth - 3*$labelHeight;
+				line-height:$labelHeight;
+				color: $midFontColor;
 			}
 		}
 		.pwd{
 			&:before{
-				background-position: -0.13rem -1.79rem;
+				background-position: -0.13rem -1.65rem;
 			}
 			span{
 				@extend %icon;
-				width:$signInHeight/7;
-				height:$signInHeight/10;
-				margin-top: $signInHeight/30;
+				width:$smallIcon;
+				height:$smallIcon;
+				margin: ($labelHeight - $smallIcon)/2;
 				float: right;
-				background-position: 0 -4.55rem;
+				background-position: -0.26rem -3.25rem;
 			}
 		}
 		.show-pwd span{
-			background-position: 0 -3.3rem;
+			background-position: -0.26rem -4.4rem;
+		}
+		.tip{
+			@include ellipsis;
+			float:left;
+			line-height: 1.5;
+			font-size: $smallFontSize;
+			width: $signLabelWidth;
+			margin-left: ($signWidth - $signLabelWidth)/2 + 0.3rem;
+			color:$warningColor;
+		}
+		.tip-s{
+			color: $sucColor;
 		}
 	}
 	.foot{
-		height:$signInHeight*1/4;
+		height:3rem;
 		width:100%;
 		position: absolute;
 		bottom:0;
+		z-index: 130;
 		background: $modal-foot;
 		border-radius: 0 0 0.2rem 0.2rem;
 		box-sizing: border-box;
 		padding:0 1rem;
-		line-height: $signInHeight*1/4;
+		line-height: 3rem;
 		font-size: $midFontSize;
 		color: $lowFontColor;
 		span{
@@ -194,7 +209,7 @@
 			&:hover{color: $mainColor;}
 		}
 		.submit{
-			margin-top: $signInHeight*1/8 - $midFontSize/2 - 0.25rem;
+			margin-top: 1.5rem - $midFontSize/2 - 0.25rem;
 		}
 	}
 }
@@ -210,13 +225,6 @@
 		height: $signUpHeight;
 	}
 	.form{
-		height:$signUpHeight*3/4 - 0.45rem;
-	}
-	.foot{
-		height:$signUpHeight*1/4;
-		line-height: $signUpHeight*1/4;
-		.submit{
-			margin-top: $signUpHeight*1/8 - $midFontSize/2 - 0.25rem;
-		}
+		height:$signUpHeight - 3rem;
 	}
 }

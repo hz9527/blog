@@ -1,0 +1,10 @@
+.theme1 {
+  color: #333; }
+  .theme1 .modal-box {
+    background: #fff;
+    color: #333; }
+    .theme1 .modal-box .head {
+      background: #222;
+      color: #eee; }
+    .theme1 .modal-box .foot {
+      border-color: #e8ebf0; }

@@ -22,10 +22,12 @@ module.exports = function(){
 
 	//设置跨域访问
 	app.all('*', function(req, res, next) {
+			req.header('Content-Type','application/json');
 	    res.header("Access-Control-Allow-Origin", "*");
 	    res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-	    res.header("X-Powered-By",' 3.2.1')
+	    res.header("X-Powered-By",' 3.2.1');
+			res.header('Cache-Control','no-cache');
 	    res.header("Content-Type", "application/json;charset=utf-8");
 	    next();
 	});

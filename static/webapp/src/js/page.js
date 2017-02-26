@@ -2,23 +2,30 @@ import React from 'react';
 import '../transStyles/page.css';
 import NavBar from './navBar.js';
 import Sign from './signIn';
+import Modal from './modal';
+import Toast from './toast';
 import Server from './tools/serveConfig';
-import Http from './tools/http.js';
+import {HTTP} from './tools/common.js';
 
 export default React.createClass({
 	getInitialState(){
 
 		return {
 			loading:false,
-			nav:{},
 			theme:'theme1',
-			signShow: true
+			nav:{},
+			sign:{},
+			modal: {show:true, cb:{confirm:'a'}},//show,refName,head,content,cb:{confirmxx cancelxx}
+			toast: {
+				// show:true,
+				// text: 'xixxxxxxxxxxxxxxxxxxxxxxxxxxxi'
+			},//show text
 		}
 	},
 	componentDidMount(){
-		this.init()
+		this.init();
 	},
-	httpUnload: Http(),
+	httpUnload: HTTP(),
 	init(){
 		//查看是否有session请求是否登陆
 		// 查看本地主题默认设置
@@ -51,13 +58,49 @@ export default React.createClass({
 	},
 	changeState(obj){
 		this.setState(obj);
-		console.log()
+	},
+	toastqueue:[],
+	toastCtrl(text){
+		var that = this;
+		this.toastqueue.push(text);
+		if(this.toastqueue.length == 1){
+			this.setState({toast:{show:true, text:this.toastqueue[0]}});
+			setTimeout(function(){
+				that.setState({toast:{show:false, text:that.toastqueue[0]}});
+			},1000);
+		}else if(this.toastqueue.length == 2){
+			window.timer.toast = setInterval(function(){
+				console.log(that.toastqueue)
+				that.setState({toast:{show:true, text:that.toastqueue[0]}});
+				setTimeout(function(){
+					that.setState({toast:{show:false, text:that.toastqueue[0]}});
+				},1000);
+				that.toastqueue.pop();
+				that.toastqueue.length == 0 && clearInterval(window.timer.toast);
+			},3000)
+		}
+	},
+	dealModal(result){
+		var that = this;
+		window.timer.toast2 = setInterval(function(){
+			console.log(that.toastqueue)
+			that.toastqueue.length == 5 && clearInterval(window.timer.toast2)
+			that.toastCtrl('hhh');
+		},500)
+		// if(result === true){
+		// 	this.refs[this.state.modal.refName][this.state.modal.cb.confirm]();
+		// }else if(result === false){
+		// 	this.refs[this.state.modal.refName][this.state.modal.cb.cancel]();
+		// }
+		this.setState({modal: null});
 	},
 	render(){
 			return(
 				<div className={this.state.theme}>
-					<NavBar {...this.state.nav} theme={this.state.theme} />
-					<Sign show={this.state.signShow} changeProps={this.changeState} />
+					<NavBar {...this.state.nav} theme={this.state.theme} changeProps={this.changeState}/>
+					<Sign {...this.state.sign} changeProps={this.changeState} ref='sign'/>
+					<Modal {...this.state.modal} changeProps={this.changeState} dealModal={this.dealModal}/>
+					<Toast {...this.state.toast} changeProps={this.changeState}/>
 				</div>
 			)
 	}

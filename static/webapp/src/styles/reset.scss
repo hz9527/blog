@@ -19,6 +19,8 @@ input{
 	border:0;
 	padding:0;
 	margin:0;
+	background: transparent;
+	font-size: $midFontSize;
 }
 
 ::-webkit-input-placeholder{
