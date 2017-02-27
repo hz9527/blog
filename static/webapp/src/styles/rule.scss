@@ -6,7 +6,7 @@ $modal-bg: rgba(0,0,0,0.6);
 $mainColor: #f55;
 $mainColorHover: #f23;
 $modal-foot: #f0f0f0;
-$warningColor: #f03;
+$nav-bg1: #f8f8f8;
 
 $modalBoxBg1:#fff;
 $modalHead1:#222;
@@ -16,6 +16,8 @@ $midFontColor: #666;
 $lowFontColor: #999;
 $modalHeadColor: #eee;
 $sucColor: #39c881;
+$warningColor: #f03;
+$mainFontColor2: #eee;
 
 
 // 大小类>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -30,6 +32,7 @@ $signLabelWidth: $signWidth*0.8;
 $modalWidth: 20rem;
 $toastMaxWidth: 25rem;
 $toastMinWidth: 10rem;
+$navTitWidth:7rem;
 
 // 高
 $signInHeight: 12rem;
@@ -39,5 +42,6 @@ $navHeight : 2.5rem;
 $labelHeight : 2rem;
 $midIcon: 1.6rem;
 $smallIcon: 1.2rem;
+$tipTag: 0.5rem;
 
 $bg-size: 7.5rem 12.5rem;//压缩50%；

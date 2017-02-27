@@ -13,7 +13,7 @@ module.exports = {
 			};
 
 			xhr.open(method, url);
-			// (method == 'post' || method == 'put') && xhr.setRequestHeader('Content-Type','application/json');
+			(method == 'post' || method == 'put') && xhr.setRequestHeader('Content-Type','application/json');
 			// console.log(data)
 			xhr.send(data || null);
 			loading && loading(this, key || 'loading');
@@ -34,7 +34,6 @@ module.exports = {
 	THROTTLE(cb,key,t){//后续为cb参数,定时器对象传入key，否则形成闭包不能起到节流作用
 		var that = this;
 		var arg = Array.prototype.splice.call(arguments, 3);
-		console.log(t)
 		clearTimeout(window.timer[key]);
 		window.timer[key] = setTimeout(function(){
 			cb.apply(that,arg);

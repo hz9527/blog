@@ -8,23 +8,86 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  width: 100%;
   height: 2.5rem;
-  background: #0ff; }
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50; }
   .nav .menu, .nav .con, .nav .sign {
     height: 100%; }
+  .nav .menu, .nav .con {
+    border-right: 1px solid #e8ebf0; }
   .nav .menu, .nav .sign {
-    background: #f00;
     -webkit-box-flex: 1.5 1 5.5rem;
     -webkit-flex: 1.5 1 5.5rem;
     flex: 1.5 1 5.5rem;
     line-height: 2.5rem;
     text-align: center; }
-    .nav .menu div, .nav .sign div {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis; }
+  .nav .menu .icon, .nav .menu .user {
+    width: 1.6rem;
+    height: 1.6rem;
+    margin: 0.45rem;
+    cursor: pointer; }
+  .nav .menu .icon {
+    float: left;
+    background: url("../images/icons.png") no-repeat;
+    background-size: 7.5rem 12.5rem;
+    background-position: -0.1rem -10.1rem; }
+    .nav .menu .icon:hover {
+      background-position: -0.1rem -8.458rem; }
+  .nav .menu .aside-show {
+    background-position: -0.1rem -7rem; }
+    .nav .menu .aside-show:hover {
+      background-position: -0.1rem -5.6rem; }
+  .nav .menu .user {
+    float: right;
+    position: relative; }
+    @media screen and (max-width: 610px) {
+      .nav .menu .user {
+        display: none; } }
+    .nav .menu .user img {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px solid #f55; }
+    .nav .menu .user .msg {
+      height: 0.5rem;
+      min-height: 0.9rem;
+      background: #f55;
+      opacity: 0.9;
+      position: absolute;
+      top: -10%;
+      right: -10%;
+      padding: 0 0.258rem;
+      border-radius: 50%;
+      font-size: 0.6rem;
+      line-height: 1.3;
+      font-weight: 200;
+      color: #fff; }
+    .nav .menu .user .tit {
+      display: none; }
+    .nav .menu .user:hover .tit {
+      display: block;
+      position: absolute;
+      z-index: 55;
+      width: 7rem;
+      padding: 0.5rem 0.3rem;
+      border-radius: 0.2rem;
+      top: 105%;
+      left: 0;
+      background: rgba(0, 0, 0, 0.6);
+      line-height: 1.3;
+      font-size: 0.6rem;
+      text-align: left; }
+      .nav .menu .user:hover .tit span {
+        color: #eee;
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; }
   .nav .con {
-    width: 54rem;
-    background: #fff; }
+    width: 54rem; }
   .nav .sign {
     font-size: 0.8rem; }

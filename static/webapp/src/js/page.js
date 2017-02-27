@@ -9,7 +9,6 @@ import {HTTP} from './tools/common.js';
 
 export default React.createClass({
 	getInitialState(){
-
 		return {
 			loading:false,
 			theme:'theme1',
@@ -23,30 +22,39 @@ export default React.createClass({
 		this.init();
 	},
 	httpUnload: HTTP(),
+	dealSign(data){
+		this.setState({nav:{
+			sign:true,
+			name:data.name,
+			picture:data.picture,
+			message:data.message
+		}});
+		var that = this;
+		window.timer.message = setInterval(function(){
+			that.httpUnload(Server.message.method, Server.message.url).then(function(data){
+				if(data.state){
+
+				}
+			})
+		},Server.message.time);
+	},
 	init(){
 		//查看是否有session请求是否登陆
 		// 查看本地主题默认设置
-		var sign,theme;
+		var theme;
 		this.httpUnload(Server.checkSign.method, Server.checkSign.url, {}).then(function(data){
 			if(data.state){
-				sign = data.data;
-				var that = this;
-				setInterval(function(){
-					that.httpUnload(Server.message.method, Server.message.url).then(function(data){
-						if(data.state){
-
-						}
-					})
-				},Server.message.time)
+				this.dealSign(data.data);
 			}else{
-				sign = {
+				clearInterval(window.timer.message);
+				window.timer.message = null;
+				this.setState({nav:{
 					sign:false,
 					name:'',
 					picture:'',
 					message: null
-				}
+				}});
 			}
-			this.setState(sign)
 		});
 
 		theme = localStorage.getItem('theme');
@@ -54,7 +62,12 @@ export default React.createClass({
 		this.setState({theme: theme})
 	},
 	changeState(obj){
-		this.setState(obj);
+		if(typeof obj == 'object'){
+			this.setState(obj);
+		}else{
+			var arg = Array.prototype.slice.call(arguments,1);
+			this[obj].apply(this,arg);
+		}
 	},
 	toastqueue:[],
 	dealToast(t){
@@ -68,25 +81,22 @@ export default React.createClass({
 		},t);
 		setTimeout(function(){
 			that.setState({toast:{className:'toast-con toast-hide'}});
+			that.toastqueue.shift();
 		},t+500);
 	},
 	toastCtrl(text, t){
 		var that = this;
-		t = t || 2000;
-		console.log(this.setState)
+		t = typeof(t) == 'number' && t || 2000;
 		this.toastqueue.push(text);
 		if(this.toastqueue.length == 1){
 			this.dealToast(t);
 		}else if(this.toastqueue.length == 2){
 			window.timer.toast = setInterval(function(){
-				that.toastqueue.shift();
 				that.dealToast(t);
 				that.toastqueue.length == 1 && clearInterval(window.timer.toast);
 			},t+1500);
 		}
-
 	},
-	text:'hh',
 	dealModal(result){
 		if(result === true){
 			this.refs[this.state.modal.refName][this.state.modal.cb.confirm]();
@@ -99,7 +109,7 @@ export default React.createClass({
 			return(
 				<div className={this.state.theme}>
 					<NavBar {...this.state.nav} theme={this.state.theme} changeProps={this.changeState}/>
-					<Sign {...this.state.sign} changeProps={this.changeState} ref='sign'/>
+					<Sign {...this.state.sign} ref='sign' changeProps={this.changeState} toast={this.toastCtrl} ref='sign'/>
 					<Modal {...this.state.modal} changeProps={this.changeState} dealModal={this.dealModal}/>
 					<Toast {...this.state.toast} ref='toast'/>
 				</div>

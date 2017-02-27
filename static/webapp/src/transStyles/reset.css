@@ -24,6 +24,9 @@ input {
   color: #999;
   font-size: 0.8rem; }
 
+img {
+  border: 0; }
+
 .hz-btn, .hz-btn-s, .hz-btn-s-l, .hz-btn-s-r, .hz-btn-m, .hz-btn-m-l, .hz-btn-m-r, .hz-btn-b-l, .hz-btn-b-r, .hz-btn-b, .hz-btn-line, .hz-btn-line-s, .hz-btn-line-s-l, .hz-btn-line-s-r, .hz-btn-line-m, .hz-btn-line-m-l, .hz-btn-line-m-r, .hz-btn-line-b, .hz-btn-line-b-l, .hz-btn-line-b-r {
   display: inline-block;
   border: 0;

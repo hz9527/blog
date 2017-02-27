@@ -1,4 +1,5 @@
-var domain = 'http://127.0.0.1:18003'
+var domain = 'http://127.0.0.1:18003';
+domain = '';
 module.exports = {
 	checkSign: {
 		method: 'post',

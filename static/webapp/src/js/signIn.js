@@ -55,7 +55,12 @@ export default React.createClass({
 			}});
 	},
 	closeModal(e){
-		if(e.target.classList.contains('sign-modal')){
+		if(e){
+			if(e.target.classList.contains('sign-modal')){
+				this.props.changeProps({sign: {show:false}});
+				this.initValue();
+			}
+		}else{
 			this.props.changeProps({sign: {show:false}});
 			this.initValue();
 		}
@@ -114,8 +119,23 @@ export default React.createClass({
 			}
 		}
 	},
-	a(){
-		console.log(111)
+	dealSubmit(res){
+		var tit = this.props.signState == 'signUp' ? '注册' : '登录'
+		this.setState({loading:false});
+		if(res.state){
+			this.closeModal();
+			this.props.changeProps('toastCtrl',tit + '成功');
+			this.props.changeProps('dealSign',res.data);
+		}else{
+			this.props.changeProps({
+				modal:{
+					show: true,
+					refName: 'sign',
+					content: tit + '失败',
+					cb:{confirm:'initValue',cancel:'closeModal'}
+				}
+			})
+		}
 	},
 	submit(){
 		if(!this.state.loading && !this.checkState){
@@ -136,7 +156,7 @@ export default React.createClass({
 						userName: n,
 						passWord: p
 					}).then(function(res){
-						console.log(res);
+							this.dealSubmit(res);
 	 					});
 				}
 			}else if(this.props.signState == 'signUp'){
@@ -159,11 +179,7 @@ export default React.createClass({
 						userName: n,
 						passWord: p
 					}).then(function(res){
-						if(this.state){
-
-						}else{
-
-						}
+								this.dealSubmit(res);
 	 					});
 				}
 			}
