@@ -193,7 +193,7 @@ $('#changeLimit').onclick = function(){
 
 //
 $('#getMessageList').onclick=function(){
-	$http('post', '/api/message',{condition:{},option:{}}).then(
+	$http('post', '/api/message',{condition:[{key:'type',value:3,result:0}],page:{}}).then(
 		function(res){
 			console.log(res.responseText);
 		}
