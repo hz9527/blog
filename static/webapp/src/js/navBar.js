@@ -6,9 +6,7 @@ export default React.createClass({
 			// console.log(this.props)
 		},
 		getInitialState(){
-			return {
-				asideShow:false,
-			}
+			return {}
 		},
 		sign(e){
 			if(e.target.innerHTML === '注册'){
@@ -22,7 +20,7 @@ export default React.createClass({
 			}
 		},
 		showAside(){
-			this.setState({asideShow:true});
+			this.props.changeProps({asideShow:true});
 		},
 		dealMessage(){
 			var that = this;
@@ -42,7 +40,11 @@ export default React.createClass({
 					that.values.messageList.push({n:t,v:item});
 				}
 			});
-			this.values.message = this.props.message.reduce(function(pre,item){return pre += item;});
+			if(this.props.message.length==0){
+				this.values.message = 0;
+			}else{
+				this.values.message = this.props.message.reduce(function(pre,item){return pre += item;});
+			}
 		},
 		values:{
 			message:0,
@@ -50,10 +52,11 @@ export default React.createClass({
 		},
 		render(){
 			var menu,sign;
-			if(this.props.sign){
+			if(this.props.sign === true){
 				this.dealMessage();
 				var titList = [];
-				titList.push(<span key='-1'>{'用户名: '+this.props.name}</span>);
+				titList.push(<span key='-2'>{'账户名: '+this.props.account}</span>);
+				titList.push(<span key='-1'>{'昵称: '+this.props.name}</span>);
 				this.values.messageList.forEach(function(item,i){
 						titList.push(<span key={i+''}>{item.n + item.v}</span>)
 					});
@@ -74,7 +77,7 @@ export default React.createClass({
 			return (
 				<div className='nav'>
 					<div className='menu' onClick={this.showAside}>
-						<b className={this.state.asideShow ? 'icon aside-show' : 'icon'}></b>
+						<b className={this.props.asideShow ? 'icon aside-show' : 'icon'}></b>
 						{menu}
 					</div>
 					<div className='con'>{3}

@@ -1,6 +1,10 @@
 @import './rule.scss';
+@import './common.scss';
 // reset style
+html,body,#root{height:100%;}
 body{
+	font-size: $midFontSize;
+	overflow-x: hidden;
 	line-height: 1.1;
 	font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
 }
@@ -102,5 +106,32 @@ img{
 			&-l{float:left;}
 			&-r{float:right;}
 		}
+	}
+}
+.switch{
+	cursor: pointer;
+	display: inline-block;
+	background: $switch-bg;
+	width: 2*$smallIcon;
+	height: $smallIcon*1.2;
+	border-radius: 30%/50%;
+	.switch-item{
+		float: left;
+		width: $smallIcon;
+		height: $smallIcon;
+		background: $mainColor;
+		border-radius: 50%;
+		margin:0.1*$smallIcon;
+	}
+}
+.switch-left{
+	.switch-item{
+		@include transition(transform 0.2s);
+	}
+}
+.switch-right{
+	.switch-item{
+		@include transform(translate(75%,0));
+		@include transition(transform 0.2s);
 	}
 }

@@ -4,6 +4,7 @@ import NavBar from './navBar.js';
 import Sign from './signIn';
 import Modal from './modal';
 import Toast from './toast';
+import Aside from './aside';
 import Server from './tools/serveConfig';
 import {HTTP} from './tools/common.js';
 
@@ -12,6 +13,9 @@ export default React.createClass({
 		return {
 			loading:false,
 			theme:'theme1',
+			message:[],
+			asideShow:false,
+			signState:false,
 			nav:{},
 			sign:{},
 			modal: {},//show,refName,head,content,cb:{confirmxx cancelxx}
@@ -24,11 +28,10 @@ export default React.createClass({
 	httpUnload: HTTP(),
 	dealSign(data){
 		this.setState({nav:{
-			sign:true,
+			account:data.account,
 			name:data.name,
 			picture:data.picture,
-			message:data.message
-		}});
+		},message:data.message,signState:true});
 		var that = this;
 		window.timer.message = setInterval(function(){
 			that.httpUnload(Server.message.method, Server.message.url).then(function(data){
@@ -43,20 +46,19 @@ export default React.createClass({
 		// 查看本地主题默认设置
 		var theme;
 		this.httpUnload(Server.checkSign.method, Server.checkSign.url, {}).then(function(data){
-			if(data.state){
+			if(data.state === true){
 				this.dealSign(data.data);
 			}else{
 				clearInterval(window.timer.message);
 				window.timer.message = null;
 				this.setState({nav:{
-					sign:false,
+					account:'',
 					name:'',
 					picture:'',
 					message: null
-				}});
+				},message:[],signState:false});
 			}
 		});
-
 		theme = localStorage.getItem('theme');
 		theme = theme === 'theme2' ? 'theme2' : 'theme1';
 		this.setState({theme: theme})
@@ -105,10 +107,16 @@ export default React.createClass({
 		}
 		this.setState({modal: null});
 	},
+	closeAside(){this.setState({asideShow:false})},
 	render(){
+			var pageClass = 'page ' + this.state.theme + (this.state.asideShow ? ' page-aside-show' : '');
 			return(
-				<div className={this.state.theme}>
-					<NavBar {...this.state.nav} theme={this.state.theme} changeProps={this.changeState}/>
+				<div className={pageClass}>
+					<div className='page-modal' onClick={this.closeAside}></div>
+					<Aside sign={this.state.signState} aside={this.state.asideShow}
+						theme={this.state.theme} close={this.closeAside} changeProps={this.changeState} />
+					<NavBar {...this.state.nav}  asideShow={this.state.asideShow}
+					 message={this.state.message} sign={this.state.signState} changeProps={this.changeState}/>
 					<Sign {...this.state.sign} ref='sign' changeProps={this.changeState} toast={this.toastCtrl} ref='sign'/>
 					<Modal {...this.state.modal} changeProps={this.changeState} dealModal={this.dealModal}/>
 					<Toast {...this.state.toast} ref='toast'/>

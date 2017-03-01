@@ -21,5 +21,9 @@ module.exports = {
 	signUp: {
 		method: 'post',
 		url: domain + '/sign'
+	},
+	getOwnInfo:{
+		method: 'get',
+		url: domain + '/api/userInfo'
 	}
 }

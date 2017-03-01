@@ -27,7 +27,6 @@ module.exports = {
 	},
 	create(req, res, next){//注册接口
 		var data = req.body;
-		console.log(data)
 		accountList.count({userName: data.userName}, function(err, l){
 			if(err){return};
 			if(l===0){
@@ -102,6 +101,7 @@ module.exports = {
 										res.json({
 											state: true,
 											data: {
+												account: data.userName,
 												name: data.userName,
 												pic: newInfo.picture,
 												message: [1,0,0,0]
@@ -143,6 +143,7 @@ module.exports = {
 								data: {
 									message: [doc.message.unRead0, doc.message.unRead1, doc.message.unRead2, doc.message.unRead3],
 									messageTime: key,
+									account: data.userName,
 									name: doc.info.name,
 									picture: doc.info.picture
 								}
@@ -180,6 +181,7 @@ module.exports = {
 							data: {
 								message: [mDoc.message.unRead0, mDoc.message.unRead1, mDoc.message.unRead2, mDoc.message.unRead3],
 								messageTime: Date.now(),
+								account: doc.userName,
 								name: mDoc.info.name,
 								picture: mDoc.info.picture
 							}

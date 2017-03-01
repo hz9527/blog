@@ -2,7 +2,7 @@
 //在各个组件中使用为this.http(method, url, data).then(scb,ecb)
 module.exports = {
 	HTTP: function (loading, cb){
-		return function(method, url, data, key){
+		return function(method, url, data){
 			var that = this;
 			var xhr = new XMLHttpRequest();
 			data&&(data=JSON.stringify(data));
@@ -16,11 +16,11 @@ module.exports = {
 			(method == 'post' || method == 'put') && xhr.setRequestHeader('Content-Type','application/json');
 			// console.log(data)
 			xhr.send(data || null);
-			loading && loading(this, key || 'loading');
+			loading && loading(this);
 
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState === 4){
-					cb && cb(that, key || 'loading');
+					cb && cb(that);
 					if(xhr.status === 200 || xhr.status>=300 && xhr.status<=304){
 						xhr.next.call(that, JSON.parse(xhr.responseText));
 					}else{

@@ -64,3 +64,20 @@
 	top:50%;
 	@include transform(translate(-50%, -50%));
 }
+@mixin loading{
+	width: $midIcon;
+	height: $midIcon;
+	background:url('../images/icons.png') no-repeat;
+	background-size: $bg-size;
+	background-position: -2rem 0.05rem;
+	margin: -$midIcon/2;
+	animation: loadingRotate .5s infinite linear;
+}
+@keyframes loadingRotate{
+	0%{
+		@include transform(rotate(0deg));
+	}
+	100%{
+		@include transform(rotate(360deg));
+	}
+}
