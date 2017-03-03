@@ -64,6 +64,4 @@
   .theme1 .aside {
     background: #f3f3f3; }
     .theme1 .aside .close {
-      background: rgba(0, 0, 0, 0.6); }
-      .theme1 .aside .close .height, .theme1 .aside .close .width {
-        background: #fff; }
+      background-position: -2.05rem -3.62rem; }

@@ -48,7 +48,6 @@ export default React.createClass({
 		return (
 			<div className='aside'>
 				<div className='close' onClick={this.closeAside}>
-					<span className='height'></span><span className='width'></span>
 				</div>
 				{content}
 				<div className='change-theme'>

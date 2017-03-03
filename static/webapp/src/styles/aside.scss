@@ -32,17 +32,8 @@
 		opacity: 0.8;
 		@include transform(rotate(45deg));
 		@include transition(transform 0.3s);
-		.height, .width{
-			@include center;
-		}
-		.height{
-			width:$midIcon*0.618;
-			height:3px;
-		}
-		.width{
-			width:3px;
-			height:$midIcon*0.618;
-		}
+		background:url('../images/icons.png') no-repeat;
+		background-size: $bg-size;
 		&:hover{
 			opacity: 1;
 			@include transform(rotate(405deg));

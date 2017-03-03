@@ -66,22 +66,9 @@
     -moz-transition: transform 0.3s;
     -ms-transition: transform 0.3s;
     -o-transition: transform 0.3s;
-    transition: transform 0.3s; }
-    .aside .close .height, .aside .close .width {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      -webkit-transform: translate(-50%, -50%);
-      -moz-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-      -o-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%); }
-    .aside .close .height {
-      width: 0.9888rem;
-      height: 3px; }
-    .aside .close .width {
-      width: 3px;
-      height: 0.9888rem; }
+    transition: transform 0.3s;
+    background: url("../images/icons.png") no-repeat;
+    background-size: 7.5rem 12.5rem; }
     .aside .close:hover {
       opacity: 1;
       -webkit-transform: rotate(405deg);
