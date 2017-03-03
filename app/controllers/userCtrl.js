@@ -69,7 +69,7 @@ module.exports = {
 							follower: doc.fans.followerLength,
 							relation: 'self'
 						}
-						res.json({state: false, message:'获取数据成功', data:{
+						res.json({state: true, message:'获取数据成功', data:{
 							info: doc.info,
 							fans: fans
 						}});

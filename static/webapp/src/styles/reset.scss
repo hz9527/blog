@@ -7,6 +7,7 @@ body{
 	overflow-x: hidden;
 	line-height: 1.1;
 	font-family: "Helvetica Neue",Helvetica,Arial,"Hiragino Sans GB","Hiragino Sans GB W3","Microsoft YaHei UI","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+
 }
 body,ul,li{
 	margin:0;
@@ -18,20 +19,40 @@ li{
 a{
 	text-decoration: none;
 }
+
+p,h1,h2,h3,h4,h5,h6{margin:0;padding:0;}
 input{
 	outline: 0;
-	border:0;
 	padding:0;
 	margin:0;
 	background: transparent;
 	font-size: $midFontSize;
+	&:focus{
+		border-color: $mainColor;
+	}
 }
 
 ::-webkit-input-placeholder{
 	color:$lowFontColor;
 	font-size: $midFontSize;
 }
+::-webkit-scollerbar{
+	width:0;
+}
+
 img{
+	border:0;
+	box-sizing: border-box;
+}
+select{
+	appearance:none;
+  -moz-appearance:none;
+  -webkit-appearance:none;
+	outline:0;
+	background: transparent;
+	border-radius: 0;
+}
+select[disabled], input[disabled]{
 	border:0;
 }
 
@@ -135,3 +156,4 @@ img{
 		@include transition(transform 0.2s);
 	}
 }
+.hide{display: none;}

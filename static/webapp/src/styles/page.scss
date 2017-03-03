@@ -24,6 +24,13 @@
 }
 .theme1{
 	color: $mainFontColor1;
+	//reset color
+	input, select{
+		border:1px solid $mainBorder1;
+	}
+	select[disabled]{
+		color: $mainFontColor1;
+	}
 	.modal-box{
 		background: $modalBoxBg1;
 		color: $mainFontColor1;
@@ -42,6 +49,11 @@
 		background: $aside-bg1;
 		.close{
 			background-position: -2.05rem -3.62rem;
+		}
+		.content-sign{
+			.pancel{
+				background: #fff;
+			}
 		}
 	}
 }

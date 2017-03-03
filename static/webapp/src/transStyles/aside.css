@@ -21,7 +21,9 @@
   top: 0;
   right: 100%;
   height: 100%;
-  width: 15rem; }
+  width: 15rem;
+  height: 100%;
+  overflow-y: auto; }
   .aside .aside-loading {
     position: absolute;
     top: 0;
@@ -57,11 +59,6 @@
     border-radius: 50%;
     cursor: pointer;
     opacity: 0.8;
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
     -webkit-transition: transform 0.3s;
     -moz-transition: transform 0.3s;
     -ms-transition: transform 0.3s;
@@ -71,21 +68,136 @@
     background-size: 7.5rem 12.5rem; }
     .aside .close:hover {
       opacity: 1;
-      -webkit-transform: rotate(405deg);
-      -moz-transform: rotate(405deg);
-      -ms-transform: rotate(405deg);
-      -o-transform: rotate(405deg);
-      transform: rotate(405deg);
+      -webkit-transform: rotate(360deg);
+      -moz-transform: rotate(360deg);
+      -ms-transform: rotate(360deg);
+      -o-transform: rotate(360deg);
+      transform: rotate(360deg);
       -webkit-transition: transform 0.3s;
       -moz-transition: transform 0.3s;
       -ms-transition: transform 0.3s;
       -o-transition: transform 0.3s;
       transition: transform 0.3s; }
   .aside .change-theme {
-    position: absolute;
-    bottom: 1.6rem;
-    left: 10%;
+    margin: 1.2rem auto;
     width: 80%;
+    margin: auto;
     line-height: 1.56rem; }
     .aside .change-theme .switch {
       float: right; }
+  .aside .content {
+    margin: 7.2rem 0;
+    height: 80%;
+    text-align: center; }
+    .aside .content .btn {
+      margin-left: 1.2rem; }
+  .aside .content-sign {
+    margin-top: 3.6rem;
+    margin-bottom: 1.2rem; }
+    .aside .content-sign .picture {
+      width: 5rem;
+      height: 5rem;
+      margin: 0 auto; }
+      .aside .content-sign .picture img {
+        border-radius: 50%;
+        width: 100%;
+        height: 100%;
+        border: 2px solid #f55; }
+    .aside .content-sign .user_fridend {
+      text-align: center;
+      margin-bottom: 1.2rem; }
+      .aside .content-sign .user_fridend p {
+        margin: 0.6rem 0; }
+      .aside .content-sign .user_fridend span {
+        display: inline-block;
+        width: 5rem;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; }
+    .aside .content-sign .info-line {
+      cursor: pointer;
+      height: 2rem;
+      line-height: 2rem;
+      border-top: 1px solid #e8ebf0;
+      position: relative; }
+      .aside .content-sign .info-line:last-child {
+        border-bottom: 1px solid #e8ebf0; }
+      .aside .content-sign .info-line i {
+        display: inline-block;
+        width: 1.2rem;
+        height: 1.2rem;
+        margin: 0 0.6rem;
+        vertical-align: -10%;
+        background: url("../images/userIcons.png") no-repeat;
+        background-size: 7.5rem 12.5rem;
+        background-position: -0.05rem 0rem; }
+      .aside .content-sign .info-line b {
+        position: absolute;
+        right: 0.6rem;
+        width: 0.6rem;
+        height: 0.6rem;
+        border-top: 2px solid #999;
+        border-right: 2px solid #999; }
+      .aside .content-sign .info-line b.up {
+        -webkit-transform: rotate(-45deg);
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -o-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        top: 0.6rem; }
+      .aside .content-sign .info-line b.down {
+        -webkit-transform: rotate(135deg);
+        -moz-transform: rotate(135deg);
+        -ms-transform: rotate(135deg);
+        -o-transform: rotate(135deg);
+        transform: rotate(135deg);
+        bottom: 0.6rem; }
+      .aside .content-sign .info-line b.right {
+        -webkit-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        transform: rotate(45deg);
+        top: 0.7rem;
+        right: 0.84rem; }
+    .aside .content-sign .setting {
+      border-bottom: 1px solid #e8ebf0; }
+      .aside .content-sign .setting i {
+        background-position: -1.6rem 0.07rem; }
+    .aside .content-sign .publish {
+      margin-top: 1.6rem; }
+      .aside .content-sign .publish i {
+        background-position: -3.1rem 0rem; }
+    .aside .content-sign .message i {
+      background-position: -4.55rem -0.12rem; }
+    .aside .content-sign .collect i {
+      background-position: -0.07rem -1.57rem; }
+    .aside .content-sign .published i {
+      background-position: -6.07rem -0.05rem; }
+    .aside .content-sign .pancel {
+      padding-bottom: 2.4rem; }
+      .aside .content-sign .pancel .head div {
+        margin: 0.6rem; }
+    .aside .content-sign .label {
+      width: 90%;
+      clear: both;
+      line-height: 1.5;
+      margin: 0.6rem auto; }
+      .aside .content-sign .label .tit-s, .aside .content-sign .label .tit-l {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: inline-block;
+        text-align: right;
+        vertical-align: top; }
+      .aside .content-sign .label .tit-s {
+        width: 40%; }
+      .aside .content-sign .label .form-w {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        box-sizing: border-box;
+        line-height: 1.5; }
+      .aside .content-sign .label .form-w {
+        text-indent: 0.6rem;
+        width: 55%; }

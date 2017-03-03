@@ -1,6 +1,7 @@
 // 颜色类>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 // 线框颜色
 $mainBorder1: #e8ebf0;
+$grayBorder: #999;
 // 背景色
 $modal-bg: rgba(0,0,0,0.6);
 $loading-bg: rgba(0,0,0,0.3);
@@ -37,6 +38,7 @@ $toastMaxWidth: 25rem;
 $toastMinWidth: 10rem;
 $navTitWidth:7rem;
 $asideWidth:15rem;
+$userPicWidth:5rem;
 
 // 高
 $signInHeight: 12rem;
@@ -44,8 +46,11 @@ $signUpHeight: 16rem;
 $navHeight : 2.5rem;
 
 $labelHeight : 2rem;
+$smallLabelHeight:1.5rem;
 $midIcon: 1.6rem;
 $smallIcon: 1.2rem;
+$arrowIcon: 0.6rem;
 $tipTag: 0.5rem;
 
 $bg-size: 7.5rem 12.5rem;//压缩50%；
+$bg-user-size: 7.5rem 12.5rem;

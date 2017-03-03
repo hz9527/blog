@@ -35,19 +35,39 @@ li {
 a {
   text-decoration: none; }
 
+p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0; }
+
 input {
   outline: 0;
-  border: 0;
   padding: 0;
   margin: 0;
   background: transparent;
   font-size: 0.8rem; }
+  input:focus {
+    border-color: #f55; }
 
 ::-webkit-input-placeholder {
   color: #999;
   font-size: 0.8rem; }
 
+::-webkit-scollerbar {
+  width: 0; }
+
 img {
+  border: 0;
+  box-sizing: border-box; }
+
+select {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  outline: 0;
+  background: transparent;
+  border-radius: 0; }
+
+select[disabled], input[disabled] {
   border: 0; }
 
 .hz-btn, .hz-btn-s, .hz-btn-s-l, .hz-btn-s-r, .hz-btn-m, .hz-btn-m-l, .hz-btn-m-r, .hz-btn-b-l, .hz-btn-b-r, .hz-btn-b, .hz-btn-line, .hz-btn-line-s, .hz-btn-line-s-l, .hz-btn-line-s-r, .hz-btn-line-m, .hz-btn-line-m-l, .hz-btn-line-m-r, .hz-btn-line-b, .hz-btn-line-b-l, .hz-btn-line-b-r {
@@ -152,3 +172,6 @@ img {
   -ms-transition: transform 0.2s;
   -o-transition: transform 0.2s;
   transition: transform 0.2s; }
+
+.hide {
+  display: none; }

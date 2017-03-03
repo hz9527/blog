@@ -51,6 +51,10 @@
 
 .theme1 {
   color: #333; }
+  .theme1 input, .theme1 select {
+    border: 1px solid #e8ebf0; }
+  .theme1 select[disabled] {
+    color: #333; }
   .theme1 .modal-box {
     background: #fff;
     color: #333; }
@@ -65,3 +69,5 @@
     background: #f3f3f3; }
     .theme1 .aside .close {
       background-position: -2.05rem -3.62rem; }
+    .theme1 .aside .content-sign .pancel {
+      background: #fff; }
