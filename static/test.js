@@ -2,7 +2,7 @@
 function $(select){
 	return document.querySelector(select);
 }
-// 注册接口
+//  注册接口
 $('#signUp').onclick=function(){
 	$http('post','/sign',{userName:'hz3', passWord:'123456'}).then(
 		function(res){
