@@ -1,0 +1,23 @@
+@import './theme.less';
+
+body {
+  color: @color;
+}
+
+.ui-tab-container {
+  display: flex;
+  .ui-tab {
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    padding: 5px;
+    min-width: 100px;
+    text-align: center;
+    &:hover {
+      background-color: @tab-hover;
+    }
+    &.ui-tab-act {
+      border-bottom-color: @tab-border;
+      color: @tab-border;
+    }
+  }
+}
