@@ -1,1 +1,1 @@
-export default [{"file":"blogs/js/test.md","title":"test","updateTime":1618039322760,"headers":[],"tips":["test","test haha"],"types":["type"]}]
+export default [{"file":"blogs/js/test.md","title":"test","updateTime":1618414993722,"headers":[{"level":2,"title":"h2"}],"tips":["test","test haha"],"types":["js"]},{"file":"blogs/designMode/index.md","title":"设计模式","updateTime":1618416983284,"hash":"","headers":[],"tips":[],"types":["设计模式"]},{"file":"blogs/js/test2.md","title":"","updateTime":1618414977919,"hash":"","headers":[],"tips":[],"types":["js"]}]

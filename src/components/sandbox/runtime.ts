@@ -1,14 +1,14 @@
-function rewriteConsole(
+function rewriteConsole (
   send: (key: string, values: {code: number; data: string}[]) => void
 ) {
   for (const key in console) {
-    const fn = console[key as keyof typeof console];
+    const fn = console[key as keyof typeof console]
     console[key as keyof typeof console] = (...args: any[]) => {
       send(key, args.map(item => {
         try {
-          return {code: 0, data: JSON.stringify(item)}
-        } catch(e) {
-          return {code: -1, data: e.message}
+          return { code: 0, data: JSON.stringify(item) }
+        } catch (e) {
+          return { code: -1, data: e.message }
         }
       }))
       fn(...args)
@@ -21,9 +21,9 @@ export default class Runtime {
 
   private listenerMap: Map<string, ((data: any) => void)[]> = new Map()
 
-  constructor(private root: Element) {
+  constructor (private root: Element) {
     this.iframe = document.createElement('iframe')
-    this.iframe.frameBorder = '0';
+    this.iframe.frameBorder = '0'
     window.addEventListener('message', this.messageHandler)
   }
 
@@ -33,13 +33,13 @@ export default class Runtime {
     }
     const data = JSON.parse(e.data)
     if (data && data.cmd) {
-      const list = this.listenerMap.get(data.cmd);
+      const list = this.listenerMap.get(data.cmd)
       list && list.forEach(data.data)
     }
   }
 
-  on(cmd: string, handler: (data: any) => void) {
-    let list = this.listenerMap.get(cmd);
+  on (cmd: string, handler: (data: any) => void) {
+    let list = this.listenerMap.get(cmd)
     if (!list) {
       list = []
       this.listenerMap.set(cmd, list)
@@ -47,18 +47,18 @@ export default class Runtime {
     list.push(handler)
   }
 
-  destroy() {
+  destroy () {
     window.removeEventListener('message', this.messageHandler)
   }
 
-  update(content: {html: string;js:string;css:string}): void {
+  update (content: {html: string;js:string;css:string}): void {
     this.iframe.style.display = content.html ? 'block' : 'none'
     this.iframe.src = `data:text/html,<!DOCTYPE html>
     <html>
       <head>
         <meta charset="UTF-8" />
         <title>Vite App</title>
-        ${content.css ? '<script>' + content.css +'</script>' : ''}
+        ${content.css ? '<script>' + content.css + '</script>' : ''}
       </head>
       <body>
         ${content.html || ''}
@@ -82,7 +82,7 @@ export default class Runtime {
           })()
           console.log(123)
         </script>
-        ${content.js ? '<script>' + content.js +'</script>' : ''}
+        ${content.js ? '<script>' + content.js + '</script>' : ''}
       </body>
     </html>
     `

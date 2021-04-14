@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { matchFactory, walkDir, getBaseInfo } = require('./utils')
+const { matchFactory, walkDir, getBaseInfo, EmptyRouterPlugin } = require('./utils')
 
 class MiddleWare {
   constructor ({
@@ -52,41 +52,66 @@ class Routers {
   constructor (baseDir) {
     this.baseDir = baseDir
     this.infos = new Map()
+    this.plugins = [] // {init, create, merge, update, remove} | (info, file) => info
   }
 
   init (list) {
     this.infos.clear()
     list.forEach(item => {
       const file = path.join(this.baseDir, item.file)
-      this.infos.set(file, item)
+      fs.existsSync(file) && this.infos.set(file, item)
     })
+    this._callHook('init', null)
+  }
+
+  use (plugin) {
+    this.plugins.push({
+      ...EmptyRouterPlugin,
+      ...(typeof plugin === 'function' ? { merge: plugin, update: plugin } : plugin)
+    })
+  }
+
+  _callHook (hook, data, ...args) {
+    return this.plugins.reduce((res, plugin) => {
+      return plugin[hook](res, ...args, this) || res
+    }, data)
   }
 
   create (file) {
     if (this.infos.has(file)) {
       return
     }
-    this.infos.set(file, getBaseInfo(file, this.baseDir))
+    this.infos.set(
+      file,
+      this._callHook('create', getBaseInfo(file, this.baseDir), file)
+    )
   }
 
   merge (file, info) {
     const base = this.infos.get(file)
     const value = typeof info === 'function' ? info(base) : info
-    this.infos.set(file, {
-      ...base,
-      ...value
-    })
+    this.infos.set(
+      file,
+      this._callHook('merge', {
+        ...base,
+        ...value
+      }, file)
+    )
   }
 
   update (file, info) {
-    this.infos.set(file, {
-      ...getBaseInfo(file, this.baseDir),
-      ...info
-    })
+    this.infos.set(
+      file,
+      this._callHook('merge', {
+        ...getBaseInfo(file, this.baseDir),
+        ...info
+      }, file)
+    )
   }
 
   remove (file) {
     this.infos.delete(file)
+    this._callHook('delete', null, file)
   }
 
   toList () {
@@ -102,6 +127,10 @@ class RouteManager {
     this.prefix = 'export default '
     this.task = null
     this.updateTarget = this._updateTarget.bind(this)
+  }
+
+  routerUse (plugin) {
+    this.routers.use(plugin)
   }
 
   use (middleWares) {

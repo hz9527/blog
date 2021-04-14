@@ -49,8 +49,19 @@ function getBaseInfo (file, dir) {
   }
 }
 
+const noop = () => {}
+
+const EmptyRouterPlugin = {
+  init: noop,
+  create: noop,
+  merge: noop,
+  update: noop,
+  remove: noop
+}
+
 module.exports = {
   matchFactory,
   walkDir,
-  getBaseInfo
+  getBaseInfo,
+  EmptyRouterPlugin
 }

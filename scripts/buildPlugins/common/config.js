@@ -2,11 +2,18 @@ const path = require('path')
 const BASE = path.resolve(__dirname, '../../../src')
 const TYPE = 'type'
 
+const MD_DIR = 'blogs'
 module.exports = {
   base: BASE,
   target: path.join(BASE, './router/config.ts'),
+  typeMap: {
+    [MD_DIR]: {
+      designMode: '设计模式',
+      js: 'js'
+    }
+  },
   md: {
-    dir: path.join(BASE, './blogs'),
+    dir: path.join(BASE, `./${MD_DIR}`),
     keys: ['kw', TYPE],
     typeClass: TYPE,
     updateClass: 'updateTime',

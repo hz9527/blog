@@ -42,6 +42,7 @@ function resolveKeysHOC (router, file) {
       tips: InfoData[0],
       types: InfoData[1]
     })
+    const route = router.infos.get(file)
     wrapperRender(md, 'renderInline', (tokens) => {
       let ind = -1
       const list = []
@@ -61,28 +62,18 @@ function resolveKeysHOC (router, file) {
           !!token.content && list.push(token)
         }
       }
-      console.log('info', InfoData)
     })
     const matches = Matches.map((reg, i) => ({ reg, key: CONFIG.keys[i] })).concat([{
       reg: matchFactory(CONFIG.updateClass),
       key: CONFIG.updateClass
     }])
     md.renderer.rules.pre_fix = function (tokens, ind) {
-      console.log('prefix', 5555)
       const token = tokens[ind]
       let base = renderTitle(token.tag)
       if (matches.length) {
         base = matches.map(item => {
-          const ind = CONFIG.keys.indexOf(item.key)
-          const value = handlerValue(item.key, router)
-          if (ind === -1) {
-            router.merge(file, {
-              updateTime: value
-            })
-          } else {
-            InfoData[ind].push(value)
-          }
-          return `${renderTitle(item.key)}<b class="${item.key}">${value}</b>`
+          const value = handlerValue(item.key, route)
+          return `${renderTitle(item.key)}${value.map(v => `<b class="${item.key}">${v}</b>`)}`
         }).join('') + base
         matches.length = 0
       }

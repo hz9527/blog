@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="code-con" v-show="showCode">
-      <div class="ui-tab-container" @click="switchTab">
+      <div class="ui-tab-container" v-click="switchTab">
         <div :class="['ui-tab', tab === 'html' ? 'ui-tab-act' : '']" data-tab="html">HTML</div>
         <div :class="['ui-tab', tab === 'css' ? 'ui-tab-act' : '']" data-tab="css">Style</div>
         <div :class="['ui-tab', tab === 'js' ? 'ui-tab-act' : '']" data-tab="js">JS</div>

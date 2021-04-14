@@ -21,11 +21,11 @@ function renderTitle (name) {
   return `<span class="${titleClass}">${titleMap[name]}:</span>`
 }
 
-function handlerValue (key, router) {
+function handlerValue (key, info) {
   if (key === typeClass) {
-    return 'type'
+    return info.types
   } else if (key === updateClass) {
-    return Date.now()
+    return [info.updateTime]
   }
 }
 

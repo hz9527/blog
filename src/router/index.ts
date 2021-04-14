@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import Config from './config'
 
 interface Item {
@@ -15,5 +15,5 @@ export default createRouter({
   routes: [
     ...routes,
     { path: '/:pathMatch(.*)*', redirect: routes[0].path }
-  ],
+  ]
 })
