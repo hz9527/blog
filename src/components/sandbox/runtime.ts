@@ -1,25 +1,11 @@
-function rewriteConsole (
-  send: (key: string, values: {code: number; data: string}[]) => void
-) {
-  for (const key in console) {
-    const fn = console[key as keyof typeof console]
-    console[key as keyof typeof console] = (...args: any[]) => {
-      send(key, args.map(item => {
-        try {
-          return { code: 0, data: JSON.stringify(item) }
-        } catch (e) {
-          return { code: -1, data: e.message }
-        }
-      }))
-      fn(...args)
-    }
-  }
-}
+import { Data, getHtml } from './utils'
 
 export default class Runtime {
   private iframe: HTMLIFrameElement;
 
-  private listenerMap: Map<string, ((data: any) => void)[]> = new Map()
+  private listenerMap: Map<string, ((data: any) => void)[]> = new Map();
+
+  private timer: number | null = null;
 
   constructor (private root: Element) {
     this.iframe = document.createElement('iframe')
@@ -34,7 +20,7 @@ export default class Runtime {
     const data = JSON.parse(e.data)
     if (data && data.cmd) {
       const list = this.listenerMap.get(data.cmd)
-      list && list.forEach(data.data)
+      list && list.forEach(fn => fn(data.data))
     }
   }
 
@@ -51,41 +37,9 @@ export default class Runtime {
     window.removeEventListener('message', this.messageHandler)
   }
 
-  update (content: {html: string;js:string;css:string}): void {
+  update (content: Data): void {
     this.iframe.style.display = content.html ? 'block' : 'none'
-    this.iframe.src = `data:text/html,<!DOCTYPE html>
-    <html>
-      <head>
-        <meta charset="UTF-8" />
-        <title>Vite App</title>
-        ${content.css ? '<script>' + content.css + '</script>' : ''}
-      </head>
-      <body>
-        ${content.html || ''}
-        <script>
-          (function() {
-            function send(data) {
-              window.top.postMessage(JSON.stringify(data), '*')
-            }
-            (${rewriteConsole.toString()})((key, values) => {
-              send({
-                cmd: 'console',
-                data: {key, values}
-              });
-            });
-            window.addEventListener('error', (e) => {
-              send({cmd: 'error', data: {message: e.error.message, stack: e.error.stack || null}})
-            });
-            window.addEventListener('unhandledrejection', (e) => {
-              send({cmd: 'error', data: {message: reason || null, stack: null}})
-            });
-          })()
-          console.log(123)
-        </script>
-        ${content.js ? '<script>' + content.js + '</script>' : ''}
-      </body>
-    </html>
-    `
+    this.iframe.src = `data:text/html,${encodeURIComponent(getHtml(content))}`
     !Array.prototype.some.call(this.root.children, (el) => el === this.iframe) &&
     this.root.appendChild(this.iframe)
   }

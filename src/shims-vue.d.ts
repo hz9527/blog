@@ -5,5 +5,5 @@ declare module '*.vue' {
 }
 
 declare module '*.md' {
-  export const render: any;
+  export const render: any
 }

@@ -1,9 +1,10 @@
 const { MiddleWare } = require('../common')
 const resolveMd = require('./markdown')
 const pluginHOC = require('./plugin')
+const { sandboxPlugin } = require('./plugin/sandbox')
 const { vueWrapperRender } = require('./renderPlugin')
 
-const loadMd = resolveMd({ plugins: [pluginHOC] })
+const loadMd = resolveMd({ plugins: [pluginHOC, () => sandboxPlugin] })
 
 module.exports = class MdMiddleWare extends MiddleWare {
   constructor (dir) {

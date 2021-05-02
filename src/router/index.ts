@@ -1,19 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Config from './config'
+import { RoutesConfig } from './data'
 
-interface Item {
-  updateTime: number;
-  file: string;
-}
-const routes = Config.map((item: Item) => ({
-  path: `/${item.updateTime}`,
+const routes = RoutesConfig.map((item) => ({
+  path: `/${item.hash}`,
   component: () => import(`../${item.file}`)
 }))
 
-export default createRouter({
+const router = createRouter({
   history: createWebHistory(),
   routes: [
     ...routes,
     { path: '/:pathMatch(.*)*', redirect: routes[0].path }
   ]
 })
+
+export default router

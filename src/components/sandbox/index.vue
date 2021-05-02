@@ -1,84 +1,136 @@
 <template>
   <div class="container">
-    <div class="code-con" v-show="showCode">
-      <div class="ui-tab-container" v-click="switchTab">
-        <div :class="['ui-tab', tab === 'html' ? 'ui-tab-act' : '']" data-tab="html">HTML</div>
-        <div :class="['ui-tab', tab === 'css' ? 'ui-tab-act' : '']" data-tab="css">Style</div>
-        <div :class="['ui-tab', tab === 'js' ? 'ui-tab-act' : '']" data-tab="js">JS</div>
+    <Resizebox
+      init-state="left"
+      @drag="drag"
+    >
+      <template #side>
+        <Tabs>
+          <tab-item title="HTML">
+            <textarea v-model="htmlValue" />
+          </tab-item>
+          <tab-item title="CSS">
+            <textarea v-model="cssValue" />
+          </tab-item>
+          <tab-item title="JS">
+            <textarea v-model="jsValue" />
+          </tab-item>
+        </Tabs>
+      </template>
+      <div class="result">
+        <div class="result-con">
+          <div
+            ref="iframeContent"
+            :class="['iframe', isDrag ? 'mask' : '']"
+          />
+          <div
+            class="log"
+            v-html="log"
+          />
+        </div>
+        <div class="btn-con">
+          <div
+            class="btn"
+            @click="reset"
+          >
+            reset
+          </div>
+          <div
+            class="btn"
+            @click="run"
+          >
+            run
+          </div>
+        </div>
       </div>
-      <div class="code" v-show="tab === 'html'">
-        <textarea v-model="htmlValue"></textarea>
-      </div>
-      <div class="code" v-show="tab === 'css'">
-        <textarea v-model="cssValue"></textarea>
-      </div>
-      <div class="code" v-show="tab === 'js'">
-        <textarea v-model="jsValue"></textarea>
-      </div>
-    </div>
-    <div class="result">
-      <div class="result-con">
-        <div class="iframe" ref="iframeContent"></div>
-        <div class="log"></div>
-      </div>
-      <div class="btn-con">
-        <div class="btn">reset</div>
-        <div class="btn" @click="run">run</div>
-      </div>
-    </div>
+    </Resizebox>
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { defineComponent } from 'vue'
+import { Tabs, TabItem } from '../Tabs'
+import Resizebox from '../ResizeBox/index.vue'
 import Runtime from './runtime'
+import { resolveLog } from './utils'
+import { CustomThis } from '../../types/index'
+
+interface CustomProps {
+  $runtime: Runtime
+}
+
+type T = CustomThis<CustomProps>
+
 export default defineComponent({
+  components: {
+    TabItem,
+    Tabs,
+    Resizebox
+  },
   props: {
     html: {
-      type: String
+      type: String,
+      default: ''
     },
     css: {
-      type: String
+      type: String,
+      default: ''
     },
     js: {
-      type: String
+      type: String,
+      default: ''
     },
     showCode: {
       type: Boolean,
       default: true
+    },
+    initRun: {
+      type: Boolean,
+      default: true
     }
   },
-  data() {
+  customProps (): CustomProps {
     return {
-      htmlValue: '',
-      cssValue: '',
-      jsValue: '',
-      tab: 'html'
+      $runtime: null as unknown as Runtime
     }
   },
-  created() {
-    this.reset();
+  data () {
+    return {
+      htmlValue: this.html,
+      cssValue: this.css,
+      jsValue: this.js,
+      tab: 'html',
+      log: '',
+      isDrag: false
+    }
   },
-  mounted() {
-    this.runtime = new Runtime(this.$refs.iframeContent)
+  mounted () {
+    (this as unknown as T).$runtime = new Runtime(this.$refs.iframeContent as Element)
+    ;(this as unknown as T).$runtime.on('console', (data) => {
+      this.log += resolveLog(data)
+    })
+    this.initRun && this.run()
+  },
+  unmounted () {
+    (this as unknown as T).$runtime.destroy()
   },
   methods: {
-    switchTab(e) {
-      if ('tab' in e.target.dataset) {
-        this.tab = e.target.dataset.tab;
-      }
+    reset () {
+      this.htmlValue = this.html
+      this.cssValue = this.css
+      this.jsValue = this.js
+      this.run()
     },
-    reset() {
-      this.htmlValue = this.html;
-      this.cssValue = this.css;
-      this.js = this.css;
-    },
-    run() {
-      this.runtime.update({
+    run () {
+      this.log = ''
+      ;(this as unknown as T).$runtime.update({
         html: this.htmlValue,
         css: this.cssValue,
         js: this.jsValue
       })
+    },
+    drag (v: boolean) {
+      this.isDrag = v
     }
   }
 })
@@ -86,17 +138,12 @@ export default defineComponent({
 
 <style lang="less" scoped>
   .container {
-    display: flex;
-    width: 100%;
     border: 1px solid #333;
   }
   .code-con {
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    .tabs {
-      display: flex;
-    }
+    overflow: hidden;
   }
   .result {
     flex-grow: 1;
@@ -106,5 +153,17 @@ export default defineComponent({
         flex-grow: 1;
       }
     }
+  }
+  .mask {
+    position: relative;
+  }
+  .mask::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
   }
 </style>

@@ -1,7 +1,6 @@
 const fs = require('fs')
-const path = require('path')
-const { matchFactory, walkDir, getBaseInfo, EmptyRouterPlugin } = require('./utils')
-
+const Routers = require('./router')
+const { matchFactory, walkDir } = require('./utils')
 class MiddleWare {
   constructor ({
     match,
@@ -48,82 +47,11 @@ class MiddleWare {
   }
 }
 
-class Routers {
-  constructor (baseDir) {
-    this.baseDir = baseDir
-    this.infos = new Map()
-    this.plugins = [] // {init, create, merge, update, remove} | (info, file) => info
-  }
-
-  init (list) {
-    this.infos.clear()
-    list.forEach(item => {
-      const file = path.join(this.baseDir, item.file)
-      fs.existsSync(file) && this.infos.set(file, item)
-    })
-    this._callHook('init', null)
-  }
-
-  use (plugin) {
-    this.plugins.push({
-      ...EmptyRouterPlugin,
-      ...(typeof plugin === 'function' ? { merge: plugin, update: plugin } : plugin)
-    })
-  }
-
-  _callHook (hook, data, ...args) {
-    return this.plugins.reduce((res, plugin) => {
-      return plugin[hook](res, ...args, this) || res
-    }, data)
-  }
-
-  create (file) {
-    if (this.infos.has(file)) {
-      return
-    }
-    this.infos.set(
-      file,
-      this._callHook('create', getBaseInfo(file, this.baseDir), file)
-    )
-  }
-
-  merge (file, info) {
-    const base = this.infos.get(file)
-    const value = typeof info === 'function' ? info(base) : info
-    this.infos.set(
-      file,
-      this._callHook('merge', {
-        ...base,
-        ...value
-      }, file)
-    )
-  }
-
-  update (file, info) {
-    this.infos.set(
-      file,
-      this._callHook('merge', {
-        ...getBaseInfo(file, this.baseDir),
-        ...info
-      }, file)
-    )
-  }
-
-  remove (file) {
-    this.infos.delete(file)
-    this._callHook('delete', null, file)
-  }
-
-  toList () {
-    return Array.from(this.infos.values())
-  }
-}
-
 class RouteManager {
-  constructor (target, baseDir) {
+  constructor (target, ...args) {
     this.target = target
     this.middleWares = []
-    this.routers = new Routers(baseDir)
+    this.routers = new Routers(...args)
     this.prefix = 'export default '
     this.task = null
     this.updateTarget = this._updateTarget.bind(this)
@@ -137,7 +65,7 @@ class RouteManager {
     this.middleWares.push(middleWares)
   }
 
-  load (...args) {
+  load (...args) { // id
     for (let i = 0, l = this.middleWares.length; i < l; i++) {
       const res = this.middleWares[i].runLoad(...args, this.routers, this.updateTarget)
       if (res) {
@@ -150,9 +78,7 @@ class RouteManager {
     const list = middleWares || this.middleWares
     return Promise.all(
       list.map(m => m.runGenRouters(this.routers))
-    ).then(() => {
-      this._updateTarget()
-    })
+    ).then(() => this._updateTarget())
   }
 
   initRouters (watch) {
@@ -162,8 +88,16 @@ class RouteManager {
           reject(err)
           return
         }
-        this.routers.init(JSON.parse(fd.toString().replace(this.prefix, '')))
-        this._updateRoutes().then(resolve, reject)
+        const str = fd.toString().replace(this.prefix, '')
+        this.routers.init(str ? JSON.parse(str) : [])
+        this._updateRoutes()
+          .then(
+            () =>
+              Promise.all(
+                Array.from(this.routers.infos.keys()).map(id => this.load(id))
+              )
+          )
+          .then(resolve, reject)
       })
     }).then(() => {
       if (!watch) {
@@ -175,15 +109,20 @@ class RouteManager {
     })
   }
 
-  _updateTarget () {
+  _updateTarget () { // todo 限频
     return Promise.resolve(this.task)
       .then(() => {
         this.task = new Promise((resolve, reject) => {
-          fs.writeFile(
-            this.target,
-            `${this.prefix}${JSON.stringify(this.routers.toList())}`,
-            e => e ? reject(e) : resolve()
-          )
+          const data = this.routers.toList()
+          if (data) {
+            fs.writeFile(
+              this.target,
+              `${this.prefix}${JSON.stringify(data, undefined, 2)}`,
+              e => e ? reject(e) : resolve()
+            )
+          } else {
+            resolve()
+          }
         }).finally(() => {
           this.task = null
         })

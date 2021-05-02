@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-
+const crypto = require('crypto')
+const { DIR_KEY } = require('./meta')
 function matchFactory (match) {
   if (typeof match === 'function') {
     return match
@@ -38,14 +39,27 @@ function walkDir (dir, ignore = () => false) {
   })
 }
 
+const KEYS = Array.from('ABCDEFGHIJ')
+function createHash (text, len = 20) {
+  return crypto
+    .createHash('md5')
+    .update(text)
+    .digest('hex')
+    .slice(0, len)
+    .replace(/\d/g, d => KEYS[d])
+}
+
 function getBaseInfo (file, dir) {
+  const base = path.relative(dir, file)
   return {
-    file: path.relative(dir, file),
+    file: base,
     title: '',
+    hash: createHash(base),
     updateTime: Date.now(),
-    headers: [], // {level, value}
+    headlines: [], // {level, value}
     tips: [],
-    types: []
+    types: [],
+    show: true
   }
 }
 
@@ -59,9 +73,45 @@ const EmptyRouterPlugin = {
   remove: noop
 }
 
+function getDirInfo (obj, keys = []) {
+  const result = [[], []]
+  const base = path.join(...keys)
+  if (obj[DIR_KEY] && typeof obj[DIR_KEY] === 'string') {
+    result[0].push(base)
+    result[1].push([obj[DIR_KEY]])
+  }
+  return Object.keys(obj).reduce((res, key) => {
+    const value = obj[key]
+    if (Array.isArray(value)) {
+      res[0].push(path.join(base, key))
+      res[1].push(value)
+    } else if (value && typeof value === 'object') {
+      const [ps, ns] = getDirInfo(value, keys.slice().concat([key]))
+      res[0].push(...ps)
+      res[1].push(...ns)
+    } else if (value) {
+      res[0].push(path.join(base, key))
+      res[1].push([value])
+    }
+    return res
+  }, result)
+}
+
+const resolveDirNames = (config, baseDir) => {
+  let [paths, names] = getDirInfo(config)
+  paths = paths.map(i => path.join(baseDir, i))
+  return (file) => {
+    const dir = fs.statSync(file).isDirectory() ? file : path.dirname(file)
+    const ind = paths.findIndex(p => dir === p)
+    return ~ind ? names[ind] : []
+  }
+}
+
 module.exports = {
   matchFactory,
   walkDir,
+  createHash,
   getBaseInfo,
-  EmptyRouterPlugin
+  EmptyRouterPlugin,
+  resolveDirNames
 }

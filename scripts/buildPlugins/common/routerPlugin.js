@@ -1,44 +1,17 @@
-const path = require('path')
 const fs = require('fs')
 
-function walkObj (obj, keys, handler) {
-  Object.keys(obj).forEach(key => {
-    const list = keys.slice()
-    list.push(key)
-    const value = obj[key]
-    if (Array.isArray(value)) {
-      handler(list, value, true)
-    } else if (value && typeof value === 'object') {
-      walkObj(value, list, handler)
-    } else if (value) {
-      handler(list, value, false)
-    }
-  })
-}
-
 function typePlugin ({
-  config = {}, // {blog: {key}}
   ignore = () => false
 } = {}) {
-  const paths = []
-  const values = []
-  walkObj(config, [], (keys, value, isArray) => {
-    paths.push(
-      path.join(...keys)
-    )
-    values.push(isArray ? value : [value])
-  })
   return function handler (info, file, context) {
     if (ignore(file)) {
       return info
     }
-    const ind = paths.findIndex(
-      p => file.indexOf(path.join(context.baseDir, p)) === 0
-    )
-    if (ind === -1) {
+    const names = context.getDirNames(file)
+    if (names.length === 0) {
       return info
     }
-    values[ind].forEach(t => !info.types.includes(t) && info.types.push(t))
+    names.forEach(t => !info.types.includes(t) && info.types.push(t))
     return info
   }
 }

@@ -9,8 +9,12 @@ function wrapperRender (md, key, handler) {
   }
 }
 
+function getContents (tokens) {
+  return tokens.map(t => t.content)
+}
+
 function getText (tokens) {
-  return tokens.map(t => t.content).join('')
+  return getContents(tokens).join('')
 }
 
 function matchFactory (key) {
@@ -18,7 +22,8 @@ function matchFactory (key) {
 }
 
 function renderTitle (name) {
-  return `<span class="${titleClass}">${titleMap[name]}:</span>`
+  const title = titleMap[name]
+  return title ? `<span class="${titleClass}">${titleMap[name]}:</span>` : ''
 }
 
 function handlerValue (key, info) {
@@ -32,6 +37,7 @@ function handlerValue (key, info) {
 module.exports = {
   wrapperRender,
   getText,
+  getContents,
   matchFactory,
   renderTitle,
   handlerValue

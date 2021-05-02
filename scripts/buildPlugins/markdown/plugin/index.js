@@ -1,12 +1,12 @@
 const config = require('../../common/config')
-const { wrapperRender, getText, matchFactory, renderTitle, handlerValue } = require('./utils')
+const { wrapperRender, getText, matchFactory, renderTitle, handlerValue, getContents } = require('./utils')
 
 const CONFIG = config.md
-const Matches = CONFIG.keys.map(matchFactory)
-
+const Keys = CONFIG.keys.concat([CONFIG.hideClass])
+const Matches = Keys.map(matchFactory) // b 标签 className
 function resolveHeadHOC (router, file) {
   return (md) => {
-    router.merge(file, { headers: [] })
+    router.merge(file, { headlines: [] })
     wrapperRender(md, 'renderToken', (tokens, ind) => {
       const token = tokens[ind]
       if (token.type !== 'heading_open') {
@@ -20,19 +20,25 @@ function resolveHeadHOC (router, file) {
         cur = tokens[++index]
       }
       const title = getText(list)
+      const id = encodeURIComponent(title)
       const level = parseInt(token.tag.slice(1))
       if (!isNaN(level)) {
         router.merge(file, (info) => {
           if (level === 1) {
             return { title }
           } else {
-            return { headers: [...info.headers, { level, title }] }
+            return { headlines: [...info.headlines, { level, name: title, value: id }] }
           }
         })
       }
-      token.attrSet('name', encodeURIComponent(title))
+      token.attrSet('id', id)
     })
   }
+}
+
+function resolveShow (list) {
+  const shouldHide = getContents(list).some(item => item.trim() !== 'false')
+  return !shouldHide
 }
 
 function resolveKeysHOC (router, file) {
@@ -45,24 +51,38 @@ function resolveKeysHOC (router, file) {
     const route = router.infos.get(file)
     wrapperRender(md, 'renderInline', (tokens) => {
       let ind = -1
+      let isHide = false
       const list = []
-      for (let i = 0, l = tokens.length; i < l; i++) {
+      for (let i = 0; i < tokens.length; i++) {
         const token = tokens[i]
         if (token.type === 'html_inline') {
           if (ind !== -1) { // todo
             if (list.length) {
-              InfoData[ind].push(getText(list))
+              if (!isHide) {
+                InfoData[ind].push(getText(list))
+              } else {
+                router.merge(file, {
+                  show: resolveShow(list, route)
+                })
+              }
               list.length = 0
             }
             ind = -1
           } else {
             ind = Matches.findIndex(reg => reg.test(token.content))
+            isHide = !(ind < InfoData.length)
           }
         } else if (~ind) {
-          !!token.content && list.push(token)
+          if (isHide) {
+            list.push(token)
+            tokens.splice(i--, 1)
+          } else {
+            !!token.content && list.push(token)
+          }
         }
       }
     })
+    // 需要匹配的基本信息
     const matches = Matches.map((reg, i) => ({ reg, key: CONFIG.keys[i] })).concat([{
       reg: matchFactory(CONFIG.updateClass),
       key: CONFIG.updateClass
@@ -79,7 +99,7 @@ function resolveKeysHOC (router, file) {
       }
       return base
     }
-    md.inline.ruler.before('html_inline', 'pre_fix', (state, ...args) => {
+    md.inline.ruler.before('html_inline', 'pre_fix', (state) => {
       if (matches.length) {
         for (let i = 0, l = state.tokens.length; i < l; i++) {
           const token = state.tokens[i]
