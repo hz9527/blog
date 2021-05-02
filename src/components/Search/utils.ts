@@ -25,7 +25,7 @@ const SearchConf: {
   { key: 'title', weight: 30, title: '' },
   { key: 'tips', weight: 20, title: '关键词' },
   { key: 'types', weight: 10, title: '文章类型' },
-  { key: 'headlines', weight: 15, title: '' }
+  { key: 'headlines', weight: 15, title: '标题' }
 ]
 
 function getItem (key: string, data: string): Item | null {
@@ -35,7 +35,7 @@ function getItem (key: string, data: string): Item | null {
   }
   return list.reduce((res, str, i) => {
     str && res.push({ hl: false, value: str })
-    if (i < list.length) {
+    if (i < list.length - 1) {
       res.push({ hl: true, value: key })
     }
     return res

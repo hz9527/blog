@@ -4,6 +4,8 @@
   - [x] Tool 组件开发
   - [x] aside 组件开发
   - [ ] header 组件开发
+  - [ ] float dragger
+  - [ ] config
 - [x] Menu 组件开发
 - [x] Resize 组件开发
 - [x] Sandbox 组件开发

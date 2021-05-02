@@ -1,8 +1,5 @@
 <template>
   <div class="body">
-    <header class="header">
-      <Serach />
-    </header>
     <div class="contianer">
       <aside class="menu">
         <Menu />
@@ -20,13 +17,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Menu from './components/Menu.vue'
-import Serach from './components/Search/index.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    Menu,
-    Serach
+    Menu
   }
 })
 </script>

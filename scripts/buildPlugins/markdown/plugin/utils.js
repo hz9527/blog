@@ -30,7 +30,7 @@ function handlerValue (key, info) {
   if (key === typeClass) {
     return info.types
   } else if (key === updateClass) {
-    return [info.updateTime]
+    return [`{{$filters.timeFormat(${info.updateTime})}}`]
   }
 }
 

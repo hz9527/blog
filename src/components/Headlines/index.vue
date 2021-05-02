@@ -1,20 +1,19 @@
 <template>
-  <div class="headlines">
+  <div
+    v-show="tree.length"
+    class="headlines-container"
+  >
     <Tree
       :data="tree"
       :config="config"
     >
-      <template #2="props">
+      <template
+        v-for="i in 4"
+        #[i+1]="props"
+        :key="i"
+      >
         <a
-          :class="'head h2' + (states[props.data.value] ? ' head-lh' : '')"
-          :href="'#' + props.data.value"
-        >
-          {{ props.data.name }}
-        </a>
-      </template>
-      <template #3="props">
-        <a
-          :class="'head h3' + (states[props.data.value] ? ' head-lh' : '')"
+          :class="'head h' + (i + 1) + ' ' + (states[props.data.value] ? ' head-lh' : '')"
           :href="'#' + props.data.value"
         >
           {{ props.data.name }}
@@ -76,25 +75,34 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-  .headlines {
-    position: fixed;
-    top: 100px;
-    right: 50px;
-    background: #fff;
-    box-shadow: 3px 3px 5px;
-  }
+@import '../../styles/theme.less';
+.headlines-container {
+  position: fixed;
+  top: 100px;
+  right: 50px;
+  padding: 10px 15px;
+  background: var(--panelBg);
+  box-shadow: var(--shadow);
   .head {
     display: block;
     text-decoration: none;
-    color: #333;
+    &:hover {
+      color: var(--textHover);
+    }
   }
   .head-lh {
-    color: #f55;
+    color: var(--color-primary);
   }
   .h2 {
-    margin-left: 10px;
+    font-size: @font-s-size;
   }
   .h3 {
-    margin-left: 20px;
+    margin-left: 10px;
+    font-size: @font-xs-size;
   }
+  .h4 {
+    margin-left: 20px;
+    font-size: @font-xxs-size;
+  }
+}
 </style>

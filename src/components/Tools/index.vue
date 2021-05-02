@@ -1,7 +1,7 @@
 <template>
   <div
     ref="container"
-    :class="['container', classNames.container]"
+    :class="['tools-container', classNames.container]"
     :style="style.container"
     @mouseleave="closePanel"
   >
@@ -15,16 +15,14 @@
         ref="asideBar"
         class="aside-bar"
         :style="style.asideBar"
-        @click="open"
       >
         <div class="aside-bar-con">
           <div
             class="aside-bar-text"
             @mouseenter="openPanel"
+            @click="open"
           >
-            <slot name="asideBar">
-              目录
-            </slot>
+            <slot name="asideBar" />
           </div>
           <div
             ref="asideDragger"
@@ -39,18 +37,29 @@
         :style="style.panel"
       >
         <div class="panel-header">
-          <div
-            class="close"
-            @click="close"
-          >
-            {{ pin && !fold ? 'close' : '' }}
+          <div class="header-operation">
+            <div
+              v-show="pin && !fold && !float"
+              class="header-icon close"
+              @click="close"
+            >
+              close
+            </div>
+            <div
+              class="header-icon float"
+              @click="floatHanlder"
+            >
+              {{ float ? 'aside' : 'float' }}
+            </div>
+            <div
+              v-show="!float"
+              class="header-icon pin"
+              @click="togglePin"
+            >
+              {{ pin ? 'pin' : 'unpin' }}
+            </div>
           </div>
-          <div
-            class="pin"
-            @click="togglePin"
-          >
-            {{ pin ? 'pin' : 'unpin' }}
-          </div>
+          <slot name="header" />
         </div>
         <slot />
       </div>
@@ -167,105 +176,122 @@ export default defineComponent({
       if (!this.float && !this.pin) {
         this.showPanel = false
       }
+    },
+    floatHanlder () {
+      this.float = !this.float
     }
   }
 })
 </script>
 
-<style lang='less' scoped>
-.container {
+<style lang='less'>
+@import '../../styles/theme.less';
+.tools-container {
   position: relative;
+  z-index: @z-index-tool;
+  background: var(--toolHeadBg);
   &.container-vertical {
     height: 100%;
   }
   &.container-horizontal {
     width: 100%;
   }
-}
-.content {
-  transition: transform 0.3s;
-  .aside-bar {
-    display: none;
-    position: absolute;
-    .aside-bar-con {
+
+  .header-operation {
+    display: flex;
+    .header-icon {
       cursor: pointer;
-      display: flex;
-      border: 1px solid #333;
-      background: #666;
-      .aside-bar-dragger {
-        padding: 5px;
-        background: #f55;
-        cursor: move;
+    }
+    // todo icon
+  }
+  .content {
+    transition: transform 0.3s;
+    .aside-bar {
+      display: none;
+      position: absolute;
+      .aside-bar-con {
+        cursor: pointer;
+        display: flex;
+        border: 1px solid #333;
+        background: #666;
+        .aside-bar-dragger {
+          padding: 5px;
+          background: #f55;
+          cursor: move;
+        }
       }
     }
-  }
-  .resize-bar {
-    display: none;
-    position: absolute;
-    cursor: col-resize;
-    background: #f55;
-    opacity: 0;
-    transition: opacity 0.3s;
-    &:hover {
-      opacity: 0.8;
+    .resize-bar {
+      display: none;
+      position: absolute;
+      cursor: col-resize;
+      background: #f55;
+      opacity: 0;
       transition: opacity 0.3s;
+      &:hover {
+        opacity: 0.8;
+        transition: opacity 0.3s;
+      }
+    }
+    .resize-bar-active {
+      opacity: 0.8;
+    }
+    .panel {
+      height: 100%;
     }
   }
-  .resize-bar-active {
-    opacity: 0.8;
+
+  .content-left,
+  .content-right {
+    height: 100%;
+    .aside-bar-con {
+      writing-mode: vertical-lr;
+    }
   }
-}
 
-.content-left,
-.content-right {
-  height: 100%;
-  .aside-bar-con {
-    writing-mode: vertical-lr;
+  .content-top,
+  .content-bottom {
+    width: 100%;
   }
-}
 
-.content-top,
-.content-bottom {
-  width: 100%;
-}
-
-.content-left.content-close {
-  transform: translate(-100%, 0);
-}
-
-.content-right.content-close {
-  transform: translate(100%, 0);
-}
-
-.content-top.content-close {
-  transform: translate(0, -100%);
-}
-
-.content-bottom.content-close {
-  transform: translate(0, 100%);
-}
-
-.content.content-close {
-  position: absolute;
-  top: 0;
-  left: 0;
-  .aside-bar {
-    display: block;
-    opacity: 1;
-    transition: 0.3s 0.3s;
-    transition-property: opacity, transform;
-    transform: translate(0, 0);
-  }
-}
-
-.content.content-open {
-  position: relative;
-  transform: translate(0, 0);
-  .aside-bar {
-    display: block;
-    visibility: hidden;
-    opacity: 0;
+  .content-left.content-close {
     transform: translate(-100%, 0);
+  }
+
+  .content-right.content-close {
+    transform: translate(100%, 0);
+  }
+
+  .content-top.content-close {
+    transform: translate(0, -100%);
+  }
+
+  .content-bottom.content-close {
+    transform: translate(0, 100%);
+  }
+
+  .content.content-close {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .aside-bar {
+      display: block;
+      opacity: 1;
+      transition: 0.3s 0.3s;
+      transition-property: opacity, transform;
+      transform: translate(0, 0);
+    }
+  }
+
+  .content.content-open {
+    position: relative;
+    transform: translate(0, 0);
+    .aside-bar {
+      display: block;
+      visibility: hidden;
+      opacity: 0;
+      transform: translate(-100%, 0);
+    }
   }
 }
 

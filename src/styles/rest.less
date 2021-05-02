@@ -1,0 +1,62 @@
+@import './theme.less';
+body {
+  /**----------------------- 颜色 ----------------------------------**/
+  // 文字颜色
+  --color: @c-gray-800;
+  --color-light: @c-gray-500;
+  --textHover: @c-primary-600;
+  --color-primary: @c-primary-600;
+  --colorInverse: #fff;
+
+  // 背景颜色
+  --tabHoverBg: @c-primary-200;
+  --asideBg: @c-primary-200;
+  --asideHoverBg: @c-primary-400;
+  --selectedBg: @c-primary-600;
+  --tabHoverBg: @c-primary-500;
+  --toolHeadBg: #fff;
+  --panelBg: #fff;
+  --light-hover-bg: @c-info-200;
+  --tip-bg: @c-primary-500;
+
+  // 边框颜色
+  --border-light: @c-primary-300;
+  --border: @c-primary-500;
+  --tabBorder: @c-primary-500;
+
+  // 阴影
+  --shadow: 3px 3px 5px;
+
+}
+
+body {
+  color: var(--color);
+  margin: 0;
+  font-size: @font-size;
+  font-family: 'Roboto', 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--color);
+  text-decoration: none;
+  &:hover {
+    color: var(--textHover);
+  }
+}
+
+input {
+  outline: none;
+  padding: 3px 5px;
+  color: var(--color);
+  border: 1px solid var(--border-light);
+  border-radius: 2px;
+  &:focus {
+    border-color: @c-primary-500;
+  }
+  &::placeholder {
+    font-size: @font-xxs-size;
+    color: var(--color-light);
+  }
+}

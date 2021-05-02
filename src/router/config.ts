@@ -9,7 +9,7 @@ export default [
             "file": "blogs/designMode/index.md",
             "title": "设计模式",
             "hash": "EdBJbcCDcFBIeJdEAFcf",
-            "updateTime": 1619934252728,
+            "updateTime": 1619964814794,
             "headlines": [
               {
                 "level": 2,

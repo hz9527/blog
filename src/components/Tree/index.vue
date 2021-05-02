@@ -12,6 +12,7 @@
         :name="name"
         :data="props.data"
         :deep="props.deep"
+        :fold="props.fold"
       />
     </template>
   </Tree>

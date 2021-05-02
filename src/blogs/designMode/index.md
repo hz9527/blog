@@ -4,17 +4,6 @@
 <b class="kw">设计原则</b>
 <b class="hide">false</b>
 
-```sandbox
-// html
-<div>hello sandbox</div>
-// lang=css
-div {
-  color: #f55;
-}
-// js
-console.log(123)
-```
-
 ## 设计模式是什么
 
 **设计模式**是软件设计中常见问题的典型解决方案。 它们就像能根据需求进行调整的预制蓝图， 可用于解决代码中反复出现的设计问题。

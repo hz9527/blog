@@ -3,34 +3,42 @@
     v-for="(item, index) in data"
     :key="index"
   >
-    <slot
-      :name="item[extraKey].name"
-      :data="item"
-      :deep="deep"
-    />
     <div
-      :class="{kids: true, fold: folds[index].fold}"
+      class="tree-parent"
       @click="toggle(index)"
     >
-      <Tree
-        v-if="item.children && item.children.length"
-        :data="item.children"
-        :extra-key="extraKey"
-        :deep="deep + 1"
-      >
-        <template
-          v-for="name in item[extraKey].names"
-          :key="name"
-          #[name]="props"
-        >
-          <slot
-            :name="name"
-            :data="props.data"
-            :deep="props.deep"
-          />
-        </template>
-      </Tree>
+      <slot
+        :name="item[extraKey].name"
+        :data="item"
+        :deep="deep"
+        :fold="folds[index].fold"
+      />
     </div>
+    <transition
+      name="tree-kids"
+    >
+      <div v-show="!folds[index].fold">
+        <Tree
+          v-if="item.children && item.children.length"
+          :data="item.children"
+          :extra-key="extraKey"
+          :deep="deep + 1"
+        >
+          <template
+            v-for="name in item[extraKey].names"
+            :key="name"
+            #[name]="props"
+          >
+            <slot
+              :name="name"
+              :data="props.data"
+              :deep="props.deep"
+              :fold="props.fold"
+            />
+          </template>
+        </Tree>
+      </div>
+    </transition>
   </template>
 </template>
 
@@ -70,9 +78,34 @@ export default defineComponent({
     }
   },
   methods: {
-    toggle () {
-
+    toggle (ind: number) {
+      const item = this.folds[ind]
+      if (item.canFold) {
+        item.fold = !item.fold
+      }
     }
   }
 })
 </script>
+
+<style lang='less'>
+.tree-kids-enter-active {
+  animation: child-animation 0.3s;
+  transform-origin: top;
+}
+.tree-kids-leave-active {
+  animation: child-animation 0.3s reverse;
+  transform-origin: top;
+}
+.tree-kids-leave-to {
+  transform: scale(1, 0);
+}
+@keyframes child-animation {
+  0% {
+    transform: scale(1, 0);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+</style>

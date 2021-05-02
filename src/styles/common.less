@@ -1,15 +1,39 @@
 @import './theme.less';
-
-body {
-  color: @color;
-  margin: 0;
-}
+@import './rest.less';
 
 .page-container {
   max-height: 100%;
   overflow: auto;
   scroll-behavior: smooth;
   padding: 0 30px 30px;
+  .tag-title {
+    display: inline-block;
+    margin: 0 5px 10px 20px;
+  }
+  .kw,
+  .type,
+  .updateTime {
+    display: inline-block;
+    margin-left: 10px;
+  }
+  .type,
+  .updateTime {
+    color: var(--color-primary);
+  }
+  .updateTime {
+    font-weight: 400;
+  }
+  .kw {
+    padding: 3px 6px;
+    background: var(--tip-bg);
+    font-size: @font-xs-size;
+    font-weight: 400;
+    color: var(--colorInverse);
+    line-height: 1.2;
+    vertical-align: middle;
+    margin-left: 10px;
+    border-radius: @font-xs-size/50%;
+  }
 }
 
 .ui-tab-container {
@@ -21,11 +45,17 @@ body {
     min-width: 100px;
     text-align: center;
     &:hover {
-      background-color: @tab-hover;
+      background-color: var(--tabHoverBg);
     }
     &.ui-tab-act {
-      border-bottom-color: @tab-border;
-      color: @tab-border;
+      border-bottom-color: var(--tabBorder);
+      color: var(--tabBorder);
     }
   }
+}
+
+.ui-ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
