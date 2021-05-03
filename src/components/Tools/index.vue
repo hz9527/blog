@@ -2,7 +2,7 @@
   <div
     ref="container"
     :class="['tools-container', classNames.container]"
-    :style="style.container"
+    :style="[style.container, containerStyle]"
     @mouseleave="closePanel"
   >
     <div :class="['content', classNames.content, contentClass]">
@@ -113,6 +113,12 @@ export default defineComponent({
         return ''
       }
       return this.contentOpened ? 'content-open' : 'content-close'
+    },
+    containerStyle (): Record<string, string> {
+      if (this.contentOpened === null || this.contentOpened) {
+        return {}
+      }
+      return this.aside === 'vertical' ? { width: '0px' } : { height: '0px' }
     }
   },
   customProps (): CustomProps {
@@ -212,11 +218,9 @@ export default defineComponent({
       .aside-bar-con {
         cursor: pointer;
         display: flex;
-        border: 1px solid #333;
-        background: #666;
-        .aside-bar-dragger {
+        background: var(--asideBg);
+        .aside-bar-dragger { // todo icon
           padding: 5px;
-          background: #f55;
           cursor: move;
         }
       }
@@ -246,12 +250,23 @@ export default defineComponent({
     height: 100%;
     .aside-bar-con {
       writing-mode: vertical-lr;
+      border-radius: 0 @btn-radius @btn-radius 0;
     }
   }
 
   .content-top,
   .content-bottom {
     width: 100%;
+  }
+  .content-top {
+    .aside-bar-con {
+      border-radius: 0 0 @btn-radius @btn-radius;
+    }
+  }
+  .content-bottom {
+    .aside-bar-con {
+      border-radius: @btn-radius @btn-radius 0 0;
+    }
   }
 
   .content-left.content-close {

@@ -1,13 +1,12 @@
 <template>
   <div class="body">
-    <div class="contianer">
-      <aside class="menu">
+    <div class="header" />
+    <div class="container">
+      <aside>
         <Menu />
       </aside>
-      <div class="content">
-        <router-view />
-      </div>
-      <aside class="titles">
+      <router-view />
+      <aside>
         <Headlines />
       </aside>
     </div>
@@ -28,23 +27,18 @@ export default defineComponent({
 
 <style lang="less" scoped>
   .body {
-    box-sizing: content-box;
     height: 100vh;
+    box-sizing: border-box;
     overflow: hidden;
     display: flex;
     flex-direction: column;
   }
   .header {
-    padding: 0 200px;
+    flex-shrink: 0;
   }
-  .contianer {
+  .container {
     display: flex;
     flex-grow: 1;
     overflow: hidden;
-    .menu,
-    .content,
-    .titles {
-      height: 100%;
-    }
   }
 </style>

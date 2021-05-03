@@ -6,8 +6,13 @@
   - [ ] header 组件开发
   - [ ] float dragger
   - [ ] config
-- [x] Menu 组件开发
-- [x] Resize 组件开发
+- [ ] Menu 组件开发
+  - [x] 基础开发
+  - [ ] 样式优化
+- [ ] Resize 组件开发
+  - [x] 基础开发
+  - [ ] config
+  - [ ] 样式优化
 - [x] Sandbox 组件开发
 - [x] Search 组件开发
 - [x] Show

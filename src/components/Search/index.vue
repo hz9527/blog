@@ -29,7 +29,7 @@
         <div
           v-for="(info, index) in item.data"
           :key="index"
-          class="content"
+          class="content ui-ellipsis"
         >
           <div :class="[info.calssName, 'label']">
             {{ info.title }}:
@@ -122,6 +122,7 @@ export default defineComponent({
     position: absolute;
     top: 100%;
     left: 0;
+    width: 100%;
     margin-top: 5px;
     background: var(--panelBg);
     box-shadow: var(--shadow);
@@ -137,11 +138,17 @@ export default defineComponent({
     padding: 5px;
     cursor: pointer;
     border-bottom: 1px solid var(--border-light);
+    box-sizing: border-box;
+    width: 100%;
     &:last-child {
       border-bottom: 0;
     }
     &:hover {
       background: var(--light-hover-bg);
+    }
+    .title {
+      font-weight: 600;
+      font-size: @font-l-size;
     }
   }
   .content {

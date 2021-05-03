@@ -1,5 +1,5 @@
 <template>
-  <div class="rich-content">
+  <div class="rich-content ui-ellipsis">
     <span
       v-for="(item, index) in list"
       :key="index"
@@ -30,7 +30,7 @@ export default defineComponent({
     display: inline-block;
   }
   .item-hl {
-    color: #f55;
+    color: var(--color-primary);
   }
   .item-empty {
     width: 5px;
