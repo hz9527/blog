@@ -2,6 +2,19 @@ const fs = require('fs')
 const path = require('path')
 const crypto = require('crypto')
 const { DIR_KEY } = require('./meta')
+
+function createContext (context, watch) {
+  let addWatchFile
+  if (watch) {
+    addWatchFile = context.addWatchFile.bind(context)
+  } else {
+    addWatchFile = noop
+  }
+  return {
+    addWatchFile
+  }
+}
+
 function matchFactory (match) {
   if (typeof match === 'function') {
     return match
@@ -108,6 +121,7 @@ const resolveDirNames = (config, baseDir) => {
 }
 
 module.exports = {
+  createContext,
   matchFactory,
   walkDir,
   createHash,

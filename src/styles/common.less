@@ -2,6 +2,7 @@
 @import './rest.less';
 
 .page-container {
+  flex-grow: 1;
   overflow: auto;
   scroll-behavior: smooth;
   padding: 0 50px 30px;
@@ -36,6 +37,16 @@
   }
 }
 
+.ui-button {
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: var(--btn-bg);
+  color: var(--colorInverse);
+  &:hover {
+    background-color: var(--btn-hover-bg);
+  }
+}
+
 .ui-tab-container {
   display: flex;
   .ui-tab {
@@ -50,6 +61,9 @@
     &.ui-tab-act {
       border-bottom-color: var(--tabBorder);
       color: var(--tabBorder);
+      &:hover {
+        color: var(--colorInverse);
+      }
     }
   }
 }
@@ -58,4 +72,18 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.ui-icon-large {
+  display: inline-block;
+  -webkit-mask-image: url(./largeIcons.svg);
+  background-color: var(--color);
+  width: 28px;
+  height: 24px;
+}
+
+.ui-triangle {
+  display: inline-block;
+  border: @font-size*0.4 solid transparent;
+  border-left-color: var(--color);
 }

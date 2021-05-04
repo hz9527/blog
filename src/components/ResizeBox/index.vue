@@ -1,22 +1,58 @@
 <template>
   <div
+    ref="container"
     :class="[
       'resizebox-container',
       'resizebox-' + direction,
-      screenState !== null ? screenState ? 'resizebox-side-max' : 'resizebox-side-min' : '']"
+      screenState !== null ? (screenState ? 'resizebox-max' : 'resizebox-min') : '']"
   >
+    <div
+      v-show="screenState === false"
+      class="aside"
+      @click="screenState=null"
+    >
+      <span class="ui-icon-large" />
+    </div>
     <div
       ref="side"
       class="resizebox-side"
       :style="sideStyle"
     >
+      <div class="operation-box">
+        <div
+          class="left"
+          @click="leftOpersHandler"
+        >
+          <div
+            v-for="item in operationConf.left"
+            :key="item"
+            :data-icon="item"
+            :class="['icon-' + item, 'ui-icon-large']"
+          />
+        </div>
+        <div
+          class="right"
+          @click="rightOpersHandler"
+        >
+          <div
+            v-for="item in operationConf.right"
+            :key="item"
+            :data-icon="item"
+            :class="['icon-' + item, 'ui-icon-large', !screenState && direction === item ? 'icon-disabled' : '']"
+          />
+        </div>
+      </div>
       <slot name="side" />
     </div>
     <div
       ref="dragger"
       class="resizebox-dragger"
     />
-    <div class="resizebox-main">
+    <div
+      ref="main"
+      class="resizebox-main"
+      :style="mainStyle"
+    >
       <slot />
     </div>
   </div>
@@ -25,25 +61,31 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
 import Dragger from '../../utils/Dragger'
-import { resizeFactory, resolveState } from './utils'
+import { resizeFactory, resolveState, resolveIgnores, getTargetIcon, getWidth } from './utils'
 import { CustomThis } from '../../types/index'
-import { FactoryRes, Direction } from './types'
+import { FactoryRes, Direction, State, OperationConf } from './types'
 
 interface CustomProps {
   $dragger: Dragger;
+  $info: number; // container width
 }
 type T = CustomThis<CustomProps>
 
 export default defineComponent({
-  customeProps (): CustomProps {
+  customProps (): CustomProps {
     return {
-      $dragger: null as unknown as Dragger
+      $dragger: null as unknown as Dragger,
+      $info: -1
     }
   },
   props: {
     initState: {
-      type: String as PropType<Direction>,
+      type: String as PropType<State>,
       default: 'bottom'
+    },
+    ignores: {
+      type: Array as PropType<State[]>,
+      default: () => []
     }
   },
   emits: ['drag'],
@@ -52,13 +94,17 @@ export default defineComponent({
       ...resolveState(this.initState),
       values: {
         vertical: -1,
-        horizontal: -1
+        horizontal: -1,
+        mainHorizontal: -1
       }
     }
   },
   computed: {
+    operationConf (): OperationConf {
+      return resolveIgnores(this.ignores)
+    },
     sideStyle (): Record<string, string> {
-      if (this.values.vertical === -1) {
+      if (this.values.vertical === -1 || this.screenState === true) {
         return {}
       }
       if (this.direction === 'left' || this.direction === 'right') {
@@ -66,6 +112,16 @@ export default defineComponent({
       } else {
         return { height: this.values.horizontal + 'px' }
       }
+    },
+    mainStyle (): Record<string, string> {
+      if (
+        this.values.mainHorizontal === -1 ||
+        this.screenState !== null ||
+        this.direction !== 'bottom'
+      ) {
+        return {}
+      }
+      return { height: this.values.mainHorizontal + 'px' }
     }
   },
   mounted () {
@@ -74,7 +130,7 @@ export default defineComponent({
       start: () => {
         this.$emit('drag', true)
         this.start()
-        res = resizeFactory(this.direction, this.values) // todo
+        res = resizeFactory(this.direction, this.values, (this as unknown as T).$info)
         ;(this as unknown as T).$dragger.setCursor(res.key === 'vertical' ? 'ew-resize' : 'row-resize')
       },
       move: (info) => {
@@ -87,13 +143,44 @@ export default defineComponent({
   },
   methods: {
     start () {
-      if (~this.values.vertical) {
-        return
+      if (this.direction !== 'bottom') {
+        let conWidth: number | undefined
+        if ((this as unknown as T).$info === -1 || this.direction === 'left' || this.direction === 'right') {
+          const container = (this.$refs.container as Element).getBoundingClientRect()
+          ;(this as unknown as T).$info = container.width
+          conWidth = container.width
+        }
+        if (~this.values.vertical) {
+          return
+        }
+        const rect = (this.$refs.side as Element).getBoundingClientRect()
+        this.values = {
+          ...this.values,
+          vertical: getWidth(rect.width, conWidth),
+          horizontal: rect.height
+        }
+      } else {
+        if (~this.values.mainHorizontal) {
+          return
+        }
+        const rect = (this.$refs.main as Element).getBoundingClientRect()
+        this.values = {
+          ...this.values,
+          mainHorizontal: rect.height
+        }
       }
-      const rect = (this.$refs.side as Element).getBoundingClientRect()
-      this.values = {
-        vertical: rect.width,
-        horizontal: rect.height
+    },
+    leftOpersHandler (e: UIEvent) {
+      const icon = getTargetIcon(e)
+      if (icon) {
+        this.screenState = icon !== 'min'
+      }
+    },
+    rightOpersHandler (e: UIEvent) {
+      const icon = getTargetIcon(e)
+      if (icon) {
+        this.direction = icon as Direction
+        this.screenState = null
       }
     }
   }
@@ -101,57 +188,5 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.resizebox-container {
-  display: flex;
-  .resizebox-side {
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .resizebox-dragger {
-    flex-grow: 0;
-    flex-shrink: 0;
-  }
-  .resizebox-main {
-    flex-grow: 1;
-  }
-  &.resizebox-max {
-    resizebox-side,
-    .resizebox-dragger {
-      display: none;
-    }
-  }
-  &.resizebox-min {
-    resizebox-main,
-    .resizebox-dragger {
-      display: none;
-    }
-  }
-}
-@dir: {
-  top: column;
-  right: row-reverse;
-  bottom: column-reverse;
-}
-each(@dir, {
-  .resizebox-@{key} {
-    flex-direction: @value;
-  }
-});
-.resizebox-left,
-.resizebox-right {
-  .resizebox-dragger {
-    width: 3px;
-    cursor: ew-resize;
-    border-left: 1px solid #f55;
-  }
-}
-.resizebox-top,
-.resizebox-bottom {
-  .resizebox-dragger {
-    height: 3px;
-    width: 100%;
-    cursor: row-resize;
-    border-bottom: 1px solid #f55;
-  }
-}
+@import './index.less';
 </style>

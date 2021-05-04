@@ -14,12 +14,16 @@
         :config="config"
       >
         <template #title="props">
-          <div :class="['dir ui-ellipsis', props.fold ? 'dir-fold' : '']">
-            {{ props.data.title }}
+          <div :class="['dir ui-ellipsis', props.fold ? 'dir-fold' : '', 'dir' + props.deep]">
+            <span
+              class="fold-icon"
+            >&#9660;</span><span
+              class="ui-icon-large dir-icon"
+            />{{ props.data.title }}
           </div>
         </template>
         <template #item="props">
-          <div :class="['item', current === props.data.hash ? 'item-current' : '']">
+          <div :class="['item', current === props.data.hash ? 'item-current' : '', 'item' + props.deep]">
             <router-link
               :to="'/' + props.data.hash"
               class="ui-ellipsis"
@@ -95,13 +99,30 @@ export default defineComponent({
   }
   .dir {
     cursor: pointer;
-    // todo icon
+    color: var(--color-primary);
+    .ui-icon-large {
+      vertical-align: bottom;
+    }
+    .dir-icon {
+      -webkit-mask-position: -140px 192px;
+      background-color: var(--color-primary);
+    }
+    .fold-icon {
+      font-size: @font-s-size;
+      display: inline-block;
+      transform: rotate(0deg);
+      transition: transfrom 0.2s;
+    }
   }
   .dir-fold {
-    color: #f55;
+    .fold-icon {
+      transform: rotate(270deg);
+    }
   }
+  @itemPadding: 20px;
+  @step: 15px;
   .item {
-    padding: 5px 5px 5px 20px;
+    padding: 5px 5px 5px @itemPadding;
     font-size: @font-s-size;
     a {
       display: block;
@@ -116,5 +137,14 @@ export default defineComponent({
       color: var(--colorInverse);
     }
   }
+  @deep: 1, 2, 3, 4;
+  each(@deep, {
+    .dir@{value} {
+      padding-left: @value * @step;
+    }
+    .item@{value} {
+      padding-left: @itemPadding + @value * @step;
+    }
+  });
 }
 </style>

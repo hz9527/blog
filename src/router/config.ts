@@ -9,7 +9,7 @@ export default [
             "file": "blogs/designMode/index.md",
             "title": "设计模式",
             "hash": "EdBJbcCDcFBIeJdEAFcf",
-            "updateTime": 1619964814794,
+            "updateTime": 1620042908778,
             "headlines": [
               {
                 "level": 2,
@@ -33,23 +33,23 @@ export default [
               },
               {
                 "level": 3,
-                "name": "单一职责",
-                "value": "%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3"
+                "name": "单一职责 SRP",
+                "value": "%E5%8D%95%E4%B8%80%E8%81%8C%E8%B4%A3%20SRP"
               },
               {
                 "level": 3,
-                "name": "里氏替换",
-                "value": "%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2"
+                "name": "里氏替换 LSP",
+                "value": "%E9%87%8C%E6%B0%8F%E6%9B%BF%E6%8D%A2%20LSP"
               },
               {
                 "level": 3,
-                "name": "依赖倒置",
-                "value": "%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE"
+                "name": "依赖倒置 DIP",
+                "value": "%E4%BE%9D%E8%B5%96%E5%80%92%E7%BD%AE%20DIP"
               },
               {
                 "level": 3,
-                "name": "接口隔离",
-                "value": "%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB"
+                "name": "接口隔离 ISP",
+                "value": "%E6%8E%A5%E5%8F%A3%E9%9A%94%E7%A6%BB%20ISP"
               },
               {
                 "level": 3,
@@ -58,8 +58,8 @@ export default [
               },
               {
                 "level": 3,
-                "name": "开闭原则",
-                "value": "%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99"
+                "name": "开闭原则 OCP",
+                "value": "%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99%20OCP"
               }
             ],
             "tips": [
@@ -74,13 +74,13 @@ export default [
         ]
       },
       {
-        "title": "js",
+        "title": "JS",
         "children": [
           {
             "file": "blogs/js/test.md",
             "title": "test",
             "hash": "bBBaIFbHAFFeeCaJJceA",
-            "updateTime": 1619935812521,
+            "updateTime": 1620095011954,
             "headlines": [
               {
                 "level": 2,
@@ -93,21 +93,49 @@ export default [
               "test haha"
             ],
             "types": [
-              "js"
+              "JS"
             ],
             "show": true
           },
           {
             "file": "blogs/js/test2.md",
-            "title": "",
+            "title": "haha2",
             "hash": "cEFbHEbAHBCIJDbAIeCB",
-            "updateTime": 1618414187030,
+            "updateTime": 1620026158865,
             "headlines": [],
             "tips": [],
             "types": [
-              "js"
+              "JS"
             ],
             "show": true
+          }
+        ]
+      },
+      {
+        "title": "CSS",
+        "children": [
+          {
+            "title": "重学系列",
+            "children": [
+              {
+                "file": "blogs/css/restudy/index.md",
+                "title": "重学 CSS 系列一",
+                "hash": "EaHFGBCDdbAaIGaAcBHI",
+                "updateTime": 1620030433464,
+                "headlines": [
+                  {
+                    "level": 2,
+                    "name": "css",
+                    "value": "css"
+                  }
+                ],
+                "tips": [],
+                "types": [
+                  "重学系列"
+                ],
+                "show": true
+              }
+            ]
           }
         ]
       }

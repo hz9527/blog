@@ -5,8 +5,6 @@ export default class Runtime {
 
   private listenerMap: Map<string, ((data: any) => void)[]> = new Map();
 
-  private timer: number | null = null;
-
   constructor (private root: Element) {
     this.iframe = document.createElement('iframe')
     this.iframe.frameBorder = '0'

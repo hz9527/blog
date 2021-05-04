@@ -23,6 +23,7 @@ app.use({
 })
 app.component('Sandbox', Sandbox)
 app.component('Headlines', Headlines)
+
 app.config.globalProperties.$filters = {
   timeFormat
 }

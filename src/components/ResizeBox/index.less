@@ -1,0 +1,114 @@
+@import '../../styles/theme.less';
+.resizebox-container {
+  display: flex;
+  overflow: hidden;
+  position: relative;
+  .aside {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: @z-index-resize-bar;
+    background-color: var(--tip-bg);
+    cursor: pointer;
+    &:hover {
+      background-color: var(--asideHoverBg);
+    }
+    .ui-icon-large {
+      display: block;
+      -webkit-mask-position: -168px 96px;
+    }
+  }
+  .resizebox-side {
+    overflow: hidden;
+    flex-shrink: 0;
+    .operation-box {
+      background-color: var(--tip-bg);
+      display: flex;
+      justify-content: space-between;
+      .ui-icon-large {
+        cursor: pointer;
+        &:hover {
+          background-color: var(--colorInverse);
+        }
+      }
+      .icon-disabled {
+        background-color: var(--colorInverse);
+        pointer-events: none;
+      }
+    }
+    .left,
+    .right {
+      display: flex;
+    }
+    .icon-min {
+      -webkit-mask-position: -84px 216px;
+    }
+    .icon-max {
+      -webkit-mask-position: 0px 72px;
+    }
+    .icon-left {
+      -webkit-mask-position: -84px 168px;
+    }
+    .icon-top {
+      -webkit-mask-position: -84px 192px;
+      transform: rotate(180deg);
+    }
+    .icon-right {
+      -webkit-mask-position: -84px 144px;
+    }
+    .icon-bottom {
+      -webkit-mask-position: -84px 192px;
+    }
+  }
+  .resizebox-dragger {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+  .resizebox-main {
+    flex-grow: 1;
+    overflow: hidden;
+  }
+  &.resizebox-min {
+    &>.resizebox-side,
+    &>.resizebox-dragger {
+      display: none;
+    }
+  }
+  &.resizebox-max {
+    &>.resizebox-main,
+    &>.resizebox-dragger {
+      display: none;
+    }
+    &>.resizebox-side {
+      flex-grow: 1;
+    }
+  }
+}
+@dir: {
+  top: column;
+  right: row-reverse;
+  bottom: column-reverse;
+}
+each(@dir, {
+  .resizebox-@{key} {
+    flex-direction: @value;
+  }
+});
+@border: 3px dotted var(--border-light);
+.resizebox-left,
+.resizebox-right {
+  &>.resizebox-dragger {
+    width: 0;
+    cursor: ew-resize;
+    border-left: @border;
+  }
+}
+.resizebox-top,
+.resizebox-bottom {
+  &>.resizebox-dragger {
+    height: 0;
+    width: 100%;
+    cursor: row-resize;
+    border-bottom: @border;
+  }
+}

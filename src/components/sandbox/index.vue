@@ -18,25 +18,42 @@
         </Tabs>
       </template>
       <div class="result">
-        <div class="result-con">
-          <div
-            ref="iframeContent"
-            :class="['iframe', isDrag ? 'mask' : '']"
-          />
-          <div
-            class="log"
-            v-html="log"
-          />
-        </div>
+        <Resizebox
+          class="result-con"
+          :ignores="['top', 'bottom']"
+          init-state="right"
+          @drag="drag"
+        >
+          <template #side>
+            <div class="result-item">
+              <div class="title">
+                渲染
+              </div>
+              <div
+                ref="iframeContent"
+                :class="['iframe', isDrag ? 'mask' : '']"
+              />
+            </div>
+          </template>
+          <div class="result-item">
+            <div class="title">
+              输出
+            </div>
+            <div
+              class="log"
+              v-html="log"
+            />
+          </div>
+        </Resizebox>
         <div class="btn-con">
           <div
-            class="btn"
+            class="ui-button"
             @click="reset"
           >
             reset
           </div>
           <div
-            class="btn"
+            class="ui-button"
             @click="run"
           >
             run
@@ -138,7 +155,16 @@ export default defineComponent({
 
 <style lang="less" scoped>
   .container {
-    border: 1px solid #333;
+    border: 1px solid var(--color);
+    .btn-con {
+      display: flex;
+      justify-content: flex-end;
+      padding: 5px 0;
+      border-top: 1px solid var(--border);
+      .ui-button {
+        margin-right: 10px;
+      }
+    }
   }
   .code-con {
     display: flex;
@@ -147,12 +173,6 @@ export default defineComponent({
   }
   .result {
     flex-grow: 1;
-    .result-con {
-      display: flex;
-      .log {
-        flex-grow: 1;
-      }
-    }
   }
   .mask {
     position: relative;

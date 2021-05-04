@@ -84,14 +84,19 @@ class Routers {
     this.infos = new Map()
     this.getDirNames = resolveDirNames(dirnames, baseDir)
     this.plugins = [] // {init, create, merge, update, remove, format, parse} | (info, file) => info
+    this.context = null
   }
 
-  init (list) {
+  init (list, context) {
+    this.context = context
     this.infos.clear()
     const infos = parse(list)
     infos.forEach(item => {
       const file = path.join(this.baseDir, item.file)
-      fs.existsSync(file) && this.infos.set(file, item)
+      if (fs.existsSync(file)) {
+        this.infos.set(file, item)
+        this.context.addWatchFile(file)
+      }
     })
     this._callHook('init', null)
   }
@@ -113,6 +118,7 @@ class Routers {
     if (this.infos.has(file)) {
       return
     }
+    this.context.addWatchFile(file)
     this.infos.set(
       file,
       this._callHook('create', getBaseInfo(file, this.baseDir), file)

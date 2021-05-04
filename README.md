@@ -19,6 +19,12 @@
 - [ ] 样式
 - [ ] 交互
 - [ ] 其他
-  - [ ] watch 不在当前路由文件
+  - [x] watch 不在当前路由文件
+  - [x] variableDynamicImport
 - [ ] 发布流程
 - [ ] 移动端适配
+
+md 增强
+
+- [x] 图片资源
+- [ ] iframe 资源

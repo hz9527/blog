@@ -8,11 +8,16 @@ const MD_DIR = 'blogs'
 module.exports = {
   base: BASE,
   target: path.join(BASE, './router/config.ts'),
+  dynamicFile: [path.join(BASE, './router/index.ts')],
   dirNameMap: {
     [MD_DIR]: {
       [DIR_KEY]: '文章',
       designMode: '设计模式',
-      js: 'js'
+      js: 'JS',
+      css: {
+        [DIR_KEY]: 'CSS',
+        restudy: '重学系列'
+      }
     }
   },
   md: {

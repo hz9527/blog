@@ -1,9 +1,9 @@
 export const noop = () => {}
 
-export function getTargetChild (e: UIEvent): EventTarget {
+export function getTargetChild (e: UIEvent, getKidsInd = (n: number) => n - 1): EventTarget {
   const list = e.composedPath()
   const ind = list.indexOf(e.currentTarget as EventTarget)
-  return list[ind - 1]
+  return list[getKidsInd(ind)]
 }
 
 export function prefixStr (value: number, l = 2, prefix = '0'): string {

@@ -1,6 +1,6 @@
 const fs = require('fs')
 const Routers = require('./router')
-const { matchFactory, walkDir } = require('./utils')
+const { matchFactory, walkDir, createContext } = require('./utils')
 class MiddleWare {
   constructor ({
     match,
@@ -81,7 +81,8 @@ class RouteManager {
     ).then(() => this._updateTarget())
   }
 
-  initRouters (watch) {
+  initRouters (watch, rollupContext) {
+    const context = createContext(rollupContext, watch)
     return new Promise((resolve, reject) => {
       fs.readFile(this.target, (err, fd) => {
         if (err) {
@@ -89,7 +90,7 @@ class RouteManager {
           return
         }
         const str = fd.toString().replace(this.prefix, '')
-        this.routers.init(str ? JSON.parse(str) : [])
+        this.routers.init(str ? JSON.parse(str) : [], context)
         this._updateRoutes()
           .then(
             () =>

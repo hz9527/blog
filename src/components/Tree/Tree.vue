@@ -90,11 +90,11 @@ export default defineComponent({
 
 <style lang='less'>
 .tree-kids-enter-active {
-  animation: child-animation 0.3s;
+  animation: child-animation 0.2s;
   transform-origin: top;
 }
 .tree-kids-leave-active {
-  animation: child-animation 0.3s reverse;
+  animation: child-animation 0.2s reverse ease-in;
   transform-origin: top;
 }
 .tree-kids-leave-to {

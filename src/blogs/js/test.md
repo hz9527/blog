@@ -15,3 +15,8 @@
 ```js
 console.log(2333)
 ```
+
+```sandbox
+// html
+<div>hello</div>
+```
