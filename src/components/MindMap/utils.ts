@@ -56,8 +56,30 @@ export function loadSources (urls: string[]): Promise<void> {
 export interface Item {
   name: string;
   value: string;
+  style: Record<string, string>
 }
 
-export function getList (list: string[]): Item[] {
-  return list.map(item => ({ name: item, value: item }))
+export function resolveThemes (obj: Record<string, any>): Item[] {
+  return Object.keys(obj).map(key => {
+    const conf = obj[key]
+    return {
+      name: key,
+      value: key,
+      style: {
+        backgroundColor: conf['root-background'],
+        color: conf['root-color'],
+        borderRadius: conf['root-radius'] + 'px'
+      }
+    }
+  })
+}
+
+export function resolveTemplates (obj: Record<string, any>): Item[] {
+  return Object.keys(obj).map((key, i) => ({
+    name: key,
+    value: key,
+    style: {
+      backgroundPosition: `${-50 * i}px 0px`
+    }
+  }))
 }

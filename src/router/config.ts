@@ -121,12 +121,12 @@ export default [
                 "file": "blogs/css/restudy/index.md",
                 "title": "重学 CSS 系列一",
                 "hash": "EaHFGBCDdbAaIGaAcBHI",
-                "updateTime": 1620494312669,
+                "updateTime": 1620569897775,
                 "headlines": [
                   {
                     "level": 2,
-                    "name": "mindMap",
-                    "value": "mindMap"
+                    "name": "关键概念",
+                    "value": "%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"
                   }
                 ],
                 "tips": [],

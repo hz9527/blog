@@ -1,9 +1,9 @@
-import { getZoom, loadSources } from './utils'
+import { getZoom, loadSources, Item, resolveThemes, resolveTemplates } from './utils'
 declare let kityminder: any
 
-const PADDING = 30
-const DEPS = ['/public/mindmap/kity.min.js']
-const SOURCES = ['/public/mindmap/mindmap.css', '/public/mindmap/mindmap.core.js']
+const PADDING = 50
+const DEPS = ['/mindmap/kity.min.js']
+const SOURCES = ['/mindmap/mindmap.css', '/mindmap/mindmap.core.js']
 
 export default class MindMap {
   static task: null | Promise<void> = null
@@ -28,7 +28,7 @@ export default class MindMap {
     this.km = new kityminder.Minder()
     this.km.renderTo(target)
     this.km.importData('json', typeof data === 'string' ? data : JSON.stringify(data))
-    this.km.disable()
+    // this.km.disable()
     this.km.execCommand('hand')
     const autoRemove = (name: string, fn: (...args: any[]) => any) => {
       const handler = (...args: any[]) => {
@@ -48,10 +48,9 @@ export default class MindMap {
         const zoomX = getZoom(width, config.maxWidth)
         const zoomY = getZoom(height, config.maxHeight - PADDING)
         this.zoom = Math.min(zoomX, zoomY)
-        console.log(this.zoom, width, height, config)
         const h = height * this.zoom / 100
         let resolveStatus = 0
-        if (domRect.height < h - PADDING) {
+        if (domRect.height < h + PADDING) {
           target.style.height = h + PADDING + 'px'
           this.km.fire('paperrender')
           resolveStatus = 2
@@ -77,11 +76,11 @@ export default class MindMap {
     return this.zoom
   }
 
-  async getTemplates (): Promise<string[]> {
+  async getTemplates (): Promise<Item[]> {
     await this.init()
     const obj = kityminder.Minder.getTemplateList()
     console.log(obj)
-    return Object.keys(obj)
+    return resolveTemplates(obj)
   }
 
   getTemplate (): string {
@@ -92,11 +91,10 @@ export default class MindMap {
     this.km && this.km.execCommand('template', name)
   }
 
-  async getThemes (): Promise<string[]> {
+  async getThemes (): Promise<Item[]> {
     await this.init()
     const obj = kityminder.Minder.getThemeList()
-    console.log(obj)
-    return Object.keys(obj)
+    return resolveThemes(obj)
   }
 
   getTheme (): string {

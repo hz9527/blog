@@ -4,6 +4,7 @@ import Sandbox from './components/Sandbox/index.vue'
 import Headlines from './components/Headlines/index.vue'
 import MindMap from './components/MindMap/index.vue'
 import { timeFormat } from './utils/utils'
+import eventBus from './utils/event'
 import './styles/common.less'
 import './styles/hl_theme.less'
 import App from './App.vue'
@@ -29,5 +30,9 @@ app.component('MindMap', MindMap)
 app.config.globalProperties.$filters = {
   timeFormat
 }
+
+document.body.addEventListener('click', (e) => {
+  eventBus.emit('bodyClick', e)
+}, true)
 
 app.mount('#app')

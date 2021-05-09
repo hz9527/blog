@@ -1,3 +1,10 @@
+
+// hyperlink [xx](xx)
+// image
+function resolveItem (item) {
+  return { data: { text: item.content }, children: item.children }
+}
+
 function resolveLine (line) {
   const str = line.trimLeft()
   const match = str.match(/^(\*+)\s/)
@@ -6,10 +13,6 @@ function resolveLine (line) {
     return { level, content: str.slice(level).trimLeft(), children: [] }
   }
   return false
-}
-
-function resolveItem (item) {
-  return { data: { text: item.content }, children: item.children }
 }
 
 function resolve (content) {
@@ -25,16 +28,17 @@ function resolve (content) {
       continue
     }
     const data = resolveItem(item) //! children 引用不能变
-    if (cur) {
-      let tem = cur
-      while (tem && tem.level >= item.level) {
+    let tem
+    while (stack.length) {
+      tem = stack[stack.length - 1]
+      if (tem.level >= item.level) {
         tem = stack.pop()
-      }
-      if (tem) {
-        tem.children.push(data)
       } else {
-        result.push(data)
+        break
       }
+    }
+    if (tem) {
+      tem.children.push(data)
     } else {
       result.push(data)
     }
