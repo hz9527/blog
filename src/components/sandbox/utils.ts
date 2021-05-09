@@ -4,6 +4,15 @@ export interface Data {
   html: string;
 }
 
+export interface InitState {
+  editor: Boolean | null;
+  result: Boolean | null;
+}
+
+export function getState (v: Boolean | null): string {
+  return v === false ? 'min' : v ? 'max' : 'left'
+}
+
 export const Beat = '__INNER_CMD_BEAT'
 
 function rewriteConsole (

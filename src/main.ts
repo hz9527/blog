@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import router from './router'
 import Sandbox from './components/Sandbox/index.vue'
 import Headlines from './components/Headlines/index.vue'
+import MindMap from './components/MindMap/index.vue'
 import { timeFormat } from './utils/utils'
 import './styles/common.less'
 import './styles/hl_theme.less'
@@ -23,6 +24,7 @@ app.use({
 })
 app.component('Sandbox', Sandbox)
 app.component('Headlines', Headlines)
+app.component('MindMap', MindMap)
 
 app.config.globalProperties.$filters = {
   timeFormat

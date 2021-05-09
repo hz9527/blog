@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <Resizebox
-      init-state="left"
+      :init-state="resizeBoxState.editor"
       @drag="drag"
     >
       <template #side>
@@ -21,7 +21,7 @@
         <Resizebox
           class="result-con"
           :ignores="['top', 'bottom']"
-          init-state="right"
+          :init-state="resizeBoxState.result"
           @drag="drag"
         >
           <template #side>
@@ -65,11 +65,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
 import { Tabs, TabItem } from '../Tabs'
 import Resizebox from '../ResizeBox/index.vue'
 import Runtime from './runtime'
-import { resolveLog } from './utils'
+import { resolveLog, InitState, getState } from './utils'
 import { CustomThis } from '../../types/index'
 
 interface CustomProps {
@@ -97,9 +97,12 @@ export default defineComponent({
       type: String,
       default: ''
     },
-    showCode: {
-      type: Boolean,
-      default: true
+    initState: {
+      type: Object as PropType<InitState>, // true/fasle/null
+      default: () => ({
+        editor: null,
+        result: null
+      })
     },
     initRun: {
       type: Boolean,
@@ -119,6 +122,14 @@ export default defineComponent({
       tab: 'html',
       log: '',
       isDrag: false
+    }
+  },
+  computed: {
+    resizeBoxState (): Record<string, string> {
+      return {
+        editor: getState(this.initState.editor),
+        result: getState(this.initState.result)
+      }
     }
   },
   mounted () {

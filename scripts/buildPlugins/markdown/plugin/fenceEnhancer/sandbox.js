@@ -54,18 +54,16 @@ function resolveCode (str, plugins) { // {match, transform}[]
   return result
 }
 
-module.exports.sandboxPlugin = function sandboxPlugin (md) {
-  const render = md.renderer.rules.fence.bind(md.renderer.rules)
-  md.renderer.rules.fence = function (tokens, ind, ...args) {
-    const token = tokens[ind]
-    if (token.info === 'sandbox') {
-      const result = resolveCode(token.content, Plugins)
-      return `<Sandbox
-        js=${JSON.stringify(result.js)}
-        css=${JSON.stringify(result.css)}
-        html=${JSON.stringify(result.html)}
-      />`
-    }
-    return render(tokens, ind, ...args)
+module.exports.sandboxEnhancer = {
+  match: 'sandbox',
+  handler (content) {
+    const result = resolveCode(content, Plugins)
+    const state = result.js && !result.html ? 'false' : !result.js && result.html ? 'true' : 'null'
+    return `<Sandbox
+      js=${JSON.stringify(result.js)}
+      css=${JSON.stringify(result.css)}
+      html=${JSON.stringify(result.html)}
+      :init-state="{editor: false, result: ${state}}"
+    />`
   }
 }

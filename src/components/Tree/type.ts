@@ -11,9 +11,9 @@ export type Extra<K extends string> = {
 }
 
 export interface Options<D, K extends string> {
-  getName: (item: D) => string,
-  getCanFold?: (item: D) => boolean,
-  getInitFold?: (item: D) => boolean,
+  getName: (item: D, deep: number) => string,
+  getCanFold?: (item: D, deep: number) => boolean,
+  getInitFold?: (item: D, deep: number) => boolean,
   key?: K
 }
 

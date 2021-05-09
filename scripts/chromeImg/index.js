@@ -44,7 +44,7 @@ const getHtml = (() => {
           }
           .large-icon {
             display: inline-block;
-            -webkit-mask-image: url(Images/largeIcons.svg);
+            -webkit-mask-image: url(Images/test.svg);
             background-color: #333;
           }
         </style>
@@ -83,7 +83,6 @@ const Conf = {
 }
 function getHeader (file) {
   const ext = path.extname(file)
-  console.log(ext)
   return Conf[ext.slice(1)]
 }
 http.createServer(async (req, res) => {

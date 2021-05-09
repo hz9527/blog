@@ -87,3 +87,28 @@
   border: @font-size*0.4 solid transparent;
   border-left-color: var(--color);
 }
+
+.ui-loading {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid var(--border-light);
+    border-bottom-color: transparent;
+    animation: loading 0.5s linear infinite;
+  }
+}
+
+@keyframes loading {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,10 +1,15 @@
 const { MiddleWare } = require('../common')
 const resolveMd = require('./markdown')
 const pluginHOC = require('./plugin')
-const { sandboxPlugin } = require('./plugin/sandbox')
+const { addEnhancer, fenceEnhancerHoc } = require('./plugin/fenceEnhancer')
+const { sandboxEnhancer } = require('./plugin/fenceEnhancer/sandbox')
+const { mindMapEnhancer } = require('./plugin/fenceEnhancer/mindmap')
 const { vueWrapperRender } = require('./renderPlugin')
 
-const loadMd = resolveMd({ plugins: [pluginHOC, () => sandboxPlugin] })
+addEnhancer(sandboxEnhancer)
+addEnhancer(mindMapEnhancer)
+
+const loadMd = resolveMd({ plugins: [pluginHOC, fenceEnhancerHoc] })
 
 module.exports = class MdMiddleWare extends MiddleWare {
   constructor (dir) {

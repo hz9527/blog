@@ -9,7 +9,7 @@ export default [
             "file": "blogs/designMode/index.md",
             "title": "设计模式",
             "hash": "EdBJbcCDcFBIeJdEAFcf",
-            "updateTime": 1620042908778,
+            "updateTime": 1620310640577,
             "headlines": [
               {
                 "level": 2,
@@ -53,8 +53,8 @@ export default [
               },
               {
                 "level": 3,
-                "name": "迪比特法则",
-                "value": "%E8%BF%AA%E6%AF%94%E7%89%B9%E6%B3%95%E5%88%99"
+                "name": "迪米特法则 LKP",
+                "value": "%E8%BF%AA%E7%B1%B3%E7%89%B9%E6%B3%95%E5%88%99%20LKP"
               },
               {
                 "level": 3,
@@ -121,12 +121,12 @@ export default [
                 "file": "blogs/css/restudy/index.md",
                 "title": "重学 CSS 系列一",
                 "hash": "EaHFGBCDdbAaIGaAcBHI",
-                "updateTime": 1620030433464,
+                "updateTime": 1620494312669,
                 "headlines": [
                   {
                     "level": 2,
-                    "name": "css",
-                    "value": "css"
+                    "name": "mindMap",
+                    "value": "mindMap"
                   }
                 ],
                 "tips": [],

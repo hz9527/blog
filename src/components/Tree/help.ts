@@ -5,22 +5,23 @@ import { Options, Data, Extra } from './type'
 function handler<D extends Record<string, any>, K extends string> (
   tree: Tree<D>,
   opt: Required<Options<D, K>>,
-  pNames: string[] = []
+  pNames: string[] = [],
+  deep = 0
 ): Data<D, K> {
   const res: Data<D, K> = []
   for (let i = 0, l = tree.length; i < l; i++) {
     const base = tree[i]
     const extra: Extra<K>[K] = {
-      name: opt.getName(base),
+      name: opt.getName(base, deep),
       names: [],
-      canFold: opt.getCanFold(base),
-      fold: opt.getInitFold(base)
+      canFold: opt.getCanFold(base, deep),
+      fold: opt.getInitFold(base, deep)
     }
     const item: Data<D, K>[number] = {
       ...base,
       [opt.key]: extra
     }
-    item.children && (item.children = handler(item.children, opt, extra.names))
+    item.children && (item.children = handler(item.children, opt, extra.names, deep + 1))
     extra.names.concat([extra.name]).forEach(n => {
       !pNames.includes(n) && pNames.push(n)
     })

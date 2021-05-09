@@ -81,7 +81,7 @@ export default defineComponent({
   props: {
     initState: {
       type: String as PropType<State>,
-      default: 'bottom'
+      default: 'left'
     },
     ignores: {
       type: Array as PropType<State[]>,
