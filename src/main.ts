@@ -3,6 +3,7 @@ import router from './router'
 import Sandbox from './components/Sandbox/index.vue'
 import Headlines from './components/Headlines/index.vue'
 import MindMap from './components/MindMap/index.vue'
+import InnerLink from './components/InnerLink/index.vue'
 import { timeFormat } from './utils/utils'
 import eventBus from './utils/event'
 import './styles/common.less'
@@ -26,6 +27,7 @@ app.use({
 app.component('Sandbox', Sandbox)
 app.component('Headlines', Headlines)
 app.component('MindMap', MindMap)
+app.component('InnerLink', InnerLink)
 
 app.config.globalProperties.$filters = {
   timeFormat

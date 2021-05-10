@@ -1,8 +1,15 @@
 
 // hyperlink [xx](xx)
 // image
-function resolveItem (item) {
-  return { data: { text: item.content }, children: item.children }
+function resolveItem (item) { // todoee
+  let data
+  const match = item.content.match(/\[(.+)\]\((.+)\)/)
+  if (match) {
+    data = { text: match[1], hyperlink: match[2] }
+  } else {
+    data = { text: item.content }
+  }
+  return { data, children: item.children }
 }
 
 function resolveLine (line) {

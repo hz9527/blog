@@ -42,7 +42,6 @@ export function loadSources (urls: string[]): Promise<void> {
     const tag = createTag(item.tag, item.getAttr(url))
     promises.push(new Promise((resolve, reject) => {
       tag.addEventListener('load', () => {
-        console.log(url)
         resolve()
       }, { once: true })
       tag.addEventListener('error', (e) => reject(e), { once: true })

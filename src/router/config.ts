@@ -3,13 +3,102 @@ export default [
     "title": "文章",
     "children": [
       {
+        "title": "CSS",
+        "children": [
+          {
+            "title": "重学系列",
+            "children": [
+              {
+                "file": "blogs/css/restudy/1-index.md",
+                "title": "重学 CSS 系列 —— CSS 世界观",
+                "hash": "bGGdACAeJeeAfEHCJFFE",
+                "updateTime": 1620658747625,
+                "headlines": [
+                  {
+                    "level": 2,
+                    "name": "关键概念",
+                    "value": "%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"
+                  }
+                ],
+                "tips": [
+                  "CSS 世界观",
+                  "CSS 关键概念"
+                ],
+                "types": [
+                  "重学系列"
+                ],
+                "show": true
+              },
+              {
+                "file": "blogs/css/restudy/2-setup.md",
+                "title": "重学 CSS 系列 —— 起步",
+                "hash": "HAIbFaaCEJdCadFcfGaH",
+                "updateTime": 1620660696875,
+                "headlines": [],
+                "tips": [
+                  "CSS",
+                  "CSS 基础"
+                ],
+                "types": [
+                  "重学系列"
+                ],
+                "show": true
+              },
+              {
+                "file": "blogs/css/restudy/3-value.md",
+                "title": "重学 CSS 系列 —— 值与单位",
+                "hash": "HcCIecJAICffGIFIAaFc",
+                "updateTime": 1620656001662,
+                "headlines": [],
+                "tips": [
+                  "CSS 值",
+                  "CSS 单位"
+                ],
+                "types": [
+                  "重学系列"
+                ],
+                "show": true
+              },
+              {
+                "file": "blogs/css/restudy/4-layout.md",
+                "title": "重学 CSS 系列 —— 布局",
+                "hash": "HbCeFIDBEDadJffdadII",
+                "updateTime": 1620656001663,
+                "headlines": [],
+                "tips": [
+                  "CSS 布局"
+                ],
+                "types": [
+                  "重学系列"
+                ],
+                "show": true
+              },
+              {
+                "file": "blogs/css/restudy/5-advance.md",
+                "title": "重学 CSS 系列 —— 进阶",
+                "hash": "ICEeIeABFbGHbcfBGDCa",
+                "updateTime": 1620656001663,
+                "headlines": [],
+                "tips": [
+                  "CSS 进阶"
+                ],
+                "types": [
+                  "重学系列"
+                ],
+                "show": true
+              }
+            ]
+          }
+        ]
+      },
+      {
         "title": "设计模式",
         "children": [
           {
             "file": "blogs/designMode/index.md",
             "title": "设计模式",
             "hash": "EdBJbcCDcFBIeJdEAFcf",
-            "updateTime": 1620310640577,
+            "updateTime": 1620660122699,
             "headlines": [
               {
                 "level": 2,
@@ -60,6 +149,11 @@ export default [
                 "level": 3,
                 "name": "开闭原则 OCP",
                 "value": "%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99%20OCP"
+              },
+              {
+                "level": 3,
+                "name": "test",
+                "value": "test"
               }
             ],
             "tips": [
@@ -108,34 +202,6 @@ export default [
               "JS"
             ],
             "show": true
-          }
-        ]
-      },
-      {
-        "title": "CSS",
-        "children": [
-          {
-            "title": "重学系列",
-            "children": [
-              {
-                "file": "blogs/css/restudy/index.md",
-                "title": "重学 CSS 系列一",
-                "hash": "EaHFGBCDdbAaIGaAcBHI",
-                "updateTime": 1620569897775,
-                "headlines": [
-                  {
-                    "level": 2,
-                    "name": "关键概念",
-                    "value": "%E5%85%B3%E9%94%AE%E6%A6%82%E5%BF%B5"
-                  }
-                ],
-                "tips": [],
-                "types": [
-                  "重学系列"
-                ],
-                "show": true
-              }
-            ]
           }
         ]
       }

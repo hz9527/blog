@@ -92,6 +92,9 @@ function resolveKeysHOC (router, file) {
       let base = renderTitle(token.tag)
       if (matches.length) {
         base = matches.map(item => {
+          if (!item.key) {
+            return ''
+          }
           const value = handlerValue(item.key, route)
           return `${renderTitle(item.key)}${value.map(v => `<b class="${item.key}">${v}</b>`)}`
         }).join('') + base

@@ -118,3 +118,5 @@ class InputComponent {
 ### 迪米特法则 LKP
 
 ### 开闭原则 OCP
+
+### test
