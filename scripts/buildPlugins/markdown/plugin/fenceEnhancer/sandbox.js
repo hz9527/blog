@@ -60,9 +60,9 @@ module.exports.sandboxEnhancer = {
     const result = resolveCode(content, Plugins)
     const state = result.js && !result.html ? 'false' : !result.js && result.html ? 'true' : 'null'
     return `<Sandbox
-      js=${JSON.stringify(result.js)}
-      css=${JSON.stringify(result.css)}
-      html=${JSON.stringify(result.html)}
+      js="${encodeURIComponent(result.js)}"
+      css="${encodeURIComponent(result.css)}"
+      html="${encodeURIComponent(result.html)}"
       :init-state="{editor: false, result: ${state}}"
     />`
   }

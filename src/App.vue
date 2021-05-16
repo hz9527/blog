@@ -1,5 +1,6 @@
 <template>
   <div class="body">
+    <Modal />
     <div class="header" />
     <div class="container">
       <aside>
@@ -15,12 +16,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Menu from './components/Menu.vue'
+import Menu from './components/menu.vue'
+import Modal from './components/Singles/Modal.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    Menu
+    Menu,
+    Modal
   }
 })
 </script>

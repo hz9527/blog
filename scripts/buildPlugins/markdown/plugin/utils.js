@@ -34,11 +34,21 @@ function handlerValue (key, info) {
   }
 }
 
+function genIdFactory () {
+  const titleMap = new Map()
+  return title => {
+    const counts = titleMap.get(title) || 0
+    titleMap.set(title, counts + 1)
+    return encodeURIComponent(counts ? title + counts : title)
+  }
+}
+
 module.exports = {
   wrapperRender,
   getText,
   getContents,
   matchFactory,
   renderTitle,
-  handlerValue
+  handlerValue,
+  genIdFactory
 }

@@ -1,5 +1,5 @@
 const config = require('../../common/config')
-const { wrapperRender, getText, matchFactory, renderTitle, handlerValue, getContents } = require('./utils')
+const { wrapperRender, getText, matchFactory, renderTitle, handlerValue, getContents, genIdFactory } = require('./utils')
 
 const CONFIG = config.md
 const Keys = CONFIG.keys.concat([CONFIG.hideClass])
@@ -7,6 +7,7 @@ const Matches = Keys.map(matchFactory) // b 标签 className
 function resolveHeadHOC (router, file) {
   return (md) => {
     router.merge(file, { headlines: [] })
+    const getId = genIdFactory()
     wrapperRender(md, 'renderToken', (tokens, ind) => {
       const token = tokens[ind]
       if (token.type !== 'heading_open') {
@@ -20,7 +21,7 @@ function resolveHeadHOC (router, file) {
         cur = tokens[++index]
       }
       const title = getText(list)
-      const id = encodeURIComponent(title)
+      const id = getId(title)
       const level = parseInt(token.tag.slice(1))
       if (!isNaN(level)) {
         router.merge(file, (info) => {

@@ -14,7 +14,8 @@
       >
         <a
           :class="'head h' + (i + 1) + ' ' + (states[props.data.value] ? ' head-lh' : '')"
-          :href="'#' + props.data.value"
+          href="#"
+          @click.prevent="jump(props.data.value)"
         >
           {{ props.data.name }}
         </a>
@@ -69,7 +70,12 @@ export default defineComponent({
     }
   },
   mounted () {
-    (this as unknown as T).$scroll.update(this.tree)
+    // (this as unknown as T).$scroll.update(this.tree)
+  },
+  methods: {
+    jump (hash: string) {
+      window.location.replace('#' + hash)
+    }
   }
 })
 </script>
@@ -83,6 +89,7 @@ export default defineComponent({
   padding: 10px 15px;
   background: var(--panelBg);
   box-shadow: var(--shadow);
+  z-index: @z-index-tool;
   .head {
     display: block;
     text-decoration: none;

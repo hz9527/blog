@@ -4,6 +4,7 @@ const pluginHOC = require('./plugin')
 const { addEnhancer, fenceEnhancerHoc } = require('./plugin/fenceEnhancer')
 const { sandboxEnhancer } = require('./plugin/fenceEnhancer/sandbox')
 const { mindMapEnhancer } = require('./plugin/fenceEnhancer/mindmap')
+const { imgPluginHoc } = require('./plugin/image')
 const linkPluginHOC = require('./plugin/link')
 const { vueWrapperRender } = require('./renderPlugin')
 
@@ -14,7 +15,8 @@ const loadMd = resolveMd({
   plugins: [
     pluginHOC,
     fenceEnhancerHoc,
-    linkPluginHOC
+    linkPluginHOC,
+    imgPluginHoc
   ]
 })
 

@@ -8,6 +8,8 @@ body {
   --color-primary: @c-primary-600;
   --colorInverse: #fff;
   --color-disable: @c-gray-300;
+  --color-link: @c-primary-600;
+  --color-link-hover: @c-primary-400;
 
   // 背景颜色
   --tabHoverBg: @c-primary-200;
@@ -42,10 +44,10 @@ body {
 }
 
 a {
-  color: var(--color);
+  color: var(--color-link);
   text-decoration: none;
   &:hover {
-    color: var(--textHover);
+    color: var(--color-link-hover);
   }
 }
 

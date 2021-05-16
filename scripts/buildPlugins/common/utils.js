@@ -38,7 +38,7 @@ function walkDir (dir, ignore = () => false) {
         if (ignore(item)) {
           return res
         }
-        fs.statSync(item).isDirectory() ? res.dirs.push(item) : res.files.push(item)
+        fs.statSync(item).isDirectory() ? res.dirs.push(item) : path.extname(item) && res.files.push(item)
         return res
       }, { files: [], dirs: [] })
       if (dirs.length) {

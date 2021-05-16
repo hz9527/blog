@@ -13,10 +13,14 @@ const router = createRouter({
       return
     }
     if (to.hash) {
-      const con = document.querySelector('.page-container')
+      const con = document.querySelector('.page-container') as HTMLElement
       const el = document.getElementById(`${encodeURIComponent(to.hash.slice(1))}`)
       if (con && el) {
-        con.scrollTo({ top: el.getBoundingClientRect().top })
+        con.style.scrollBehavior = 'auto'
+        con.scrollTop = el.getBoundingClientRect().top
+        requestAnimationFrame(() => {
+          con.style.removeProperty('scroll-behavior')
+        })
       }
     }
   },

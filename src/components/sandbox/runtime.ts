@@ -8,6 +8,7 @@ export default class Runtime {
   constructor (private root: Element) {
     this.iframe = document.createElement('iframe')
     this.iframe.frameBorder = '0'
+    this.iframe.style.width = '100%'
     window.addEventListener('message', this.messageHandler)
   }
 

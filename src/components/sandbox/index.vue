@@ -116,9 +116,9 @@ export default defineComponent({
   },
   data () {
     return {
-      htmlValue: this.html,
-      cssValue: this.css,
-      jsValue: this.js,
+      htmlValue: decodeURIComponent(this.html),
+      cssValue: decodeURIComponent(this.css),
+      jsValue: decodeURIComponent(this.js),
       tab: 'html',
       log: '',
       isDrag: false
