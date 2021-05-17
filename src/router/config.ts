@@ -12,7 +12,7 @@ export default [
                 "file": "blogs/css/restudy/1-index.md",
                 "title": "重学 CSS 系列 —— CSS 世界观",
                 "hash": "bGGdACAeJeeAfEHCJFFE",
-                "updateTime": 1621136342230,
+                "updateTime": 1621252839073,
                 "headlines": [
                   {
                     "level": 2,

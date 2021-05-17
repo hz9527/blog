@@ -28,3 +28,56 @@ md 增强
 
 - [x] 图片资源
 - [ ] iframe 资源
+
+## 开发指南
+
+### 目录名称配置
+
+`scripts/buildPlugins/common/config.js` 文件下 `dirNameMap` 字段，`DIR_KEY` 描述目录名称
+
+### 目录文章排序
+
+### 语法糖
+
+#### sandbox
+
+\`\`\`sandbox
+
+// html
+xml
+
+// css
+css
+
+// js
+js
+
+\`\`\`
+
+#### mindMap
+
+\`\`\`mindMap
+
+\* 一级标题
+
+\*\* \[二级标题\]\(link\)
+
+\`\`\`
+
+#### 图片
+
+图片自带预览，可以设置样式
+
+\!\[alt styleJSON\]\(link\)
+
+\!\[alt {class: string, style?: string}\]\(link\)
+
+## 系列文章
+
+- [ ] 重学 CSS 系列
+- [ ] CSS 属性系列
+- [ ] CSS 奇技淫巧
+- [ ] JS 手写系列
+- [ ] JS 编程题系列
+- [ ] 深入浅出网络协议
+- [ ] 深入浅出http系列（http、https、http2）

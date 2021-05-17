@@ -14,16 +14,34 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script lang="tsx">
+import { defineComponent, onMounted, onBeforeUnmount } from 'vue'
 import Menu from './components/menu.vue'
 import Modal from './components/Singles/Modal.vue'
+import eventBus from './utils/event'
+import Preview from './components/common/preview.vue'
+import { useModal } from './utils/hook'
 
 export default defineComponent({
   name: 'App',
   components: {
     Menu,
     Modal
+  },
+  setup () {
+    const modal = useModal()
+    const handler = (e: UIEvent) => {
+      const target = e.target as HTMLImageElement
+      if (target.nodeName === 'IMG' && target.dataset.type === 'preview') {
+        modal.show(<Preview src={target.src} />)
+      }
+    }
+    onMounted(() => {
+      eventBus.on('bodyClick', handler)
+    })
+    onBeforeUnmount(() => {
+      eventBus.off('bodyClick', handler)
+    })
   }
 })
 </script>

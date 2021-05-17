@@ -109,7 +109,7 @@ HTML (超文本标记语言) 元素大多数都是行内元素（包含 inline/i
 
 ## 盒子模型
 
-![boxModel](../../../assets/blogs/boxmodel.png)
+![boxModel {"maxWidth": "300px"}](../../../assets/blogs/boxmodel.png)
 
 ## BFC
 

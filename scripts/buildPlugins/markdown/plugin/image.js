@@ -15,7 +15,7 @@ function enhancerProps (alt) {
   const match = alt.match(/\{.+\}/)
   if (match) {
     try {
-      result.alt = result.alt.replace(match[0])
+      result.alt = result.alt.replace(match[0], '').trim()
       const obj = JSON.parse(match[0])
       if (obj.class) { // {class: string; style?: string}
         return { ...result, ...obj }
@@ -35,14 +35,14 @@ module.exports.imgPluginHoc = (route, file) => {
   return (md) => {
     const render = md.renderer.rules.image.bind(md.renderer.rules)
     md.renderer.rules.image = function (tokens, ind, ...args) {
-      // console.log(tokens[ind])
       const img = tokens[ind]
       const url = getAttr(img, 'src')
       if (!url) {
         return render(tokens, ind, ...args)
       }
-      const alt = getAttr(img, 'alt')
-      const props = alt ? enhancerProps(alt[1]) : {}
+      let alt = getAttr(img, 'alt')
+      alt = (alt && alt[1]) || img.content
+      const props = alt ? enhancerProps(alt) : {}
       return `<img src=${url[1]} ${Object.keys(props).map(key => `${key}="${props[key]}"`).join(' ')} />`
     }
   }

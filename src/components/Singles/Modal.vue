@@ -15,6 +15,7 @@
 <script lang="tsx">
 import { defineComponent } from 'vue'
 import Content from './modal-con.vue'
+import { setGlobal, MODAL_KEY } from '../../utils/hook'
 export default defineComponent({
   components: { Content },
   data () {
@@ -25,7 +26,7 @@ export default defineComponent({
     }
   },
   created () {
-    this.$.appContext.config.globalProperties.$modal = {
+    setGlobal(this.$.appContext.app, MODAL_KEY, {
       show: (jsx: any) => {
         this.show = true
         this.child = jsx
@@ -33,7 +34,7 @@ export default defineComponent({
       hide: () => {
         this.show = false
       }
-    }
+    })
     const unsub = this.$watch('show', () => {
       this.init = true
       unsub()
