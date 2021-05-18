@@ -110,13 +110,26 @@ function getDirInfo (obj, keys = []) {
   }, result)
 }
 
-const resolveDirNames = (config, baseDir) => {
+const resolveFactory = (config, baseDir) => {
   let [paths, names] = getDirInfo(config)
+  const dirs = paths
   paths = paths.map(i => path.join(baseDir, i))
-  return (file) => {
-    const dir = fs.statSync(file).isDirectory() ? file : path.dirname(file)
-    const ind = paths.findIndex(p => dir === p)
-    return ~ind ? names[ind] : []
+  return {
+    resolveDirNames: (file) => {
+      const dir = fs.statSync(file).isDirectory() ? file : path.dirname(file)
+      const ind = paths.findIndex(p => dir === p)
+      return ~ind ? names[ind] : []
+    },
+    sort: (list) => {
+      if (list.length < 2) {
+        return list
+      }
+      const { dirData, fileData } = list.reduce((res, item) => {
+        item[DIR_KEY] ? res.dirData.push(item) : res.fileData.push(item)
+        return res
+      }, { dirData: [], fileData: [] })
+      return dirData.sort((a, b) => dirs.indexOf(a[DIR_KEY]) - dirs.indexOf(b[DIR_KEY])).concat(fileData)
+    }
   }
 }
 
@@ -127,5 +140,5 @@ module.exports = {
   createHash,
   getBaseInfo,
   EmptyRouterPlugin,
-  resolveDirNames
+  resolveFactory
 }
