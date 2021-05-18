@@ -9,8 +9,12 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
+    "typeRoots": [
+      "./node_modules",
+      "./src/types"
+    ],
     "types": [
-      "src/types/global",
+      "./global.d.tsx",
       "vite/client"
     ]
   },

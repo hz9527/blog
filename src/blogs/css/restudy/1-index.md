@@ -45,7 +45,7 @@ CSS 世界观主要描述 CSS 中一些基本概念及原则，如盒模型、BF
 
   * inline padding/margin 左右生效，上下 “不生效”（占据渲染但不占据空间，并且遵循文档流顺序覆盖）
 
-* 两个相邻的元素都设置了margin 并且两个margin有重叠，那么更大的设置会被保留，小的则会消失（外边距叠加）
+* 两个相邻的元素都设置了margin 并且两个[margin有重叠](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)，那么更大的设置会被保留，小的则会消失（外边距叠加）
 
   * 理论上水平方向不会触发边距塌陷 [reference](https://www.w3.org/TR/CSS2/box.html#collapsing-margins)
   * 对于 block element 也可以理解为水平方向也会触发边距塌陷，具体见下方示例
@@ -111,7 +111,37 @@ HTML (超文本标记语言) 元素大多数都是行内元素（包含 inline/i
 
 ![boxModel {"maxWidth": "300px"}](../../../assets/blogs/boxmodel.png)
 
+在盒子模型里，一共分为 4 个区域（由内到外）：
+
+1. 内容区域（content area）
+2. 内边距区域（padding area）
+3. 边框区域（border area）
+4. 外边距区域（margin area）
+
+### 宽高计算
+
+在 文档流 中简单介绍过，块级盒子默认宽度为父容器宽度，高度为内部高度。在正常情况下，设置盒子宽高是指 内容区域，因此当盒子存在 margin、padding、border 等情况下，设置宽度 100%，则会超出父元素。
+
+可以通过 `box-sizing` 来改变这一默认行为，其取值除了正常取值外，主要为 `content-box`(default) & `border-box`，设置为后者则宽高设置为整个边框区域
+
+### 背景计算
+
+默认背景计算衍生到 border area 外边缘，可以通过 [`background-clip`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/background-clip) 设置
+
+### 定位计算
+
+1. float: 从 content area 计算，如左浮动为
+2. position(absolute\fixed): 从 border area 内边缘计算
+
 ## BFC
+
+> BFC(Block Formatting Context) 块级格式化上下文
+
+### 是什么？
+
+### 如何形成？
+
+### 相关应用
 
 ### IFC、GFC、FFC
 
@@ -122,3 +152,7 @@ HTML (超文本标记语言) 元素大多数都是行内元素（包含 inline/i
 ## 总结
 
 [视觉格式化模型](https://developer.mozilla.org/zh-CN/docs/Web/CSS/Visual_formatting_model)
+[reference](https://juejin.cn/post/6844903894313598989)
+<https://github.com/zuopf769/notebook/blob/master/fe/BFC%E5%8E%9F%E7%90%86%E5%89%96%E6%9E%90/README.md>
+
+<https://juejin.cn/post/6844903497045917710>
