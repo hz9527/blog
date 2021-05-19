@@ -7,7 +7,7 @@ const routes = RoutesConfig.map((item) => ({
 }))
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.VITE_ROUTER_PATH), // 项目 basic path
   scrollBehavior (to, from) {
     if (from && from.path === to.path) {
       return

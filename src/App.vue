@@ -16,6 +16,7 @@
 
 <script lang="tsx">
 import { defineComponent, onMounted, onBeforeUnmount } from 'vue'
+import { useRouter } from 'vue-router'
 import Menu from './components/menu.vue'
 import Modal from './components/Singles/Modal.vue'
 import eventBus from './utils/event'
@@ -30,6 +31,7 @@ export default defineComponent({
   },
   setup () {
     const modal = useModal()
+    const router = useRouter()
     const handler = (e: UIEvent) => {
       const target = e.target as HTMLImageElement
       if (target.nodeName === 'IMG' && target.dataset.type === 'preview') {
@@ -38,6 +40,12 @@ export default defineComponent({
     }
     onMounted(() => {
       eventBus.on('bodyClick', handler)
+      const value = localStorage.getItem(import.meta.env.VITE_REDIRECT_KEY)
+      if (value) {
+        localStorage.removeItem(import.meta.env.VITE_REDIRECT_KEY)
+        const info: {path: string; hash: string; search: string} = JSON.parse(value)
+        router.replace({ path: info.path, hash: decodeURIComponent(info.hash) })
+      }
     })
     onBeforeUnmount(() => {
       eventBus.off('bodyClick', handler)

@@ -1,5 +1,8 @@
+function regFactory (str) {
+  return new RegExp(`^//\\s+(lang=)?${str}(\\s+)?$`)
+}
 function matchFactory (str) {
-  const reg = new RegExp(`^//\\s+(lang=)?${str}(\\s+)?$`)
+  const reg = regFactory(str)
   return (line) => reg.test(line.toLowerCase()) ? str : false
 }
 function transform (str) {
@@ -21,10 +24,11 @@ const Plugins = [
 ]
 
 exports.use = function (plugin) {
-  Plugins.push(plugin)
+  const item = typeof plugin === 'function' ? plugin(regFactory) : plugin
+  Plugins.push(item)
 }
 
-function resolveCode (str, plugins) { // {match, transform}[]
+function resolveCode (str, plugins, ...args) { // {match, transform}[]
   // lang=xx/xx
   const list = str.split('\n')
   const result = { js: '', css: '', html: '' }
@@ -38,7 +42,7 @@ function resolveCode (str, plugins) { // {match, transform}[]
         // eslint-disable-next-line no-prototype-builtins
         if (result.hasOwnProperty(type)) {
           if (cur) {
-            result[cur.type] = cur.handler(result[cur.type])
+            result[cur.type] = cur.handler(result[cur.type], ...args)
           }
           cur = {
             type,
@@ -48,16 +52,19 @@ function resolveCode (str, plugins) { // {match, transform}[]
         }
       }
     } else if (cur) {
-      result[cur.type] += line
+      result[cur.type] += ('\n' + line)
     }
+  }
+  if (cur) {
+    result[cur.type] = cur.handler(result[cur.type], ...args)
   }
   return result
 }
 
 module.exports.sandboxEnhancer = {
   match: 'sandbox',
-  handler (content) {
-    const result = resolveCode(content, Plugins)
+  handler (content, ...args) {
+    const result = resolveCode(content, Plugins, ...args)
     const state = result.js && !result.html ? 'false' : !result.js && result.html ? 'true' : 'null'
     return `<Sandbox
       js="${encodeURIComponent(result.js)}"

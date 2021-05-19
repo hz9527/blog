@@ -116,11 +116,12 @@ class RouteManager {
         this.task = new Promise((resolve, reject) => {
           const data = this.routers.toList()
           if (data) {
-            fs.writeFile(
-              this.target,
-              `${this.prefix}${JSON.stringify(data, undefined, 2)}`,
-              e => e ? reject(e) : resolve()
-            )
+            try {
+              fs.writeFileSync(this.target, `${this.prefix}${JSON.stringify(data, undefined, 2)}`)
+              resolve()
+            } catch (e) {
+              reject(e)
+            }
           } else {
             resolve()
           }

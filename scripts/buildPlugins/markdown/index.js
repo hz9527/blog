@@ -1,12 +1,26 @@
+const path = require('path')
 const { MiddleWare } = require('../common')
 const resolveMd = require('./markdown')
 const pluginHOC = require('./plugin')
 const { addEnhancer, fenceEnhancerHoc } = require('./plugin/fenceEnhancer')
-const { sandboxEnhancer } = require('./plugin/fenceEnhancer/sandbox')
+const { sandboxEnhancer, use } = require('./plugin/fenceEnhancer/sandbox')
 const { mindMapEnhancer } = require('./plugin/fenceEnhancer/mindmap')
 const { imgPluginHoc } = require('./plugin/image')
 const linkPluginHOC = require('./plugin/link')
 const { vueWrapperRender } = require('./renderPlugin')
+const { resolveInclude } = require('./plugin/utils')
+
+use((factory) => {
+  const reg = factory('includejs')
+  return {
+    match (line) {
+      return reg.test(line) ? 'js' : false
+    },
+    transform (str, file) {
+      return resolveInclude(str, file)
+    }
+  }
+})
 
 addEnhancer(sandboxEnhancer)
 addEnhancer(mindMapEnhancer)
@@ -24,7 +38,13 @@ module.exports = class MdMiddleWare extends MiddleWare {
   constructor (dir) {
     super({
       match: /\.md$/,
-      dir
+      dir,
+      ignore (p) {
+        if (path.extname(p)) {
+          return !/\.md$/.test(p)
+        }
+        return false
+      }
     })
   }
 

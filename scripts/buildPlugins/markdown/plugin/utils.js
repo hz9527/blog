@@ -1,3 +1,5 @@
+const path = require('path')
+const fs = require('fs')
 const config = require('../../common/config')
 
 const { titleMap, titleClass, typeClass, updateClass } = config.md
@@ -43,6 +45,32 @@ function genIdFactory () {
   }
 }
 
+const BaseReg = /import\s+('.+'|".+")/g
+const Reg = /import\s+('(.+)'|"(.+)")/
+function getFileContent (str, baseFile) { // ! 不支持 watch
+  const match = str.match(Reg)
+  if (!match) {
+    return str
+  }
+  const file = path.resolve(path.dirname(baseFile), match[2])
+  if (!fs.existsSync(file)) {
+    console.warn(`${file} not found`)
+    return `${match[2]} is not exist`
+  }
+  return fs.readFileSync(file).toString()
+}
+
+function resolveInclude (content, file) {
+  const match = content.match(BaseReg)
+  let data = content
+  if (match) {
+    match.forEach(str => {
+      data = data.replace(str, () => getFileContent(str, file))
+    })
+  }
+  return data
+}
+
 module.exports = {
   wrapperRender,
   getText,
@@ -50,5 +78,6 @@ module.exports = {
   matchFactory,
   renderTitle,
   handlerValue,
-  genIdFactory
+  genIdFactory,
+  resolveInclude
 }

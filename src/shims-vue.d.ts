@@ -17,3 +17,9 @@ declare const process: {
     NODE_ENV: 'development' | 'production'
   }
 }
+
+// eslint-disable-next-line no-unused-vars
+interface ImportMetaEnv {
+  VITE_ROUTER_PATH: string;
+  VITE_REDIRECT_KEY: string;
+}

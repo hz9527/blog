@@ -1,27 +1,81 @@
-const http = require('http')
+const { execSync } = require('child_process')
+function exec (cmd) {
+  return execSync(cmd).toString()
+}
 
-http.createServer((req, res) => {
-  if (req.url === '/') {
-    res.setHeader('Content-Type', 'text/html; charset=UTF-8')
-    res.setHeader('Cache-Control', 'max-age=31536000')
-    res.end(`<!DOCTYPE html>
-    <html lang="en">
-      <head></head>
-      <body class="test">
-       test
-       <script>
-        setTimeout(() => {
-          const script = document.createElement('script');
-          script.src = '/index.js';
-          document.body.appendChild(script);
-        }, 5000)
-       </script>
-      </body>
-    </html>
-    `)
-  } else if (req.url === '/index.js') {
-    res.setHeader('Content-Type', 'application/javascript')
-    res.setHeader('Cache-Control', 'max-age=31536000')
-    res.end('')
+function checker (result, msg) {
+  if (!result) {
+    console.warn(msg)
+    console.log('release fail')
+    process.exit(1)
   }
-}).listen(8080)
+}
+
+const Version = ['major', 'minor', 'patch', 'premajor', 'preminor', 'prepatch', 'prerelease']
+const Args = {
+  version: Version.find(key => !!process.env[`npm_config_${key}`]) || 'minor'
+}
+// check status
+// check branch
+// add tag
+// delete branch
+// checkout branch
+// build
+// resolve file
+// commit
+const value = () => true
+const Flows = [
+  {
+    cmd: 'git branch',
+    value (d) {
+      const item = d.split('\n').find(line => line.indexOf('* ') === 0)
+      if (!item) {
+        return false
+      }
+      return item.replace('* ', '').trim() === 'dev'
+    },
+    msg: 'branch invalid'
+  },
+  {
+    cmd: `npm version ${Args.version}`,
+    value,
+    msg: ''
+  },
+  {
+    cmd: 'git branch -f gh-pages && git checkout gh-pages',
+    value
+  },
+  {
+    cmd () {
+      const data = exec('npm run build')
+      console.log(data)
+    },
+    value
+  },
+  {
+    cmd: 'rm -rf `ls | grep -v "dist"`',
+    value,
+    msg: 'delete files fail'
+  },
+  {
+    cmd: 'cp -r dist/* . && rm -rf dist',
+    value,
+    msg: 'delete files fail'
+  },
+  {
+    cmd: 'git push -f',
+    value
+  },
+  {
+    cmd: 'git checkout dev && npm install',
+    value
+  }
+]
+
+Flows.forEach(({ cmd, value = '', msg = `${cmd} exec fail` }) => {
+  const data = typeof cmd === 'function' ? cmd() : exec(cmd)
+  const result = typeof value === 'function' ? value(data) : data === value
+  checker(result, msg)
+})
+
+console.log('release success')
