@@ -13,7 +13,13 @@ module.exports = {
     [MD_DIR]: {
       [DIR_KEY]: '文章',
       designMode: '设计模式',
-      js: 'JS',
+      js: {
+        [DIR_KEY]: 'JS',
+        es6: 'es6 系列',
+        exercises: '编码系列',
+        polyfill: '模拟实现系列'
+      },
+      browser: '浏览器',
       css: {
         [DIR_KEY]: 'CSS',
         restudy: '重学系列'

@@ -54,6 +54,8 @@ js
 
 \`\`\`
 
+增强 js，注释使用 `includejs` 引入外部js文件 `import 'relativePath'`
+
 #### mindMap
 
 \`\`\`mindMap
