@@ -1,0 +1,1 @@
+import{e as E,o as r,f as B}from"./vendor.22ad804a.js";const a={class:"page-container"},e=B("h1",{id:"CSS%20%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E5%B1%9E%E6%80%A7%E7%B3%BB%E5%88%97%20%E2%80%94%E2%80%94%20%E6%80%BB%E6%8F%BD"},"CSS 深入浅出属性系列 —— 总揽",-1);function o(B,o){return r(),E("div",a,[e])}var n={render:o};export default n;export{o as render};
