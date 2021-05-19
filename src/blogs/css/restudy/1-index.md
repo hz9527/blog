@@ -49,7 +49,7 @@ CSS 世界观主要描述 CSS 中一些基本概念及原则，如盒模型、BF
 
   * 理论上水平方向不会触发边距塌陷 [reference](https://www.w3.org/TR/CSS2/box.html#collapsing-margins)
   * 对于 block element 也可以理解为水平方向也会触发边距塌陷，具体见下方示例
-  * margin 重叠 还可以还可以穿透，如 ul 下 li margin 会穿透
+  * margin 重叠 还可以还可以穿透，如 ul 下 li margin 会穿透，即 margin 重叠除了兄弟块之间还有父子块
 
 行内元素示例
 
@@ -139,9 +139,17 @@ HTML (超文本标记语言) 元素大多数都是行内元素（包含 inline/i
 
 ### 是什么？
 
+> 它是一个**独立的渲染区域**，只有Block-level box参与， 它规定了内部的Block-level Box如何布局，并且与这个区域外部毫不相干。
+
 ### 如何形成？
 
 ### 相关应用
+
+**清除浮动带来影响**
+
+**消除父子元素 margin 折叠**
+
+**使用 float 消除兄弟元素 margin 折叠**
 
 ### IFC、GFC、FFC
 
