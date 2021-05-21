@@ -3,7 +3,7 @@ const CONFIG = require('../common/config')
 const { RouteManager } = require('../common')
 const { typePlugin, updateTimePlugin } = require('../common/routerPlugin')
 const MarkdownMiddleware = require('../markdown')
-const dynamicHandler = require('./dynamicImport')
+const manager = require('./dynamicImport')
 
 const routeManager = new RouteManager(CONFIG.target, CONFIG.base, CONFIG.dirNameMap)
 
@@ -27,15 +27,19 @@ module.exports = function plugin () {
       })
     },
     buildStart () {
+      manager.init(process.env.NODE_ENV === 'production')
       return routeManager.initRouters(this.meta.watchMode, this)
     },
     transform (code, id) { // dynamicImports
       if (CONFIG.dynamicFile.includes(id)) {
-        return dynamicHandler.call(this, code, getPaths.bind(null, id))
+        return manager.resolver(code, getPaths.bind(null, id), id, this)
       }
     },
+    resolveDynamicImport (...args) {
+      return manager.resolveDynamicImport(...args)
+    },
     load (id) {
-      return routeManager.load(id)
+      return manager.loadId(id) || routeManager.load(id)
     }
   }
 }
