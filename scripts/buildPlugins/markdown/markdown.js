@@ -6,7 +6,7 @@ module.exports = function resolveMd (config) {
   return (id, router, update) => {
     const md = markdownIt({
       html: true,
-      highlight: function (str, lang) {
+      highlight: function (str, { lang }) {
         if (lang && hljs.getLanguage(lang)) {
           try {
             return hljs.highlight(lang, str).value

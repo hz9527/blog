@@ -4,7 +4,7 @@ export interface Headline {
   value: string;
 }
 
-export interface RouteItem {
+interface BaseRoute {
   file: string
   title: string;
   hash: string;
@@ -12,6 +12,16 @@ export interface RouteItem {
   headlines: Headline[];
   tips: string[];
   types: string[];
+}
+interface RouterDataItem {
+  title: string;
+  children: ((BaseRoute & {
+    show: boolean;
+  }) | RouterDataItem)[];
+}
+export type RouterData = RouterDataItem[];
+
+export interface RouteItem extends BaseRoute {
   dirs: string[];
 }
 

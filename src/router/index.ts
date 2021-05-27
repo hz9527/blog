@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { RoutesConfig } from './data'
+import Config from './config'
+import { RoutesConfig, init } from './data'
+
+init(Config)
 
 const routes = RoutesConfig.map((item) => ({
   path: `/${item.hash}`,

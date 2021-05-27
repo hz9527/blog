@@ -5,9 +5,31 @@
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>hz's site</title>
+    <style>
+      .loading {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .loading::after {
+        content: '';
+        animation: l 1s linear infinite;
+      }
+      @keyframes l {
+        25% {content: '.';}
+        50% {content: '..';}
+        75% {content: '...';}
+        100% {content: '';}
+      }
+    </style>
   </head>
-  <body class="test">
-    <div id="app"></div>
+  <body>
+    <div id="app">
+      <div class="loading">
+        loading
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

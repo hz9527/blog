@@ -2,9 +2,6 @@ declare module '*.vue' {
   import { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>
   export default component
-  export interface ComponentCustomProperties {
-    $test: 123
-  }
 }
 
 declare module '*.md' {

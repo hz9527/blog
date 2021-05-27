@@ -24,7 +24,7 @@ export default [
             "file": "blogs/designMode/index.md",
             "title": "设计模式",
             "hash": "EdBJbcCDcFBIeJdEAFcf",
-            "updateTime": 1620670811682,
+            "updateTime": 1622001845604,
             "headlines": [
               {
                 "level": 2,
@@ -73,13 +73,8 @@ export default [
               },
               {
                 "level": 3,
-                "name": "开闭原则 OCP",
-                "value": "%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99%20OCP"
-              },
-              {
-                "level": 3,
-                "name": "test",
-                "value": "test"
+                "name": "开闭原则 OCP2",
+                "value": "%E5%BC%80%E9%97%AD%E5%8E%9F%E5%88%99%20OCP2"
               }
             ],
             "tips": [

@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "vite",
+    "dev:inspect": "node --inspect node_modules/.bin/vite",
     "build": "VITE_ROUTER_PATH=/blog/ vite build --base=./",
+    "build:inspect": "VITE_ROUTER_PATH=/blog/ node --inspect-brk node_modules/.bin/vite build --base=./",
     "serve": "vite preview",
     "release": "node ./scripts/release/index.js",
     "lint": "eslint . --ext=.js,.ts,.vue"

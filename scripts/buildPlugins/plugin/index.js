@@ -40,6 +40,22 @@ module.exports = function plugin () {
     },
     load (id) {
       return manager.loadId(id) || routeManager.load(id)
+    },
+    outputOptions (option) {
+      const fn = typeof option.manualChunks === 'string' ? () => option.manualChunks : (option.manualChunks || (() => {}))
+      return {
+        ...option,
+        // chunkFileNames (info) {
+        //   return option.chunkFileNames
+        // },
+        manualChunks (id, ...args) {
+          // todo 后续将路由生成及相关逻辑拆出来后单独拆包，保证大部分chunk hash 一致
+          // 1. 经常变动部分一旦被别的模块依赖就应该不能有hash
+          // 2. 将经常变动部分代码拆分成单独文件
+          // 实现 contenthash & 配合 sw
+          return fn(id, ...args)
+        }
+      }
     }
   }
 }

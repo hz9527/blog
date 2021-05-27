@@ -1,8 +1,7 @@
-import Config from './config'
-import { RouteItem } from '../types/index'
+import { RouteItem, RouterData } from '../types/index'
 
 // show 为 false 或者无 title 会被忽略
-function walk (data: typeof Config, dirs: string[] = []): RouteItem[] {
+function walk (data: RouterData, dirs: string[] = []): RouteItem[] {
   const result: RouteItem[] = []
   for (let i = 0; i < data.length; i++) {
     const item = data[i]
@@ -26,6 +25,11 @@ function walk (data: typeof Config, dirs: string[] = []): RouteItem[] {
   return result as RouteItem[]
 }
 
-export const RoutesConfig = walk(Config)
+export let RoutesConfig: RouteItem[] = []
 
-export const Tree = Config
+export let Tree: RouterData = []
+
+export function init (config: RouterData) {
+  RoutesConfig = walk(config)
+  Tree = config
+}

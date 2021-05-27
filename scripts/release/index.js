@@ -63,7 +63,7 @@ const Flows = [
     msg: 'delete files fail'
   },
   {
-    cmd: 'git push -f',
+    cmd: 'git push origin gh-pages -f',
     value
   },
   {
